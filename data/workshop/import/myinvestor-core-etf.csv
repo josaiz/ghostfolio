@@ -1,0 +1,23 @@
+﻿Date,Code,Name,Action,Currency,Price,Quantity,Fee,DataSource,Account,Comment
+2024-01-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,102.4,10,1,YAHOO,MyInvestor Core ETF,scenario=dca-core; first core global ETF purchase
+2024-02-15,SXR8.DE,iShares Core S&P 500 UCITS ETF Acc,BUY,EUR,470,2,1,YAHOO,MyInvestor Core ETF,scenario=us-exposure; adds S&P 500 exposure
+2024-03-15,IUSN.DE,iShares MSCI World Small Cap UCITS ETF,BUY,EUR,5.92,35,1,YAHOO,MyInvestor Core ETF,scenario=small-cap-diversification
+2024-04-15,EUNA.DE,iShares Core Global Aggregate Bond UCITS ETF EUR Hedged,BUY,EUR,5.04,200,1,YAHOO,MyInvestor Core ETF,scenario=bond-sleeve; stabilizer allocation
+2024-05-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,105,8,1,YAHOO,MyInvestor Core ETF,scenario=dca-core
+2024-06-15,IS3N.DE,iShares Core MSCI EM IMI UCITS ETF Acc,BUY,EUR,32.2,40,1,YAHOO,MyInvestor Core ETF,scenario=emerging-markets
+2024-07-15,EXSA.DE,iShares STOXX Europe 600 UCITS ETF Dist,BUY,EUR,51,20,1,YAHOO,MyInvestor Core ETF,scenario=europe-dividend-income
+2024-09-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,110,9,1,YAHOO,MyInvestor Core ETF,scenario=dca-core
+2024-10-15,EUNA.DE,iShares Core Global Aggregate Bond UCITS ETF EUR Hedged,BUY,EUR,5.12,180,1,YAHOO,MyInvestor Core ETF,scenario=bond-sleeve
+2024-12-15,IUSN.DE,iShares MSCI World Small Cap UCITS ETF,BUY,EUR,6.2,30,1,YAHOO,MyInvestor Core ETF,scenario=small-cap-diversification
+2025-01-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,116.5,10,1,YAHOO,MyInvestor Core ETF,scenario=dca-core
+2025-03-15,SXR8.DE,iShares Core S&P 500 UCITS ETF Acc,BUY,EUR,520,2,1,YAHOO,MyInvestor Core ETF,scenario=us-exposure
+2025-04-15,IUSN.DE,iShares MSCI World Small Cap UCITS ETF,SELL,EUR,5.8,15,1,YAHOO,MyInvestor Core ETF,scenario=tax-loss-harvesting; partial small-cap sale
+2025-05-15,IS3N.DE,iShares Core MSCI EM IMI UCITS ETF Acc,BUY,EUR,34,35,1,YAHOO,MyInvestor Core ETF,scenario=emerging-markets
+2025-06-30,EXSA.DE,iShares STOXX Europe 600 UCITS ETF Dist,DIVIDEND,EUR,0.72,20,0,YAHOO,MyInvestor Core ETF,scenario=dividend-income; Europe ETF distribution
+2025-07-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,119,8,1,YAHOO,MyInvestor Core ETF,scenario=dca-core
+2025-09-15,EUNA.DE,iShares Core Global Aggregate Bond UCITS ETF EUR Hedged,BUY,EUR,5.3,160,1,YAHOO,MyInvestor Core ETF,scenario=bond-sleeve
+2025-11-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,123,8,1,YAHOO,MyInvestor Core ETF,scenario=dca-core
+2026-01-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,126,7,1,YAHOO,MyInvestor Core ETF,scenario=dca-core
+2026-03-15,IS3N.DE,iShares Core MSCI EM IMI UCITS ETF Acc,BUY,EUR,36,30,1,YAHOO,MyInvestor Core ETF,scenario=emerging-markets
+2026-05-15,SXR8.DE,iShares Core S&P 500 UCITS ETF Acc,BUY,EUR,565,1.5,1,YAHOO,MyInvestor Core ETF,scenario=us-exposure; fractional ETF purchase
+2026-05-20,EXSA.DE,iShares STOXX Europe 600 UCITS ETF Dist,DIVIDEND,EUR,0.75,20,0,YAHOO,MyInvestor Core ETF,scenario=dividend-income; recurring distribution
