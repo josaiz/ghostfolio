@@ -387,6 +387,95 @@ Windows:
 .\scripts\logs.ps1
 ```
 
+## Cargar datos de demo
+
+Antes de cargar datos, asegúrate de que:
+
+1. Ghostfolio esta arrancado.
+2. Ya has creado el usuario admin desde la UI.
+3. Tienes a mano el security token del usuario admin.
+4. El dataset esta en `data/workshop/`.
+
+El dataset esperado vive en:
+
+```text
+data/workshop/import/
+```
+
+El seed usa estos tres CSV:
+
+```text
+myinvestor-core-etf.csv
+trade-republic-growth.csv
+crypto-exchange.csv
+```
+
+No importa por defecto `ghostfolio-workshop-anomalies-do-not-import-main.csv`.
+
+Nota: el CSV cripto mantiene los tickers Yahoo `BTC-USD` y `ETH-USD`, pero esta
+version de Ghostfolio los valida como `BTCUSD` y `ETHUSD`. El seed hace esa
+normalizacion automaticamente al llamar a la API.
+
+Mac/Linux:
+
+```bash
+./scripts/seed-workshop-data.sh
+```
+
+Windows:
+
+```powershell
+.\scripts\seed-workshop-data.ps1
+```
+
+El script usa la API HTTP existente de Ghostfolio. Como esta version no tiene login local email/password, pedira el security token de Ghostfolio por consola. Alternativamente, para uso local temporal puedes usar:
+
+```bash
+GHOSTFOLIO_ACCESS_TOKEN="tu-security-token" ./scripts/seed-workshop-data.sh
+```
+
+Tambien se acepta `GHOSTFOLIO_AUTH_TOKEN` si ya tienes un JWT valido.
+
+El seed crea, si faltan, estas cuentas:
+
+```text
+MyInvestor Core ETF
+Trade Republic Growth
+Crypto Exchange
+```
+
+Cada actividad importada queda marcada en el comentario con `WORKSHOP_DEMO_DATA`, de forma que ejecutar el seed una segunda vez no deberia duplicar actividades.
+
+## Resetear datos de demo
+
+El reset solo debe borrar actividades marcadas como `WORKSHOP_DEMO_DATA`. No borra el usuario admin ni datos ajenos al workshop.
+
+Mac/Linux:
+
+```bash
+./scripts/reset-workshop-data.sh
+```
+
+Sin confirmacion:
+
+```bash
+./scripts/reset-workshop-data.sh --force
+```
+
+Windows:
+
+```powershell
+.\scripts\reset-workshop-data.ps1
+```
+
+Sin confirmacion:
+
+```powershell
+.\scripts\reset-workshop-data.ps1 -Force
+```
+
+Las cuentas demo solo se borran si fueron creadas por el seed y quedan vacias tras eliminar las actividades demo.
+
 ## Nota para siguientes fases
 
 Esta fase solo deja Ghostfolio funcionando localmente con build desde codigo. En una fase posterior se podran anadir:

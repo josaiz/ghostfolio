@@ -1,0 +1,22 @@
+﻿Date,Code,Name,Action,Currency,Price,Quantity,Fee,DataSource,Account,Comment
+2024-07-10,NVDA,NVIDIA Corporation,BUY,USD,125,10,1,YAHOO,Trade Republic Growth,scenario=tech-concentration; post-split NVDA entry
+2024-07-18,AAPL,Apple Inc.,BUY,USD,225,6,1,YAHOO,Trade Republic Growth,scenario=tech-concentration
+2024-08-01,MSFT,Microsoft Corporation,BUY,USD,415,3,1,YAHOO,Trade Republic Growth,scenario=tech-concentration
+2024-08-20,GOOGL,Alphabet Inc. Class A,BUY,USD,165,4,1,YAHOO,Trade Republic Growth,scenario=tech-concentration
+2024-09-05,AMZN,Amazon.com Inc.,BUY,USD,180,5,1,YAHOO,Trade Republic Growth,scenario=tech-concentration
+2024-10-01,ASML.AS,ASML Holding N.V.,BUY,EUR,760,1.2,1,YAHOO,Trade Republic Growth,scenario=europe-tech; mixed-currency portfolio
+2024-10-15,NVDA,NVIDIA Corporation,BUY,USD,140,4,1,YAHOO,Trade Republic Growth,scenario=tech-concentration; adds to winner
+2024-11-08,AAPL,Apple Inc.,BUY,USD,228,4,1,YAHOO,Trade Republic Growth,scenario=tech-concentration
+2024-12-18,MSFT,Microsoft Corporation,DIVIDEND,USD,0.83,3,0,YAHOO,Trade Republic Growth,scenario=dividend-income; quarterly dividend
+2025-01-20,MSFT,Microsoft Corporation,BUY,USD,430,2,1,YAHOO,Trade Republic Growth,scenario=tech-concentration
+2025-02-20,NVDA,NVIDIA Corporation,BUY,USD,130,3,1,YAHOO,Trade Republic Growth,scenario=tech-concentration; buy-the-dip
+2025-03-10,AMZN,Amazon.com Inc.,SELL,USD,205,2,1,YAHOO,Trade Republic Growth,scenario=rebalancing; trims Amazon after run-up
+2025-04-15,ASML.AS,ASML Holding N.V.,BUY,EUR,650,0.8,1,YAHOO,Trade Republic Growth,scenario=europe-tech; adds after drawdown
+2025-06-18,AAPL,Apple Inc.,DIVIDEND,USD,0.26,10,0,YAHOO,Trade Republic Growth,scenario=dividend-income; Apple dividend
+2025-08-12,GOOGL,Alphabet Inc. Class A,BUY,USD,180,3,1,YAHOO,Trade Republic Growth,scenario=tech-concentration
+2025-09-18,NVDA,NVIDIA Corporation,SELL,USD,165,4,1,YAHOO,Trade Republic Growth,scenario=rebalancing; trims concentrated NVDA position
+2025-12-18,MSFT,Microsoft Corporation,DIVIDEND,USD,0.91,5,0,YAHOO,Trade Republic Growth,scenario=dividend-income; quarterly dividend
+2026-02-14,AAPL,Apple Inc.,BUY,USD,245,3,1,YAHOO,Trade Republic Growth,scenario=tech-concentration
+2026-03-14,NVDA,NVIDIA Corporation,BUY,USD,185,2,1,YAHOO,Trade Republic Growth,scenario=tech-concentration; adds to AI exposure
+2026-04-10,AAPL,Apple Inc.,SELL,USD,230,2,1,YAHOO,Trade Republic Growth,scenario=rebalancing; small Apple trim
+2026-05-20,AAPL,Apple Inc.,DIVIDEND,USD,0.26,11,0,YAHOO,Trade Republic Growth,scenario=dividend-income; Apple dividend

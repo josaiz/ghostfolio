@@ -1,0 +1,7 @@
+﻿Date,Code,Name,Action,Currency,Price,Quantity,Fee,DataSource,Account,Comment
+2025-07-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,119,8,1,YAHOO,Import Sandbox,ANOMALY=exact-duplicate-candidate; duplicate of main dataset row
+2025-07-15,VWCE.DE,Vanguard FTSE All-World UCITS ETF Acc,BUY,EUR,119,8,1,YAHOO,Import Sandbox,ANOMALY=exact-duplicate-candidate; intentionally repeated row
+2025-10-02,AAPL,Apple Inc.,BUY,USD,245,1,65,YAHOO,Import Sandbox,ANOMALY=high-fee; fee much higher than expected for small order
+2025-10-18,AAPL,Apple Inc.,BUY,EUR,245,1,1,YAHOO,Import Sandbox,"ANOMALY=currency-mismatch; AAPL usually priced in USD, imported as EUR"
+2025-11-01,BTC-USD,Bitcoin USD,BUY,USD,30000,0.5,2.5,YAHOO,Import Sandbox,ANOMALY=price-outlier; BTC price inconsistent with date
+2026-01-05,MSFT,Microsoft Corporation,SELL,USD,410,20,1,YAHOO,Import Sandbox,ANOMALY=oversell-risk; sells more shares than sandbox account would hold
