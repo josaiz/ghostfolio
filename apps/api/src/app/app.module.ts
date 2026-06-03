@@ -43,6 +43,7 @@ import { BenchmarksModule } from './endpoints/benchmarks/benchmarks.module';
 import { GhostfolioModule } from './endpoints/data-providers/ghostfolio/ghostfolio.module';
 import { MarketDataModule } from './endpoints/market-data/market-data.module';
 import { PlatformsModule } from './endpoints/platforms/platforms.module';
+import { PortfolioInsightsModule } from './endpoints/portfolio-insights/portfolio-insights.module';
 import { PublicModule } from './endpoints/public/public.module';
 import { SitemapModule } from './endpoints/sitemap/sitemap.module';
 import { TagsModule } from './endpoints/tags/tags.module';
@@ -120,6 +121,7 @@ import { UserModule } from './user/user.module';
     MarketDataModule,
     PlatformModule,
     PlatformsModule,
+    PortfolioInsightsModule,
     PortfolioModule,
     PortfolioSnapshotQueueModule,
     PrismaModule,

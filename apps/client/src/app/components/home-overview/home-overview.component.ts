@@ -1,3 +1,4 @@
+import { GfPortfolioInsightsComponent } from '@ghostfolio/client/components/portfolio-insights/portfolio-insights.component';
 import { GfPortfolioPerformanceComponent } from '@ghostfolio/client/components/portfolio-performance/portfolio-performance.component';
 import { LayoutService } from '@ghostfolio/client/core/layout.service';
 import { ImpersonationStorageService } from '@ghostfolio/client/services/impersonation-storage.service';
@@ -36,6 +37,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     GfLineChartComponent,
+    GfPortfolioInsightsComponent,
     GfPortfolioPerformanceComponent,
     MatButtonModule,
     RouterModule

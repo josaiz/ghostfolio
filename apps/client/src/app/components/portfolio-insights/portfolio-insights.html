@@ -1,0 +1,70 @@
+<section class="portfolio-insights rounded shadow-sm">
+  <div class="align-items-start d-flex justify-content-between mb-2">
+    <div>
+      <h5 class="mb-1">Portfolio Insights</h5>
+      <div class="small text-muted">
+        Demo data only. Descriptive observations, not financial advice.
+      </div>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="py-3 small text-muted">Loading demo insights...</div>
+  } @else if (error()) {
+    <div class="align-items-center d-flex justify-content-between py-2">
+      <span class="small text-muted">{{ error() }}</span>
+      <button color="primary" mat-button type="button" (click)="fetchInsights()">
+        Retry
+      </button>
+    </div>
+  } @else if (insights()?.insights; as portfolioInsights) {
+    <div class="d-flex flex-wrap small text-muted summary-row">
+      <span>{{ portfolioInsights.accounts.length }} accounts</span>
+      <span>{{ portfolioInsights.anomalies.length }} anomaly types</span>
+      <span>{{ portfolioInsights.source }}</span>
+    </div>
+
+    <div class="mt-3">
+      <div class="font-weight-bold mb-2 small text-uppercase text-muted">
+        Largest nominal cost share
+      </div>
+      @for (account of portfolioInsights.accounts; track account.name) {
+        <div class="align-items-center d-flex flex-wrap insight-row py-1">
+          <div class="flex-grow-1 pr-2 text-truncate">
+            <span class="font-weight-bold">{{ account.name }}</span>
+            <span class="text-muted"> · {{ account.topConcentration.symbol }}</span>
+          </div>
+          <gf-value
+            [isPercent]="true"
+            [precision]="1"
+            [value]="getCostShareValue(account.topConcentration.costSharePct)"
+          />
+        </div>
+      }
+    </div>
+
+    <div class="mt-3">
+      <div class="font-weight-bold mb-2 small text-uppercase text-muted">
+        Demo anomaly scan
+      </div>
+      <div class="small text-muted mb-2">
+        {{ portfolioInsights.anomalies.length }} anomaly types across the
+        workshop anomaly scenarios.
+      </div>
+      @for (anomaly of portfolioInsights.anomalies; track anomaly.type) {
+        <div class="align-items-center d-flex insight-row py-1 small">
+          <span class="badge mr-2 severity-{{ anomaly.severity }}">
+            {{ anomaly.severity }}
+          </span>
+          <span class="flex-grow-1 text-truncate">{{ anomaly.type }}</span>
+          <span class="text-muted">{{ anomaly.count }}</span>
+        </div>
+      }
+    </div>
+
+    <div class="mt-3 small text-muted">
+      {{ portfolioInsights.disclaimer }} Generated from deterministic workshop
+      data.
+    </div>
+  }
+</section>

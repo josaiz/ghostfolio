@@ -47,6 +47,7 @@ import {
   PortfolioDividendsResponse,
   PortfolioHoldingResponse,
   PortfolioHoldingsResponse,
+  PortfolioInsightsResponse,
   PortfolioInvestmentsResponse,
   PortfolioPerformanceResponse,
   PortfolioReportResponse,
@@ -633,6 +634,12 @@ export class DataService {
           return response;
         })
       );
+  }
+
+  public fetchPortfolioInsights() {
+    return this.http.get<PortfolioInsightsResponse>(
+      '/api/v1/portfolio-insights'
+    );
   }
 
   public fetchPortfolioPerformance({

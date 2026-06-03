@@ -30,6 +30,7 @@ import type { LookupItem } from './lookup-item.interface';
 import type { MarketData } from './market-data.interface';
 import type { PortfolioChart } from './portfolio-chart.interface';
 import type { PortfolioDetails } from './portfolio-details.interface';
+import type { PortfolioInsights } from './portfolio-insights.interface';
 import type { PortfolioPerformance } from './portfolio-performance.interface';
 import type { PortfolioPosition } from './portfolio-position.interface';
 import type { PortfolioReportRule } from './portfolio-report-rule.interface';
@@ -72,6 +73,7 @@ import type { PlatformsResponse } from './responses/platforms-response.interface
 import type { PortfolioDividendsResponse } from './responses/portfolio-dividends-response.interface';
 import type { PortfolioHoldingResponse } from './responses/portfolio-holding-response.interface';
 import type { PortfolioHoldingsResponse } from './responses/portfolio-holdings-response.interface';
+import type { PortfolioInsightsResponse } from './responses/portfolio-insights-response.interface';
 import type { PortfolioInvestmentsResponse } from './responses/portfolio-investments.interface';
 import type { PortfolioPerformanceResponse } from './responses/portfolio-performance-response.interface';
 import type { PortfolioReportResponse } from './responses/portfolio-report.interface';
@@ -165,6 +167,8 @@ export {
   PortfolioDividendsResponse,
   PortfolioHoldingResponse,
   PortfolioHoldingsResponse,
+  PortfolioInsights,
+  PortfolioInsightsResponse,
   PortfolioInvestmentsResponse,
   PortfolioPerformance,
   PortfolioPerformanceResponse,
