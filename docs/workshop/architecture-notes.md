@@ -1,84 +1,84 @@
-# Ghostfolio — Notas de arquitectura para agentes (workshop)
+# Ghostfolio — Architecture notes for agents (workshop)
 
-> Mapa breve y práctico para que los agentes de OpenCode trabajen sobre Ghostfolio sin perderse ni inventar rutas.
-> Todas las rutas de esta página están **verificadas** contra el repo en la rama de soluciones.
+> A brief, practical map for OpenCode agents to work on Ghostfolio without getting lost or inventing paths.
+> All paths on this page are **verified** against the repo on the solutions branch.
 
 ## Stack
 
-- **Monorepo Nx** (`nx.json`, `nx 22.x`). Proyecto por defecto: `api`.
+- **Monorepo Nx** (`nx.json`, `nx 22.x`). Default project: `api`.
 - **Backend**: NestJS 11 → `apps/api/`.
 - **Frontend**: Angular 21 + Angular Material + Bootstrap utilities → `apps/client/`.
-- **Librerías compartidas**: `libs/common/` (interfaces, DTOs, enums, helpers) y `libs/ui/` (componentes UI reutilizables).
-- **Datos**: PostgreSQL + Prisma 7 → `prisma/schema.prisma`. Redis para colas/caché.
-- **Node** `>=22.18.0`. ESM disponible (el tooling de workshop usa `.mjs`).
-- Arranque local: Docker build desde código (`scripts/start.sh|.ps1`, `scripts/rebuild.sh|.ps1`). App en `http://localhost:3333`.
+- **Shared libraries**: `libs/common/` (interfaces, DTOs, enums, helpers) and `libs/ui/` (reusable UI components).
+- **Data**: PostgreSQL + Prisma 7 → `prisma/schema.prisma`. Redis for queues/cache.
+- **Node** `>=22.18.0`. ESM available (workshop tooling uses `.mjs`).
+- Local startup: Docker build from source (`scripts/start.sh|.ps1`, `scripts/rebuild.sh|.ps1`). App at `http://localhost:3333`.
 
-## 1. Backend principal — `apps/api/`
+## 1. Main backend — `apps/api/`
 
-Módulos NestJS por feature en `apps/api/src/app/<feature>/` (`*.module.ts`, `*.controller.ts`, `*.service.ts`).
-Registrados en `apps/api/src/app/app.module.ts`.
+NestJS modules per feature in `apps/api/src/app/<feature>/` (`*.module.ts`, `*.controller.ts`, `*.service.ts`).
+Registered in `apps/api/src/app/app.module.ts`.
 
-Módulos relevantes verificados:
+Verified relevant modules:
 
-- `account/` → cuentas. `GET /api/v1/account`, `POST /api/v1/account`, `DELETE /api/v1/account/:id`.
-- `activities/` → actividades (modelo `Order`). `GET/POST /api/v1/activities`, `DELETE /api/v1/activities[/:id]`.
-- `import/` → importación. `POST /api/v1/import?dryRun=true|false`.
-- `portfolio/` → cálculos de portfolio, performance, holdings.
-- `auth/`, `user/` → autenticación por *security token* (`POST /api/v1/auth/anonymous` → JWT).
+- `account/` → accounts. `GET /api/v1/account`, `POST /api/v1/account`, `DELETE /api/v1/account/:id`.
+- `activities/` → activities (`Order` model). `GET/POST /api/v1/activities`, `DELETE /api/v1/activities[/:id]`.
+- `import/` → import. `POST /api/v1/import?dryRun=true|false`.
+- `portfolio/` → portfolio calculations, performance, holdings.
+- `auth/`, `user/` → authentication via *security token* (`POST /api/v1/auth/anonymous` → JWT).
 - `health/` → `GET /api/v1/health`.
-- `endpoints/<feature>/` → convención más reciente para endpoints nuevos (p. ej. `endpoints/ai/`, `endpoints/watchlist/`).
+- `endpoints/<feature>/` → more recent convention for new endpoints (e.g. `endpoints/ai/`, `endpoints/watchlist/`).
 
-> Para una feature nueva de insights, el patrón natural es **`apps/api/src/app/endpoints/portfolio-insights/`**
-> (module + controller + service) registrado en `app.module.ts`. Es el patrón que siguen módulos recientes.
+> For a new insights feature, the natural pattern is **`apps/api/src/app/endpoints/portfolio-insights/`**
+> (module + controller + service) registered in `app.module.ts`. This is the pattern followed by recent modules.
 
-## 2. Frontend principal — `apps/client/`
+## 2. Main frontend — `apps/client/`
 
-- Páginas en `apps/client/src/app/pages/<page>/` (incluye `home/`, `portfolio/`, `demo/`, `accounts/`).
-- Componentes en `apps/client/src/app/components/<component>/` (p. ej. `home-overview/`, `home-holdings/`,
+- Pages in `apps/client/src/app/pages/<page>/` (includes `home/`, `portfolio/`, `demo/`, `accounts/`).
+- Components in `apps/client/src/app/components/<component>/` (e.g. `home-overview/`, `home-holdings/`,
   `portfolio-summary/`, `home-summary/`).
-- Componentes UI reutilizables en `libs/ui/src/lib/<component>/` (existe incluso `assistant/`, `chart/`, `activities-table/`).
-- Servicios cliente en `apps/client/src/app/services/`.
+- Reusable UI components in `libs/ui/src/lib/<component>/` (includes `assistant/`, `chart/`, `activities-table/`).
+- Client services in `apps/client/src/app/services/`.
 
-> Para un widget "Portfolio Insights" el patrón natural es un componente nuevo en
-> `apps/client/src/app/components/portfolio-insights/`, consumido desde la página `home` o `portfolio`, y
-> apoyado en patrones de `home-overview`/`portfolio-summary`.
+> For a "Portfolio Insights" widget the natural pattern is a new component in
+> `apps/client/src/app/components/portfolio-insights/`, consumed from the `home` or `portfolio` page, and
+> built on patterns from `home-overview`/`portfolio-summary`.
 
-## 3. Capa de datos / Prisma — `prisma/schema.prisma`
+## 3. Data layer / Prisma — `prisma/schema.prisma`
 
-Modelos clave (verificados en `docs/workshop/data-seed-notes.md`):
+Key models (verified in `docs/workshop/data-seed-notes.md`):
 
 - **`Account`**: `id`, `userId`, `name`, `currency`, `balance`, `comment`, `isExcluded`, `platformId`.
-- **`Order`** (= actividad/transacción): `id`, `userId`, `accountId`, `comment`, `currency`, `date`, `fee`,
+- **`Order`** (= activity/transaction): `id`, `userId`, `accountId`, `comment`, `currency`, `date`, `fee`,
   `quantity`, `type` (`BUY`/`SELL`/`DIVIDEND`/`FEE`/`INTEREST`/`LIABILITY`), `unitPrice`, `symbolProfileId`.
 - **`SymbolProfile`**: `dataSource`, `symbol`, `currency`, `name`, `assetClass`, `assetSubClass`.
-- **`Tag`**, **`User`** (sin email/password local; usa `accessToken` hasheado).
+- **`Tag`**, **`User`** (no local email/password; uses hashed `accessToken`).
 
-DTOs compartidos: `libs/common/src/lib/dtos/create-account.dto.ts`, `.../create-order.dto.ts`.
+Shared DTOs: `libs/common/src/lib/dtos/create-account.dto.ts`, `.../create-order.dto.ts`.
 
-## 4. Datos demo del workshop (fuente de verdad para insights)
+## 4. Workshop demo data (source of truth for insights)
 
 ```text
 data/workshop/import/
-  ghostfolio-workshop-main.csv                          # 54 actividades, 3 cuentas (dataset limpio)
+  ghostfolio-workshop-main.csv                          # 54 activities, 3 accounts (clean dataset)
   myinvestor-core-etf.csv / trade-republic-growth.csv / crypto-exchange.csv
-  ghostfolio-workshop-anomalies-do-not-import-main.csv  # 6 filas con anomalías etiquetadas (NO importar)
+  ghostfolio-workshop-anomalies-do-not-import-main.csv  # 6 rows with labelled anomalies (DO NOT import)
 ```
 
-Cabecera CSV: `Date,Code,Name,Action,Currency,Price,Quantity,Fee,DataSource,Account,Comment`.
+CSV header: `Date,Code,Name,Action,Currency,Price,Quantity,Fee,DataSource,Account,Comment`.
 
-Cuentas y perfil de riesgo del dataset (útil para insights):
+Accounts and risk profile of the dataset (useful for insights):
 
-- **MyInvestor Core ETF** (EUR): ETFs globales (VWCE.DE), S&P500 (SXR8.DE), small cap, bonos, EM, Europa. Diversificado.
-- **Trade Republic Growth** (USD): NVDA, AAPL, MSFT, GOOGL, AMZN, ASML.AS → **concentración tech evidente**.
-- **Crypto Exchange** (USD): BTC, ETH → **volatilidad alta**.
+- **MyInvestor Core ETF** (EUR): global ETFs (VWCE.DE), S&P500 (SXR8.DE), small cap, bonds, EM, Europe. Diversified.
+- **Trade Republic Growth** (USD): NVDA, AAPL, MSFT, GOOGL, AMZN, ASML.AS → **clear tech concentration**.
+- **Crypto Exchange** (USD): BTC, ETH → **high volatility**.
 
-Anomalías etiquetadas en el CSV de anomalías: `exact-duplicate`, `high-fee`, `currency-mismatch`,
+Anomalies labelled in the anomalies CSV: `exact-duplicate`, `high-fee`, `currency-mismatch`,
 `price-outlier`, `oversell-risk`.
 
-> Helper reutilizable ya existente: `tools/workshop/lib/workshop-data.mjs` (parser CSV robusto `parseCsvFile`,
-> definición de `DATASET_FILES`, marcador `WORKSHOP_DEMO_DATA`, helpers de API). El MCP de demo lo reutiliza.
+> Existing reusable helper: `tools/workshop/lib/workshop-data.mjs` (robust CSV parser `parseCsvFile`,
+> `DATASET_FILES` definition, `WORKSHOP_DEMO_DATA` marker, API helpers). The demo MCP reuses it.
 
-## 5. Scripts de Docker / build / datos
+## 5. Docker / build / data scripts
 
 ```text
 scripts/start.sh|.ps1     scripts/stop.sh|.ps1     scripts/rebuild.sh|.ps1   scripts/reset.sh|.ps1
@@ -86,39 +86,39 @@ scripts/check.sh|.ps1     scripts/logs.sh|.ps1
 scripts/seed-workshop-data.sh|.ps1                 scripts/reset-workshop-data.sh|.ps1
 ```
 
-El seed usa la **API HTTP** de Ghostfolio (no escribe en PostgreSQL directamente) y marca cada actividad con
-`WORKSHOP_DEMO_DATA` para ser idempotente. (Ver `docs/workshop/data-seed-notes.md`.)
+The seed uses the Ghostfolio **HTTP API** (does not write directly to PostgreSQL) and marks each activity with
+`WORKSHOP_DEMO_DATA` to be idempotent. (See `docs/workshop/data-seed-notes.md`.)
 
 ## 6. Tests
 
-- Jest por proyecto Nx. `npm run test:api`, `npm run test:common`, `npm run test:ui`.
-- Lint: `npm run lint`. Formato: `npm run format` / `format:check` (Prettier + import sort).
-- Tests unitarios junto al código: `*.spec.ts`.
+- Jest per Nx project. `npm run test:api`, `npm run test:common`, `npm run test:ui`.
+- Lint: `npm run lint`. Format: `npm run format` / `format:check` (Prettier + import sort).
+- Unit tests alongside code: `*.spec.ts`.
 
-## 7. Dónde encaja "Portfolio Insights Assistant"
+## 7. Where "Portfolio Insights Assistant" fits
 
-- **Cálculo determinista de insights** (concentración por cuenta/símbolo, anomalías simples) → puede vivir como
-  servicio backend (`endpoints/portfolio-insights/`) **o** como lógica del MCP de demo (read-only sobre CSV).
-- **Visualización** → componente `portfolio-insights` en el cliente.
-- **Datos** → dataset demo en `data/workshop/import/` (estable y reproducible, no toca datos reales).
-- **Safety** → revisión de lenguaje para que los insights **no** sean consejo financiero personalizado.
+- **Deterministic insights calculation** (concentration by account/symbol, simple anomalies) → can live as a
+  backend service (`endpoints/portfolio-insights/`) **or** as demo MCP logic (read-only over CSV).
+- **Visualisation** → `portfolio-insights` component in the client.
+- **Data** → demo dataset in `data/workshop/import/` (stable and reproducible, does not touch real data).
+- **Safety** → language review to ensure insights are **not** personalised financial advice.
 
-La rama de soluciones implementa el camino **read-only por MCP** como happy path funcional (ver
-`reference-implementation.md`); frontend/backend se entregan como **planes técnicos** generados por los commands.
+The solutions branch implements the **read-only via MCP** path as the functional happy path (see
+`reference-implementation.md`); frontend/backend are delivered as **technical plans** generated by the commands.
 
-## 8. Qué NO conviene tocar durante la sesión
+## 8. What NOT to touch during the session
 
-- `.env`, `.env.dev`, `.env.example` y cualquier secreto.
-- `prisma/schema.prisma` y `prisma/migrations/` (cambiar el esquema rompe el arranque/seed).
-- `docker/`, `Dockerfile`, `scripts/` de arranque/reset (romperían el setup local).
-- Datos reales de cualquier usuario. Solo trabajamos con el dataset demo marcado `WORKSHOP_DEMO_DATA`.
-- Cambios masivos transversales (refactors globales, subir versiones de dependencias, tocar `nx.json`/`tsconfig.base.json`).
-- El CSV de anomalías **no** se importa al portfolio demo principal.
+- `.env`, `.env.dev`, `.env.example` and any secrets.
+- `prisma/schema.prisma` and `prisma/migrations/` (changing the schema breaks startup/seed).
+- `docker/`, `Dockerfile`, startup/reset `scripts/` (would break the local setup).
+- Real data from any user. We only work with the demo dataset marked `WORKSHOP_DEMO_DATA`.
+- Large cross-cutting changes (global refactors, upgrading dependency versions, touching `nx.json`/`tsconfig.base.json`).
+- The anomalies CSV is **not** imported into the main demo portfolio.
 
-## 9. Reglas de oro para agentes
+## 9. Golden rules for agents
 
-1. Investiga y planifica antes de editar. Prefiere planes a cambios grandes.
-2. Cambios pequeños y localizados; respeta patrones existentes (busca un módulo/componente análogo y cópialo).
-3. `git status` + `git diff` antes y después.
-4. Datos demo en **read-only** salvo el seed oficial.
-5. Nada de consejo financiero personalizado en textos, prompts o respuestas.
+1. Investigate and plan before editing. Prefer plans over large changes.
+2. Small, localised changes; respect existing patterns (find an analogous module/component and copy it).
+3. `git status` + `git diff` before and after.
+4. Demo data in **read-only** mode except for the official seed.
+5. No personalised financial advice in texts, prompts, or responses.

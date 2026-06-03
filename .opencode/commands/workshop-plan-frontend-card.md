@@ -1,24 +1,24 @@
 ---
-description: Produce un plan de implementación frontend (Angular/Nx) para una tarjeta FE del backlog. P. ej. /workshop-plan-frontend-card FE-01
+description: Produces a frontend implementation plan (Angular/Nx) for a FE card from the backlog. E.g. /workshop-plan-frontend-card FE-01
 agent: frontend-angular-agent
 subtask: true
 ---
 
-Planifica la implementación frontend para la tarjeta: **$ARGUMENTS**
+Plan the frontend implementation for the card: **$ARGUMENTS**
 
-Backlog (localiza la tarjeta $1):
+Backlog (locate card $1):
 @docs/workshop/whiteboard-backlog.md
 
-Trabaja así:
-1. Carga la skill `angular-nx-development` (y `angular-developer` para mecánica de Angular).
-2. Identifica un componente análogo real en `apps/client/src/app/components/` o `libs/ui/` y síguelo.
-3. Entrega un **plan**, no código (salvo que se pida explícitamente implementar):
-   - Componente/vista a crear y **ruta exacta** (p. ej. `apps/client/src/app/components/portfolio-insights/`).
-   - Inputs/outputs y **contrato de datos** que consume (mock determinista o endpoint).
-   - Dónde se monta (página/host) y cómo se navega hasta él.
-   - Pasos de validación: `npm run lint`, build del cliente, revisión visual.
-   - Textos de UI propuestos (que luego pasarán por `/workshop-review-financial-safety`).
-4. Indica qué ficheros se crearían/editarían y por qué (mínimo posible).
+Work as follows:
+1. Load the `angular-nx-development` skill (and `angular-developer` for Angular mechanics).
+2. Identify a real analogous component in `apps/client/src/app/components/` or `libs/ui/` and follow it.
+3. Deliver a **plan**, not code (unless explicitly asked to implement):
+   - Component/view to create and **exact path** (e.g. `apps/client/src/app/components/portfolio-insights/`).
+   - Inputs/outputs and **data contract** it consumes (deterministic mock or endpoint).
+   - Where it is mounted (page/host) and how to navigate to it.
+   - Validation steps: `npm run lint`, client build, visual review.
+   - Proposed UI texts (which will later go through `/workshop-review-financial-safety`).
+4. Indicate which files would be created/edited and why (minimum possible).
 
-Guarda el plan en `docs/workshop/generated/$1-frontend-plan.md`.
-Recuerda: `git status` antes, `git diff` después si implementas. No commit/push.
+Save the plan in `docs/workshop/generated/$1-frontend-plan.md`.
+Remember: `git status` before, `git diff` after if you implement. No commit/push.

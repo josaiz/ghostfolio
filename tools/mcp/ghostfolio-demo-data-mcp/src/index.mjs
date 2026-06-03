@@ -28,28 +28,28 @@ const TOOLS = [
   {
     name: 'list_demo_accounts',
     description:
-      'Lista las cuentas del portfolio demo con sus divisas, nº de símbolos y nº de actividades. Read-only.',
+      'Lists the demo portfolio accounts with their currencies, number of symbols, and number of activities. Read-only.',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
     handler: () => listAccounts()
   },
   {
     name: 'get_demo_portfolio_summary',
     description:
-      'Resumen determinista del portfolio demo: totales, holdings por cuenta, coste invertido y concentración (cuota de coste por símbolo dentro de cada cuenta). Read-only, sin asesoramiento.',
+      'Deterministic summary of the demo portfolio: totals, holdings per account, invested cost, and concentration (cost share per symbol within each account). Read-only, no financial advice.',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
     handler: () => getPortfolioSummary()
   },
   {
     name: 'list_demo_activities',
     description:
-      'Lista actividades del dataset demo, opcionalmente filtradas por cuenta, símbolo o tipo (BUY/SELL/DIVIDEND/...). Read-only.',
+      'Lists activities from the demo dataset, optionally filtered by account, symbol, or type (BUY/SELL/DIVIDEND/...). Read-only.',
     inputSchema: {
       type: 'object',
       properties: {
-        account: { type: 'string', description: 'Nombre de cuenta (exacto).' },
-        symbol: { type: 'string', description: 'Símbolo, p. ej. NVDA o VWCE.DE.' },
-        type: { type: 'string', description: 'Tipo de actividad: BUY, SELL, DIVIDEND, FEE, ...' },
-        limit: { type: 'integer', minimum: 1, description: 'Máximo de filas a devolver.' }
+        account: { type: 'string', description: 'Account name (exact match).' },
+        symbol: { type: 'string', description: 'Symbol, e.g. NVDA or VWCE.DE.' },
+        type: { type: 'string', description: 'Activity type: BUY, SELL, DIVIDEND, FEE, ...' },
+        limit: { type: 'integer', minimum: 1, description: 'Maximum number of rows to return.' }
       },
       additionalProperties: false
     },
@@ -58,14 +58,14 @@ const TOOLS = [
   {
     name: 'detect_demo_anomalies',
     description:
-      'Detecta anomalías simples (duplicados, comisión alta, divisa inesperada, precio atípico, sobreventa) de forma determinista. Por defecto analiza el CSV de anomalías. Read-only.',
+      'Detects simple anomalies (duplicates, high fee, unexpected currency, price outlier, oversell) in a deterministic way. Analyses the anomalies CSV by default. Read-only.',
     inputSchema: {
       type: 'object',
       properties: {
         source: {
           type: 'string',
           enum: ['anomalies', 'main', 'both'],
-          description: 'Fuente a analizar. Por defecto "anomalies".'
+          description: 'Source to analyse. Default is "anomalies".'
         }
       },
       additionalProperties: false
@@ -74,10 +74,10 @@ const TOOLS = [
   },
   {
     name: 'get_account_summary',
-    description: 'Resumen de una sola cuenta demo por nombre (holdings, coste y concentración). Read-only.',
+    description: 'Summary of a single demo account by name (holdings, cost, and concentration). Read-only.',
     inputSchema: {
       type: 'object',
-      properties: { account: { type: 'string', description: 'Nombre de la cuenta.' } },
+      properties: { account: { type: 'string', description: 'Account name.' } },
       required: ['account'],
       additionalProperties: false
     },
@@ -86,20 +86,20 @@ const TOOLS = [
   {
     name: 'get_symbol_exposure',
     description:
-      'Exposición por símbolo en todo el portfolio demo (coste nominal y cuentas que lo contienen). Opcionalmente para un símbolo concreto. Read-only.',
+      'Exposure per symbol across the entire demo portfolio (nominal cost and accounts holding it). Optionally filtered to a specific symbol. Read-only.',
     inputSchema: {
       type: 'object',
-      properties: { symbol: { type: 'string', description: 'Símbolo opcional para filtrar.' } },
+      properties: { symbol: { type: 'string', description: 'Optional symbol to filter by.' } },
       additionalProperties: false
     },
     handler: (args) => getSymbolExposure(args && args.symbol)
   },
   {
     name: 'get_recent_activities',
-    description: 'Devuelve las N actividades demo más recientes por fecha. Read-only.',
+    description: 'Returns the N most recent demo activities by date. Read-only.',
     inputSchema: {
       type: 'object',
-      properties: { limit: { type: 'integer', minimum: 1, description: 'Cuántas devolver (def. 10).' } },
+      properties: { limit: { type: 'integer', minimum: 1, description: 'How many to return (default 10).' } },
       additionalProperties: false
     },
     handler: (args) => getRecentActivities((args && args.limit) || 10)
@@ -151,7 +151,7 @@ function handleToolCall(id, params) {
   } catch (error) {
     // Tool execution error reported in-band (isError), per MCP spec.
     sendResult(id, {
-      content: [{ type: 'text', text: `Error en ${name}: ${error.message}` }],
+      content: [{ type: 'text', text: `Error in ${name}: ${error.message}` }],
       isError: true
     });
     log('tool error', name, error.message);
@@ -171,8 +171,8 @@ function handleMessage(message) {
         capabilities: { tools: {} },
         serverInfo: SERVER_INFO,
         instructions:
-          'Datos demo de Ghostfolio en modo solo lectura. Las cifras son descriptivas y educativas; ' +
-          'no constituyen asesoramiento financiero. ' +
+          'Ghostfolio demo data in read-only mode. The figures are descriptive and educational; ' +
+          'they do not constitute financial advice. ' +
           DISCLAIMER
       });
       return;

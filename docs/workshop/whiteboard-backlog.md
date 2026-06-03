@@ -1,259 +1,259 @@
-# Backlog de producto — Innovation Night (para Microsoft Whiteboard)
+# Product Backlog — Innovation Night (for Microsoft Whiteboard)
 
-Epic común: **Portfolio Insights Assistant** — una mejora de producto sobre Ghostfolio que resume el portfolio demo,
-detecta concentración y anomalías simples, y lo hace de forma **descriptiva** (sin asesoramiento financiero) y
-**gobernada** (con un sistema de desarrollo agéntico en OpenCode).
+Epic: **Portfolio Insights Assistant** — a product enhancement on top of Ghostfolio that summarises the demo portfolio,
+detects concentration and simple anomalies, and does so in a **descriptive** way (no financial advice) and
+**governed** (with an agentic development system in OpenCode).
 
-> Cada tarjeta es una **tarea de producto real**. El componente OpenCode (command/agent/skill/MCP) es el **medio**
-> para resolverla, no el fin. Copia este backlog a Microsoft Whiteboard en 7 swimlanes (una columna por swimlane).
-> La versión CSV equivalente está en `whiteboard-cards.csv`.
+> Each card is a **real product task**. The OpenCode component (command/agent/skill/MCP) is the **means**
+> to solve it, not the end. Copy this backlog to Microsoft Whiteboard in 7 swimlanes (one column per swimlane).
+> The equivalent CSV version is in `whiteboard-cards.csv`.
 
 Swimlanes: **Foundation · Frontend · Backend · Domain & Data · MCP · Safety & Review · Integration**
 
-Leyenda de estado en la rama de soluciones:
-- 🟢 **Resuelto**: el componente ya existe y funciona en esta rama (úsalo / estúdialo).
-- 🟡 **Tooling listo**: el command/agente/skill existe; el equipo produce el entregable de producto (plan o código).
+Status legend in the solutions branch:
+- 🟢 **Resolved**: the component already exists and works on this branch (use it / study it).
+- 🟡 **Tooling ready**: the command/agent/skill exists; the team produces the product deliverable (plan or code).
 
 ---
 
 ## Swimlane: Foundation
 
-### FND-01 — Mapa técnico de Ghostfolio para la feature
+### FND-01 — Technical map of Ghostfolio for the feature
 - **Swimlane**: Foundation
-- **Equipo sugerido**: cualquiera (ideal para empezar)
-- **Objetivo funcional**: entender dónde vive cada cosa para no romper nada al construir insights.
-- **Entregable de producto**: mapa técnico (ficheros, contratos, endpoints, riesgos) de la zona de portfolio/insights.
-- **Entregable agentic**: ejecutar `/workshop-inspect-architecture` con el agente `ghostfolio-architect`.
-- **Concepto OpenCode trabajado**: Command + Agent (investigación read-only).
-- **Dependencias**: ninguna.
-- **Criterio de aceptación**: documento con rutas reales verificadas y el command de planificación recomendado.
-- **Pistas**: parte de `docs/workshop/architecture-notes.md`; pide al agente que confirme rutas con grep.
-- **Dificultad**: Baja · **Tiempo**: 20 min · **Estado**: 🟢
+- **Suggested team**: any (ideal to start with)
+- **Functional goal**: understand where everything lives so nothing breaks when building insights.
+- **Product deliverable**: technical map (files, contracts, endpoints, risks) of the portfolio/insights area.
+- **Agentic deliverable**: run `/workshop-inspect-architecture` with the `ghostfolio-architect` agent.
+- **OpenCode concept**: Command + Agent (read-only investigation).
+- **Dependencies**: none.
+- **Acceptance criterion**: document with verified real paths and the recommended planning command.
+- **Hints**: start from `docs/workshop/architecture-notes.md`; ask the agent to confirm paths with grep.
+- **Difficulty**: Low · **Time**: 20 min · **Status**: 🟢
 
-### FND-02 — Contrato funcional del Portfolio Insights Assistant
+### FND-02 — Functional contract of the Portfolio Insights Assistant
 - **Swimlane**: Foundation
-- **Equipo sugerido**: Datos/Dominio
-- **Objetivo funcional**: definir qué insights ofrece la feature y con qué forma de datos, para que FE/BE/MCP encajen.
-- **Entregable de producto**: contrato de datos de insights (campos, tipos, ejemplos) que consumirán frontend y backend.
-- **Entregable agentic**: skill `ghostfolio-domain-analysis` + agente `portfolio-domain-agent`; datos vía MCP.
-- **Concepto OpenCode trabajado**: Skill + Agent (+ MCP como fuente de datos).
-- **Dependencias**: FND-01.
-- **Criterio de aceptación**: contrato con 3–5 insights descriptivos, cada uno trazable a una métrica del MCP.
-- **Pistas**: usa `get_demo_portfolio_summary`; nada de "comprar/vender".
-- **Dificultad**: Media · **Tiempo**: 30 min · **Estado**: 🟡
+- **Suggested team**: Data/Domain
+- **Functional goal**: define what insights the feature offers and in what data shape, so FE/BE/MCP fit together.
+- **Product deliverable**: insights data contract (fields, types, examples) to be consumed by frontend and backend.
+- **Agentic deliverable**: skill `ghostfolio-domain-analysis` + agent `portfolio-domain-agent`; data via MCP.
+- **OpenCode concept**: Skill + Agent (+ MCP as data source).
+- **Dependencies**: FND-01.
+- **Acceptance criterion**: contract with 3–5 descriptive insights, each traceable to an MCP metric.
+- **Hints**: use `get_demo_portfolio_summary`; nothing about "buy/sell".
+- **Difficulty**: Medium · **Time**: 30 min · **Status**: 🟡
 
 ---
 
 ## Swimlane: Frontend Product Tasks
 
-### FE-01 — Widget "Portfolio Insights" en la UI
+### FE-01 — "Portfolio Insights" widget in the UI
 - **Swimlane**: Frontend
-- **Equipo sugerido**: Frontend
-- **Objetivo funcional**: que un usuario vea un panel con los insights del portfolio demo.
-- **Entregable de producto**: plan (o componente) de un widget visible que muestra concentración/anomalías.
-- **Entregable agentic**: `/workshop-plan-frontend-card FE-01` → agente `frontend-angular-agent` + skill `angular-nx-development`.
-- **Concepto OpenCode trabajado**: Command + Agent + Skill.
-- **Dependencias**: FND-02 (contrato). Consume MCP/BE-01.
-- **Criterio de aceptación**: plan con ruta real del componente (p. ej. `apps/client/src/app/components/portfolio-insights/`),
-  componente análogo a seguir (`home-overview`), inputs/contrato y pasos de validación (`npm run lint`).
-- **Pistas**: copia el patrón de `home-overview`/`portfolio-summary`; no añadas librerías.
-- **Dificultad**: Media · **Tiempo**: 40 min · **Estado**: 🟡
+- **Suggested team**: Frontend
+- **Functional goal**: allow a user to see a panel with the demo portfolio insights.
+- **Product deliverable**: plan (or component) for a visible widget showing concentration/anomalies.
+- **Agentic deliverable**: `/workshop-plan-frontend-card FE-01` → agent `frontend-angular-agent` + skill `angular-nx-development`.
+- **OpenCode concept**: Command + Agent + Skill.
+- **Dependencies**: FND-02 (contract). Consumes MCP/BE-01.
+- **Acceptance criterion**: plan with the real component path (e.g. `apps/client/src/app/components/portfolio-insights/`),
+  an analogous component to follow (`home-overview`), inputs/contract and validation steps (`npm run lint`).
+- **Hints**: copy the `home-overview`/`portfolio-summary` pattern; do not add libraries.
+- **Difficulty**: Medium · **Time**: 40 min · **Status**: 🟡
 
-### FE-02 — Sección "Demo Portfolio Health"
+### FE-02 — "Demo Portfolio Health" section
 - **Swimlane**: Frontend
-- **Equipo sugerido**: Frontend
-- **Objetivo funcional**: una vista que resuma la "salud" descriptiva del portfolio demo (diversificación, nº anomalías).
-- **Entregable de producto**: plan (o vista) con visualización simple de health/insights.
-- **Entregable agentic**: `/workshop-plan-frontend-card FE-02` → `frontend-angular-agent` + `angular-nx-development`.
-- **Concepto OpenCode trabajado**: Command + Agent + Skill.
-- **Dependencias**: FE-01 o FND-02.
-- **Criterio de aceptación**: plan con dónde se monta la vista, qué métricas muestra y de dónde vienen.
-- **Pistas**: salud = métricas descriptivas, no un score que parezca recomendación.
-- **Dificultad**: Media · **Tiempo**: 35 min · **Estado**: 🟡
+- **Suggested team**: Frontend
+- **Functional goal**: a view that summarises the descriptive "health" of the demo portfolio (diversification, number of anomalies).
+- **Product deliverable**: plan (or view) with a simple health/insights visualisation.
+- **Agentic deliverable**: `/workshop-plan-frontend-card FE-02` → `frontend-angular-agent` + `angular-nx-development`.
+- **OpenCode concept**: Command + Agent + Skill.
+- **Dependencies**: FE-01 or FND-02.
+- **Acceptance criterion**: plan with where the view is mounted, what metrics it shows and where they come from.
+- **Hints**: health = descriptive metrics, not a score that looks like a recommendation.
+- **Difficulty**: Medium · **Time**: 35 min · **Status**: 🟡
 
-### FE-03 — Botón "Explain demo portfolio"
+### FE-03 — "Explain demo portfolio" button
 - **Swimlane**: Frontend
-- **Equipo sugerido**: Frontend
-- **Objetivo funcional**: una interacción que pida y muestre el resumen del portfolio demo.
-- **Entregable de producto**: plan (o implementación) de un botón que consume el endpoint/MCP y muestra el resumen.
-- **Entregable agentic**: `/workshop-plan-frontend-card FE-03` + `/workshop-review-financial-safety` para el texto.
-- **Concepto OpenCode trabajado**: Command + Agent + Safety review.
-- **Dependencias**: FE-01, BE-01 o MCP-02.
-- **Criterio de aceptación**: el texto mostrado pasa el review de safety (PASS) y es descriptivo.
-- **Pistas**: el "explain" describe; no aconseja.
-- **Dificultad**: Media · **Tiempo**: 35 min · **Estado**: 🟡
+- **Suggested team**: Frontend
+- **Functional goal**: an interaction that requests and displays the demo portfolio summary.
+- **Product deliverable**: plan (or implementation) of a button that consumes the endpoint/MCP and shows the summary.
+- **Agentic deliverable**: `/workshop-plan-frontend-card FE-03` + `/workshop-review-financial-safety` for the text.
+- **OpenCode concept**: Command + Agent + Safety review.
+- **Dependencies**: FE-01, BE-01 or MCP-02.
+- **Acceptance criterion**: the displayed text passes the safety review (PASS) and is descriptive.
+- **Hints**: the "explain" describes; it does not advise.
+- **Difficulty**: Medium · **Time**: 35 min · **Status**: 🟡
 
 ---
 
 ## Swimlane: Backend Product Tasks
 
-### BE-01 — Endpoint mockeado de portfolio insights
+### BE-01 — Mocked portfolio insights endpoint
 - **Swimlane**: Backend
-- **Equipo sugerido**: Backend
-- **Objetivo funcional**: exponer un resumen demo determinista para que el frontend lo consuma.
-- **Entregable de producto**: plan técnico del endpoint (module/controller/service + DTO) que devuelve insights demo.
-- **Entregable agentic**: `/workshop-plan-backend-card BE-01` → `backend-nestjs-agent` + skill `nestjs-api-development`.
-- **Concepto OpenCode trabajado**: Command + Agent + Skill.
-- **Dependencias**: FND-02.
-- **Criterio de aceptación**: plan con contrato en `libs/common`, ruta `/api/v1/...`, módulo análogo a copiar y validación con `npm run test:api`. Sin LLM real.
-- **Pistas**: sigue la convención `apps/api/src/app/endpoints/<feature>/`.
-- **Dificultad**: Media · **Tiempo**: 40 min · **Estado**: 🟡
+- **Suggested team**: Backend
+- **Functional goal**: expose a deterministic demo summary for the frontend to consume.
+- **Product deliverable**: technical plan for the endpoint (module/controller/service + DTO) that returns demo insights.
+- **Agentic deliverable**: `/workshop-plan-backend-card BE-01` → `backend-nestjs-agent` + skill `nestjs-api-development`.
+- **OpenCode concept**: Command + Agent + Skill.
+- **Dependencies**: FND-02.
+- **Acceptance criterion**: plan with contract in `libs/common`, route `/api/v1/...`, analogous module to copy and validation with `npm run test:api`. No real LLM.
+- **Hints**: follow the `apps/api/src/app/endpoints/<feature>/` convention.
+- **Difficulty**: Medium · **Time**: 40 min · **Status**: 🟡
 
-### BE-02 — Servicio de concentración por cuenta/símbolo
+### BE-02 — Concentration service by account/symbol
 - **Swimlane**: Backend
-- **Equipo sugerido**: Backend
-- **Objetivo funcional**: calcular la exposición/concentración de cada cuenta como dato de producto reutilizable.
-- **Entregable de producto**: servicio backend (o plan) que calcula coste por símbolo y cuota por cuenta.
-- **Entregable agentic**: `backend-nestjs-agent` + skill `prisma-readonly-data-access` (lectura segura).
-- **Concepto OpenCode trabajado**: Agent + Skill (read-only data).
-- **Dependencias**: FND-02; alineado con DATA-01.
-- **Criterio de aceptación**: lógica read-only documentada que reproduce las cifras del MCP (`get_symbol_exposure`).
-- **Pistas**: compara tu cálculo con `get_demo_portfolio_summary` para validar.
-- **Dificultad**: Alta · **Tiempo**: 45 min · **Estado**: 🟡
+- **Suggested team**: Backend
+- **Functional goal**: calculate the exposure/concentration of each account as a reusable product data point.
+- **Product deliverable**: backend service (or plan) that calculates cost per symbol and share per account.
+- **Agentic deliverable**: `backend-nestjs-agent` + skill `prisma-readonly-data-access` (safe read).
+- **OpenCode concept**: Agent + Skill (read-only data).
+- **Dependencies**: FND-02; aligned with DATA-01.
+- **Acceptance criterion**: documented read-only logic that reproduces the MCP figures (`get_symbol_exposure`).
+- **Hints**: compare your calculation with `get_demo_portfolio_summary` to validate.
+- **Difficulty**: High · **Time**: 45 min · **Status**: 🟡
 
 ---
 
 ## Swimlane: Domain & Data Product Tasks
 
-### DATA-01 — Reglas de concentración/exposición del portfolio demo
+### DATA-01 — Concentration/exposure rules for the demo portfolio
 - **Swimlane**: Domain & Data
-- **Equipo sugerido**: Datos/Dominio
-- **Objetivo funcional**: definir cómo se mide la concentración (umbrales, qué se considera "alta concentración" de forma descriptiva).
-- **Entregable de producto**: documento de reglas de exposición con cifras reales del dataset demo.
-- **Entregable agentic**: `/workshop-analyze-demo-portfolio` → `portfolio-domain-agent` + skill `ghostfolio-domain-analysis` + MCP.
-- **Concepto OpenCode trabajado**: Command + Agent + Skill + MCP (tool de datos).
-- **Dependencias**: MCP-02.
-- **Criterio de aceptación**: reglas con cifras del MCP (p. ej. "Trade Republic Growth: AAPL 26.2%, top-3 67.7%") y caveat de divisa/coste.
-- **Pistas**: todo dato viene del MCP; describe, no recomiendes.
-- **Dificultad**: Media · **Tiempo**: 35 min · **Estado**: 🟡
+- **Suggested team**: Data/Domain
+- **Functional goal**: define how concentration is measured (thresholds, what is considered "high concentration" in a descriptive way).
+- **Product deliverable**: exposure rules document with real figures from the demo dataset.
+- **Agentic deliverable**: `/workshop-analyze-demo-portfolio` → `portfolio-domain-agent` + skill `ghostfolio-domain-analysis` + MCP.
+- **OpenCode concept**: Command + Agent + Skill + MCP (data tool).
+- **Dependencies**: MCP-02.
+- **Acceptance criterion**: rules with MCP figures (e.g. "Trade Republic Growth: AAPL 26.2%, top-3 67.7%") and currency/cost caveat.
+- **Hints**: all data comes from the MCP; describe, do not recommend.
+- **Difficulty**: Medium · **Time**: 35 min · **Status**: 🟡
 
-### DATA-02 — Reglas de anomalías sobre datos importados
+### DATA-02 — Anomaly rules for imported data
 - **Swimlane**: Domain & Data
-- **Equipo sugerido**: Datos/Dominio
-- **Objetivo funcional**: definir qué cuenta como anomalía en datos importados (duplicado, comisión alta, divisa, precio, sobreventa).
-- **Entregable de producto**: catálogo de anomalías con su definición y severidad, validado contra el dataset de anomalías.
-- **Entregable agentic**: MCP `detect_demo_anomalies` + skill `prisma-readonly-data-access` + `/workshop-review-financial-safety`.
-- **Concepto OpenCode trabajado**: MCP (tool) + Skill + Safety review.
-- **Dependencias**: MCP-03.
-- **Criterio de aceptación**: catálogo que explica los 5 tipos y por qué cada uno se marca; coincide con la salida del MCP.
-- **Pistas**: el detector NO usa las etiquetas del CSV; explica la heurística.
-- **Dificultad**: Media · **Tiempo**: 35 min · **Estado**: 🟡
+- **Suggested team**: Data/Domain
+- **Functional goal**: define what counts as an anomaly in imported data (duplicate, high commission, currency, price, oversell).
+- **Product deliverable**: anomaly catalogue with definition and severity, validated against the anomaly dataset.
+- **Agentic deliverable**: MCP `detect_demo_anomalies` + skill `prisma-readonly-data-access` + `/workshop-review-financial-safety`.
+- **OpenCode concept**: MCP (tool) + Skill + Safety review.
+- **Dependencies**: MCP-03.
+- **Acceptance criterion**: catalogue that explains the 5 types and why each is flagged; matches the MCP output.
+- **Hints**: the detector does NOT use the CSV labels; explain the heuristic.
+- **Difficulty**: Medium · **Time**: 35 min · **Status**: 🟡
 
 ---
 
 ## Swimlane: MCP Product Tasks
 
-### MCP-01 — MCP local read-only para datos demo
+### MCP-01 — Local read-only MCP for demo data
 - **Swimlane**: MCP
-- **Equipo sugerido**: MCP/Plataforma
-- **Objetivo funcional**: dar a OpenCode una herramienta estable para consultar datos demo sin prompts sueltos ni acceso destructivo.
-- **Entregable de producto**: servidor MCP local registrado en `opencode.json` con `list_demo_accounts`.
-- **Entregable agentic**: agente `mcp-builder-agent` + skill `mcp-server-authoring`; config en `opencode.json`.
-- **Concepto OpenCode trabajado**: MCP + Agent + Skill + Config.
-- **Dependencias**: ninguna.
-- **Criterio de aceptación**: `./scripts/check-demo-mcp.sh` (o `.ps1`) en verde; OpenCode lista las tools del servidor.
-- **Pistas**: ya implementado en `tools/mcp/ghostfolio-demo-data-mcp/`; estúdialo y extiéndelo.
-- **Dificultad**: Media · **Tiempo**: 40 min · **Estado**: 🟢
+- **Suggested team**: MCP/Platform
+- **Functional goal**: give OpenCode a stable tool to query demo data without loose prompts or destructive access.
+- **Product deliverable**: local MCP server registered in `opencode.json` with `list_demo_accounts`.
+- **Agentic deliverable**: agent `mcp-builder-agent` + skill `mcp-server-authoring`; config in `opencode.json`.
+- **OpenCode concept**: MCP + Agent + Skill + Config.
+- **Dependencies**: none.
+- **Acceptance criterion**: `./scripts/check-demo-mcp.sh` (or `.ps1`) passes green; OpenCode lists the server tools.
+- **Hints**: already implemented in `tools/mcp/ghostfolio-demo-data-mcp/`; study it and extend it.
+- **Difficulty**: Medium · **Time**: 40 min · **Status**: 🟢
 
 ### MCP-02 — Tool `get_demo_portfolio_summary`
 - **Swimlane**: MCP
-- **Equipo sugerido**: MCP/Plataforma
-- **Objetivo funcional**: que cualquier agente obtenga un resumen determinista de la cartera demo.
-- **Entregable de producto**: tool MCP que devuelve totales, holdings y concentración por cuenta.
-- **Entregable agentic**: `/workshop-plan-mcp-card MCP-02` → `mcp-builder-agent` + `mcp-server-authoring`.
-- **Concepto OpenCode trabajado**: MCP tool.
-- **Dependencias**: MCP-01.
-- **Criterio de aceptación**: la tool devuelve 3 cuentas, 54 actividades y cuotas por símbolo; smoke test verde.
-- **Pistas**: reutiliza `src/data.mjs`; no dupliques el parser de CSV.
-- **Dificultad**: Media · **Tiempo**: 35 min · **Estado**: 🟢
+- **Suggested team**: MCP/Platform
+- **Functional goal**: allow any agent to obtain a deterministic summary of the demo portfolio.
+- **Product deliverable**: MCP tool that returns totals, holdings and concentration per account.
+- **Agentic deliverable**: `/workshop-plan-mcp-card MCP-02` → `mcp-builder-agent` + `mcp-server-authoring`.
+- **OpenCode concept**: MCP tool.
+- **Dependencies**: MCP-01.
+- **Acceptance criterion**: the tool returns 3 accounts, 54 activities and shares per symbol; smoke test passes green.
+- **Hints**: reuse `src/data.mjs`; do not duplicate the CSV parser.
+- **Difficulty**: Medium · **Time**: 35 min · **Status**: 🟢
 
 ### MCP-03 — Tool `detect_demo_anomalies`
 - **Swimlane**: MCP
-- **Equipo sugerido**: MCP/Plataforma
-- **Objetivo funcional**: detectar de forma determinista anomalías simples en datos importados.
-- **Entregable de producto**: tool MCP que reporta duplicados, comisión alta, divisa inesperada, precio atípico y sobreventa.
-- **Entregable agentic**: `mcp-builder-agent` + `mcp-server-authoring` + `/workshop-review-financial-safety` para los textos.
-- **Concepto OpenCode trabajado**: MCP tool + Safety review.
-- **Dependencias**: MCP-01.
-- **Criterio de aceptación**: detecta los 5 tipos en el CSV de anomalías y ~0 en el dataset limpio.
-- **Pistas**: deriva umbrales del dataset limpio; no leas las etiquetas `ANOMALY=`.
-- **Dificultad**: Alta · **Tiempo**: 45 min · **Estado**: 🟢
+- **Suggested team**: MCP/Platform
+- **Functional goal**: deterministically detect simple anomalies in imported data.
+- **Product deliverable**: MCP tool that reports duplicates, high commission, unexpected currency, atypical price and oversell.
+- **Agentic deliverable**: `mcp-builder-agent` + `mcp-server-authoring` + `/workshop-review-financial-safety` for the texts.
+- **OpenCode concept**: MCP tool + Safety review.
+- **Dependencies**: MCP-01.
+- **Acceptance criterion**: detects the 5 types in the anomaly CSV and ~0 in the clean dataset.
+- **Hints**: derive thresholds from the clean dataset; do not read the `ANOMALY=` labels.
+- **Difficulty**: High · **Time**: 45 min · **Status**: 🟢
 
 ---
 
 ## Swimlane: Safety & Review
 
-### SAFE-01 — Guía de límites del assistant
+### SAFE-01 — Assistant limits guide
 - **Swimlane**: Safety & Review
-- **Equipo sugerido**: Safety
-- **Objetivo funcional**: dejar claro qué puede y qué no puede decir la feature (informa, no aconseja).
-- **Entregable de producto**: guía de límites + checklist de aceptación de safety.
-- **Entregable agentic**: agente `financial-safety-reviewer` + skill `financial-safety-review`.
-- **Concepto OpenCode trabajado**: Agent + Skill.
-- **Dependencias**: ninguna.
-- **Criterio de aceptación**: checklist de 7 puntos y ejemplos PASS/FAIL aplicables a FE/MCP/INT.
-- **Pistas**: ya hay base en la skill `financial-safety-review`; conviértela en guía para tu equipo.
-- **Dificultad**: Baja · **Tiempo**: 25 min · **Estado**: 🟢
+- **Suggested team**: Safety
+- **Functional goal**: make clear what the feature can and cannot say (informs, does not advise).
+- **Product deliverable**: limits guide + safety acceptance checklist.
+- **Agentic deliverable**: agent `financial-safety-reviewer` + skill `financial-safety-review`.
+- **OpenCode concept**: Agent + Skill.
+- **Dependencies**: none.
+- **Acceptance criterion**: 7-point checklist and PASS/FAIL examples applicable to FE/MCP/INT.
+- **Hints**: there is already a base in the skill `financial-safety-review`; turn it into a guide for your team.
+- **Difficulty**: Low · **Time**: 25 min · **Status**: 🟢
 
-### SAFE-02 — Revisar que una respuesta no recomiende comprar/vender
+### SAFE-02 — Review that a response does not recommend buying/selling
 - **Swimlane**: Safety & Review
-- **Equipo sugerido**: Safety (revisa entregables de otros equipos)
-- **Objetivo funcional**: garantizar que ningún texto visible recomiende acciones financieras personalizadas.
-- **Entregable de producto**: informe PASS/FAIL con hallazgos y reescritura segura.
-- **Entregable agentic**: `/workshop-review-financial-safety <texto|ruta>` → `financial-safety-reviewer`.
-- **Concepto OpenCode trabajado**: Command + Agent + Skill.
-- **Dependencias**: algo que revisar (FE-03, DATA-01, INT-01...).
-- **Criterio de aceptación**: informe con veredicto y, si FAIL, reescritura que mantiene la información quitando el consejo.
-- **Pistas**: úsalo como **gate** antes de cualquier demo.
-- **Dificultad**: Baja · **Tiempo**: 20 min · **Estado**: 🟢
+- **Suggested team**: Safety (reviews other teams' deliverables)
+- **Functional goal**: ensure no visible text recommends personalised financial actions.
+- **Product deliverable**: PASS/FAIL report with findings and safe rewrite.
+- **Agentic deliverable**: `/workshop-review-financial-safety <text|path>` → `financial-safety-reviewer`.
+- **OpenCode concept**: Command + Agent + Skill.
+- **Dependencies**: something to review (FE-03, DATA-01, INT-01...).
+- **Acceptance criterion**: report with verdict and, if FAIL, a rewrite that keeps the information while removing the advice.
+- **Hints**: use it as a **gate** before any demo.
+- **Difficulty**: Low · **Time**: 20 min · **Status**: 🟢
 
 ---
 
 ## Swimlane: Integration
 
-### INT-01 — Happy path de demo de extremo a extremo
+### INT-01 — End-to-end demo happy path
 - **Swimlane**: Integration
-- **Equipo sugerido**: Integración
-- **Objetivo funcional**: demostrar el ciclo completo: datos demo → MCP → análisis → insights → review de safety.
-- **Entregable de producto**: camino demostrable y reproducible (Portfolio Insights Demo).
-- **Entregable agentic**: `/workshop-implement-small-product-slice INT-01` + `/workshop-demo-runbook` + skill `product-slice-delivery`.
-- **Concepto OpenCode trabajado**: Command + Skill (orquestación de varios componentes).
-- **Dependencias**: MCP-02, MCP-03, SAFE-02.
-- **Criterio de aceptación**: se ejecuta `/workshop-analyze-demo-portfolio`, sale un resumen con cifras del MCP y pasa safety; pasos repetibles.
-- **Pistas**: la happy path de referencia es read-only por MCP y no toca `apps/`.
-- **Dificultad**: Media · **Tiempo**: 40 min · **Estado**: 🟢
+- **Suggested team**: Integration
+- **Functional goal**: demonstrate the full cycle: demo data → MCP → analysis → insights → safety review.
+- **Product deliverable**: a demonstrable and reproducible path (Portfolio Insights Demo).
+- **Agentic deliverable**: `/workshop-implement-small-product-slice INT-01` + `/workshop-demo-runbook` + skill `product-slice-delivery`.
+- **OpenCode concept**: Command + Skill (orchestration of multiple components).
+- **Dependencies**: MCP-02, MCP-03, SAFE-02.
+- **Acceptance criterion**: `/workshop-analyze-demo-portfolio` runs, produces a summary with MCP figures and passes safety; steps are repeatable.
+- **Hints**: the reference happy path is read-only via MCP and does not touch `apps/`.
+- **Difficulty**: Medium · **Time**: 40 min · **Status**: 🟢
 
-### INT-02 — Handoff entre equipos
+### INT-02 — Team handoff
 - **Swimlane**: Integration
-- **Equipo sugerido**: Integración/Facilitación
-- **Objetivo funcional**: que un equipo pueda continuar el trabajo de otro sin perder contexto.
-- **Entregable de producto**: documento de handoff por tarjeta (qué se hizo, qué falta).
-- **Entregable agentic**: `/workshop-prepare-team-handoff <ID>` → `workshop-facilitator-agent` + plantilla `team-handoff-template.md`.
-- **Concepto OpenCode trabajado**: Command + Agent + plantilla reutilizable.
-- **Dependencias**: cualquier tarjeta en curso.
-- **Criterio de aceptación**: handoff con componentes usados, ficheros tocados (`git status`), pruebas y siguiente paso.
-- **Pistas**: no inventes; lo que no conste, "pendiente".
-- **Dificultad**: Baja · **Tiempo**: 20 min · **Estado**: 🟢
+- **Suggested team**: Integration/Facilitation
+- **Functional goal**: allow a team to continue another team's work without losing context.
+- **Product deliverable**: handoff document per card (what was done, what is missing).
+- **Agentic deliverable**: `/workshop-prepare-team-handoff <ID>` → `workshop-facilitator-agent` + template `team-handoff-template.md`.
+- **OpenCode concept**: Command + Agent + reusable template.
+- **Dependencies**: any card in progress.
+- **Acceptance criterion**: handoff with components used, files touched (`git status`), tests and next step.
+- **Hints**: do not invent; anything not recorded is "pending".
+- **Difficulty**: Low · **Time**: 20 min · **Status**: 🟢
 
 ---
 
-## Resumen rápido
+## Quick summary
 
-| ID | Swimlane | Título | Componente OpenCode | Dif. | Min |
+| ID | Swimlane | Title | OpenCode Component | Diff. | Min |
 |----|----------|--------|---------------------|------|-----|
-| FND-01 | Foundation | Mapa técnico | Command+Agent | Baja | 20 |
-| FND-02 | Foundation | Contrato de insights | Skill+Agent+MCP | Media | 30 |
-| FE-01 | Frontend | Widget Portfolio Insights | Command+Agent+Skill | Media | 40 |
-| FE-02 | Frontend | Sección Demo Portfolio Health | Command+Agent+Skill | Media | 35 |
-| FE-03 | Frontend | Botón Explain demo portfolio | Command+Agent+Safety | Media | 35 |
-| BE-01 | Backend | Endpoint mock de insights | Command+Agent+Skill | Media | 40 |
-| BE-02 | Backend | Servicio de concentración | Agent+Skill | Alta | 45 |
-| DATA-01 | Domain & Data | Reglas de concentración | Command+Agent+Skill+MCP | Media | 35 |
-| DATA-02 | Domain & Data | Reglas de anomalías | MCP+Skill+Safety | Media | 35 |
-| MCP-01 | MCP | MCP local read-only | MCP+Agent+Skill+Config | Media | 40 |
-| MCP-02 | MCP | Tool portfolio summary | MCP tool | Media | 35 |
-| MCP-03 | MCP | Tool detect anomalies | MCP tool+Safety | Alta | 45 |
-| SAFE-01 | Safety & Review | Guía de límites | Agent+Skill | Baja | 25 |
-| SAFE-02 | Safety & Review | Review comprar/vender | Command+Agent+Skill | Baja | 20 |
-| INT-01 | Integration | Happy path demo | Command+Skill | Media | 40 |
-| INT-02 | Integration | Handoff entre equipos | Command+Agent | Baja | 20 |
+| FND-01 | Foundation | Technical map | Command+Agent | Low | 20 |
+| FND-02 | Foundation | Insights contract | Skill+Agent+MCP | Medium | 30 |
+| FE-01 | Frontend | Portfolio Insights widget | Command+Agent+Skill | Medium | 40 |
+| FE-02 | Frontend | Demo Portfolio Health section | Command+Agent+Skill | Medium | 35 |
+| FE-03 | Frontend | Explain demo portfolio button | Command+Agent+Safety | Medium | 35 |
+| BE-01 | Backend | Mock insights endpoint | Command+Agent+Skill | Medium | 40 |
+| BE-02 | Backend | Concentration service | Agent+Skill | High | 45 |
+| DATA-01 | Domain & Data | Concentration rules | Command+Agent+Skill+MCP | Medium | 35 |
+| DATA-02 | Domain & Data | Anomaly rules | MCP+Skill+Safety | Medium | 35 |
+| MCP-01 | MCP | Local read-only MCP | MCP+Agent+Skill+Config | Medium | 40 |
+| MCP-02 | MCP | Portfolio summary tool | MCP tool | Medium | 35 |
+| MCP-03 | MCP | Detect anomalies tool | MCP tool+Safety | High | 45 |
+| SAFE-01 | Safety & Review | Limits guide | Agent+Skill | Low | 25 |
+| SAFE-02 | Safety & Review | Buy/sell review | Command+Agent+Skill | Low | 20 |
+| INT-01 | Integration | Demo happy path | Command+Skill | Medium | 40 |
+| INT-02 | Integration | Team handoff | Command+Agent | Low | 20 |

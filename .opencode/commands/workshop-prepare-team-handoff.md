@@ -1,27 +1,27 @@
 ---
-description: Prepara el handoff de un equipo rellenando la plantilla con lo que se ha hecho en una tarjeta (INT-02).
+description: Prepares the handoff document for a team by filling in the template with what was done on a card (INT-02).
 agent: workshop-facilitator-agent
 ---
 
-Prepara el documento de handoff para: **$ARGUMENTS**
+Prepare the handoff document for: **$ARGUMENTS**
 
-Plantilla base:
+Base template:
 @docs/workshop/team-handoff-template.md
 
-Estado del repo:
+Repo status:
 !`git status --short`
 
-Trabaja así:
-1. Identifica la tarjeta del backlog ($1) y su objetivo funcional.
-2. Rellena la plantilla con:
-   - Tarjeta elegida y objetivo funcional.
-   - Componentes OpenCode creados/usados (commands, agents, skills, MCP/tools).
-   - Decisiones tomadas y por qué.
-   - Comandos ejecutados (incluye los `/workshop-*` usados).
-   - Ficheros modificados (a partir de `git status`/`git diff`).
-   - Pruebas realizadas y resultado.
-   - Revisión de safety (resultado de `/workshop-review-financial-safety`).
-   - Dudas y siguiente paso para el equipo que reciba.
-3. No inventes: si un dato no consta, escribe "pendiente".
+Work as follows:
+1. Identify the backlog card ($1) and its functional objective.
+2. Fill in the template with:
+   - Chosen card and functional objective.
+   - OpenCode components created/used (commands, agents, skills, MCP/tools).
+   - Decisions made and why.
+   - Commands executed (include the `/workshop-*` commands used).
+   - Modified files (from `git status`/`git diff`).
+   - Tests performed and result.
+   - Safety review (result of `/workshop-review-financial-safety`).
+   - Open questions and next step for the receiving team.
+3. Do not invent: if a piece of information is not available, write "pending".
 
-Guarda el resultado en `docs/workshop/generated/$1-handoff.md`. No hagas commit/push.
+Save the result to `docs/workshop/generated/$1-handoff.md`. Do not commit/push.

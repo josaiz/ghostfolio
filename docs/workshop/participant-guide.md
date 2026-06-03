@@ -1,21 +1,21 @@
-# Guía del participante — Innovation Night (Ghostfolio + OpenCode)
+# Participant Guide — Innovation Night (Ghostfolio + OpenCode)
 
-Bienvenido/a. En este workshop **desarrollamos mejoras reales sobre Ghostfolio** usando una forma de trabajo
-**agéntica, gobernada y repetible** con OpenCode. Los commands, agents, skills y MCPs son **el medio**; el fin es
-una mejora de producto: el **Portfolio Insights Assistant**.
+Welcome. In this workshop **we develop real improvements to Ghostfolio** using an
+**agentic, governed, and repeatable** way of working with OpenCode. Commands, agents, skills, and MCPs are **the means**; the goal is
+a product improvement: the **Portfolio Insights Assistant**.
 
-## 1. Lo más importante
+## 1. The most important thing
 
-> No estamos "pidiéndole código a la IA". Estamos construyendo un sistema de desarrollo agéntico para implementar
-> una mejora de producto. Cada tarjeta del backlog tiene un **objetivo funcional** real y se resuelve **creando,
-> mejorando o usando** al menos un command/agent/skill/MCP.
+> We are not "asking AI for code". We are building an agentic development system to implement
+> a product improvement. Each backlog card has a real **functional objective** and is resolved by **creating,
+> improving, or using** at least one command/agent/skill/MCP.
 
-## 2. Qué vas a construir
+## 2. What you will build
 
-El epic común es **Portfolio Insights Assistant**: resumir el portfolio demo, detectar concentración por
-cuenta/símbolo, detectar anomalías simples, mostrar insights y hacerlo **sin asesoramiento financiero**.
+The shared epic is **Portfolio Insights Assistant**: summarise the demo portfolio, detect concentration by
+account/symbol, detect simple anomalies, display insights and do it all **without financial advice**.
 
-## 3. Arrancar Ghostfolio
+## 3. Starting Ghostfolio
 
 Mac/Linux:
 ```bash
@@ -27,38 +27,38 @@ Windows (PowerShell):
 .\scripts\start.ps1
 .\scripts\check.ps1
 ```
-La primera build tarda. Si modificas código de Ghostfolio: `./scripts/rebuild.sh` (o `.ps1`).
+The first build takes a while. If you modify Ghostfolio code: `./scripts/rebuild.sh` (or `.ps1`).
 
-## 4. Cargar datos demo (si aún no están)
+## 4. Loading demo data (if not already loaded)
 
-1. Abre `http://localhost:3333`, crea el usuario con *Get Started* (el primero es ADMIN) y guarda su **security token**.
-2. Siembra los datos demo:
+1. Open `http://localhost:3333`, create the user with *Get Started* (the first one is ADMIN) and save their **security token**.
+2. Seed the demo data:
 ```bash
 ./scripts/seed-workshop-data.sh           # te pedirá el security token
 # Windows: .\scripts\seed-workshop-data.ps1
 ```
-Crea 3 cuentas demo (MyInvestor Core ETF, Trade Republic Growth, Crypto Exchange) con ~54 actividades.
-> Nota: la **demo de insights por MCP funciona aunque Ghostfolio no esté levantado**, porque el MCP lee los CSV.
+Creates 3 demo accounts (MyInvestor Core ETF, Trade Republic Growth, Crypto Exchange) with ~54 activities.
+> Note: the **MCP insights demo works even if Ghostfolio is not running**, because the MCP reads the CSV files.
 
-## 5. Abrir OpenCode
+## 5. Opening OpenCode
 
-Abre OpenCode en la raíz del repo. Debería detectar automáticamente:
-- el MCP `ghostfolio-demo-data` (`opencode.json`),
-- los commands `/workshop-*` (`.opencode/commands/`),
-- los agentes (`.opencode/agents/`) y skills (`.opencode/skills/`).
+Open OpenCode at the root of the repo. It should automatically detect:
+- the MCP `ghostfolio-demo-data` (`opencode.json`),
+- the `/workshop-*` commands (`.opencode/commands/`),
+- the agents (`.opencode/agents/`) and skills (`.opencode/skills/`).
 
-Verifica el MCP:
+Verify the MCP:
 ```bash
 ./scripts/check-demo-mcp.sh    # Windows: .\scripts\check-demo-mcp.ps1
 ```
 
-## 6. Elegir una tarjeta del whiteboard
+## 6. Choosing a card from the whiteboard
 
-1. Mira el backlog en `docs/workshop/whiteboard-backlog.md` (y en el Microsoft Whiteboard de la sesión).
-2. Elige una tarjeta de tu swimlane. Lee su **Objetivo funcional**, **Entregable de producto** y **Entregable agentic**.
-3. Empieza casi siempre por entender el terreno: `/workshop-inspect-architecture <tu-tema>`.
+1. Look at the backlog in `docs/workshop/whiteboard-backlog.md` (and on the session's Microsoft Whiteboard).
+2. Pick a card from your swimlane. Read its **Functional objective**, **Product deliverable**, and **Agentic deliverable**.
+3. Almost always start by understanding the terrain: `/workshop-inspect-architecture <your-topic>`.
 
-## 7. Cómo trabajar una tarjeta (el ciclo)
+## 7. How to work a card (the cycle)
 
 ```text
 investigar  -> /workshop-inspect-architecture
@@ -68,36 +68,36 @@ revisar     -> /workshop-review-financial-safety
 entregar    -> /workshop-prepare-team-handoff
 ```
 
-- Usa el **command** que corresponde a tu tarjeta; éste invoca al **agente** adecuado, que carga la **skill** correcta
-  y, si aporta, consulta el **MCP**.
-- Puedes crear o mejorar componentes: añade una tool al MCP, afina una skill, ajusta un command. Documenta por qué.
+- Use the **command** that matches your card; it invokes the appropriate **agent**, which loads the correct **skill**
+  and, if relevant, queries the **MCP**.
+- You can create or improve components: add a tool to the MCP, refine a skill, adjust a command. Document why.
 
-## 8. Revisar tus cambios con Git
+## 8. Reviewing your changes with Git
 
 ```bash
 git status          # qué ficheros tocaste
 git diff            # el contenido exacto de los cambios
 ```
-Hazlo **antes y después**. **No** hagas `git commit` ni `git push` salvo que el facilitador lo pida.
+Do this **before and after**. Do **not** run `git commit` or `git push` unless the facilitator asks for it.
 
-## 9. Cómo pedir ayuda
+## 9. How to ask for help
 
-- Pregunta al `workshop-facilitator-agent` ("¿qué command uso para FE-02?").
-- Consulta `architecture-notes.md` (mapa del repo) y la `pedagogical-matrix.md` (qué aprende cada tarjeta).
-- Si algo no arranca, mira el `facilitator-guide.md` (sección fallbacks) o pide ayuda al facilitador humano.
+- Ask the `workshop-facilitator-agent` ("What command do I use for FE-02?").
+- Check `architecture-notes.md` (repo map) and `pedagogical-matrix.md` (what each card teaches).
+- If something doesn't start, see `facilitator-guide.md` (fallbacks section) or ask the human facilitator.
 
-## 10. Qué NO tocar
+## 10. What NOT to touch
 
-- `.env`, `.env.dev`, `.env.example` ni secretos.
+- `.env`, `.env.dev`, `.env.example` or any secrets.
 - `prisma/schema.prisma`, `prisma/migrations/`, `docker/`, `Dockerfile`, `nx.json`, `tsconfig.base.json`.
-- Datos reales. Solo el dataset demo (read-only salvo el seed oficial).
-- **Nunca** generes asesoramiento financiero personalizado. Describe, no aconsejes. Pasa tus textos por
+- Real data. Only the demo dataset (read-only except for the official seed).
+- **Never** generate personalised financial advice. Describe, do not advise. Run your texts through
   `/workshop-review-financial-safety`.
 
-## 11. Definición de "tarjeta terminada"
+## 11. Definition of "card done"
 
-- [ ] Objetivo funcional cumplido (entregable de producto: plan o código mínimo).
-- [ ] Se creó/mejoró/usó al menos un command/agent/skill/MCP.
-- [ ] Revisión de safety en PASS (si hay texto visible).
-- [ ] `git status`/`git diff` revisados; sin commit/push.
-- [ ] Handoff preparado con `/workshop-prepare-team-handoff`.
+- [ ] Functional objective met (product deliverable: plan or minimal code).
+- [ ] At least one command/agent/skill/MCP was created/improved/used.
+- [ ] Safety review in PASS (if there is visible text).
+- [ ] `git status`/`git diff` reviewed; no commit/push.
+- [ ] Handoff prepared with `/workshop-prepare-team-handoff`.

@@ -8,7 +8,7 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
   exit 1
 }
 
-Write-Host "==> Comprobando el MCP ghostfolio-demo-data (initialize + tools/list + tools/call)"
+Write-Host "==> Checking the ghostfolio-demo-data MCP (initialize + tools/list + tools/call)"
 node tools\mcp\ghostfolio-demo-data-mcp\src\smoke-test.mjs
 if ($LASTEXITCODE -ne 0) {
   exit $LASTEXITCODE

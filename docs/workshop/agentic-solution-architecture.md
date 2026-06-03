@@ -1,112 +1,112 @@
-# Arquitectura de la solución agentic — Portfolio Insights Assistant
+# Agentic solution architecture — Portfolio Insights Assistant
 
-Cómo encajan commands, agents, skills y el MCP para resolver **tareas de producto reales** sobre Ghostfolio,
-de forma gobernada y repetible con OpenCode.
+How commands, agents, skills and the MCP fit together to solve **real product tasks** on Ghostfolio,
+in a governed and repeatable way with OpenCode.
 
-## 1. Product epic que resolvemos
+## 1. Product epic we are solving
 
-**Portfolio Insights Assistant**: una mejora de Ghostfolio que, sobre el portfolio demo, (a) muestra un resumen,
-(b) detecta concentración por cuenta/símbolo, (c) detecta anomalías simples en datos importados, (d) presenta
-insights básicos, (e) consulta datos demo por un MCP read-only y (f) garantiza que no da consejo financiero personalizado.
+**Portfolio Insights Assistant**: a Ghostfolio enhancement that, on top of the demo portfolio, (a) shows a summary,
+(b) detects concentration by account/symbol, (c) detects simple anomalies in imported data, (d) presents
+basic insights, (e) queries demo data via a read-only MCP and (f) guarantees it does not give personalised financial advice.
 
-No usamos un LLM real para los cálculos: los insights son **deterministas y reproducibles**. El valor del workshop
-no es "pedir código a la IA", sino **construir un sistema de desarrollo agéntico** que implemente esta mejora.
+We do not use a real LLM for the calculations: the insights are **deterministic and reproducible**. The value of the workshop
+is not "asking code from AI", but **building an agentic development system** that implements this enhancement.
 
 ## 2. Commands (`.opencode/commands/`)
 
-| Command | Para qué | Agente |
+| Command | Purpose | Agent |
 |---------|----------|--------|
-| `/workshop-inspect-architecture` | Investigar arquitectura y mapear (FND-01). | ghostfolio-architect |
-| `/workshop-plan-frontend-card` | Plan de un widget/vista frontend (FE-*). | frontend-angular-agent |
-| `/workshop-plan-backend-card` | Plan de un endpoint/servicio (BE-*). | backend-nestjs-agent |
-| `/workshop-plan-mcp-card` | Plan de una tool MCP (MCP-*). | mcp-builder-agent |
-| `/workshop-analyze-demo-portfolio` | Insights descriptivos del portfolio demo (DATA-01/INT-01). | portfolio-domain-agent |
-| `/workshop-implement-small-product-slice` | Implementar una happy path mínima (INT-01). | (agente activo) |
-| `/workshop-review-financial-safety` | Gate de seguridad financiera (SAFE-02). | financial-safety-reviewer |
-| `/workshop-prepare-team-handoff` | Handoff entre equipos (INT-02). | workshop-facilitator-agent |
-| `/workshop-demo-runbook` | Runbook de la demo (INT-01). | workshop-facilitator-agent |
+| `/workshop-inspect-architecture` | Investigate architecture and map it (FND-01). | ghostfolio-architect |
+| `/workshop-plan-frontend-card` | Plan for a frontend widget/view (FE-*). | frontend-angular-agent |
+| `/workshop-plan-backend-card` | Plan for an endpoint/service (BE-*). | backend-nestjs-agent |
+| `/workshop-plan-mcp-card` | Plan for an MCP tool (MCP-*). | mcp-builder-agent |
+| `/workshop-analyze-demo-portfolio` | Descriptive insights from the demo portfolio (DATA-01/INT-01). | portfolio-domain-agent |
+| `/workshop-implement-small-product-slice` | Implement a minimal happy path (INT-01). | (active agent) |
+| `/workshop-review-financial-safety` | Financial safety gate (SAFE-02). | financial-safety-reviewer |
+| `/workshop-prepare-team-handoff` | Handoff between teams (INT-02). | workshop-facilitator-agent |
+| `/workshop-demo-runbook` | Demo runbook (INT-01). | workshop-facilitator-agent |
 
 ## 3. Agents (`.opencode/agents/`)
 
-- `ghostfolio-architect` — investiga arquitectura (read-only).
-- `frontend-angular-agent` — frontend Angular/Nx.
-- `backend-nestjs-agent` — endpoints/servicios NestJS.
-- `prisma-data-agent` — datos/Prisma (read-only).
-- `mcp-builder-agent` — MCP local read-only.
-- `portfolio-domain-agent` — dominio/insights del portfolio demo.
-- `financial-safety-reviewer` — límites financieros (read-only).
-- `workshop-facilitator-agent` — facilitación/handoffs (primary).
+- `ghostfolio-architect` — investigates architecture (read-only).
+- `frontend-angular-agent` — Angular/Nx frontend.
+- `backend-nestjs-agent` — NestJS endpoints/services.
+- `prisma-data-agent` — data/Prisma (read-only).
+- `mcp-builder-agent` — local read-only MCP.
+- `portfolio-domain-agent` — portfolio demo domain/insights.
+- `financial-safety-reviewer` — financial limits (read-only).
+- `workshop-facilitator-agent` — facilitation/handoffs (primary).
 
 ## 4. Skills (`.opencode/skills/`)
 
 `ghostfolio-domain-analysis`, `angular-nx-development`, `nestjs-api-development`, `prisma-readonly-data-access`,
 `mcp-server-authoring`, `financial-safety-review`, `workshop-task-design`, `product-slice-delivery`.
 
-Además, OpenCode descubre las skills genéricas ya presentes en el repo: `.agents/skills/angular-developer` y
-`.agents/skills/nestjs-best-practices`. Las nuestras las **referencian** (saber genérico → cómo aplicarlo en Ghostfolio).
+In addition, OpenCode discovers the generic skills already present in the repo: `.agents/skills/angular-developer` and
+`.agents/skills/nestjs-best-practices`. Ours **reference** them (generic knowledge → how to apply it in Ghostfolio).
 
 ## 5. MCP (`tools/mcp/ghostfolio-demo-data-mcp/`)
 
-Servidor MCP local **read-only**, zero-dependency, registrado en `opencode.json` como `ghostfolio-demo-data`.
-Lee los CSV demo de `data/workshop/import/`. Tools: `list_demo_accounts`, `get_demo_portfolio_summary`,
+Local **read-only** MCP server, zero-dependency, registered in `opencode.json` as `ghostfolio-demo-data`.
+Reads the demo CSVs from `data/workshop/import/`. Tools: `list_demo_accounts`, `get_demo_portfolio_summary`,
 `list_demo_activities`, `detect_demo_anomalies`, `get_account_summary`, `get_symbol_exposure`, `get_recent_activities`.
 
-## 6. Cómo cada componente resuelve tareas de producto
+## 6. How each component solves product tasks
 
-- **Command** = el "cómo trabajar" repetible de una tarjeta (investigar/planificar/implementar/revisar).
-- **Agent** = el "quién", con permisos acotados a su función (los de investigación no editan).
-- **Skill** = el "qué saber" del repo y del dominio, para aplicar patrones reales.
-- **MCP** = el "con qué datos", de forma estable y read-only, sin prompts sueltos.
+- **Command** = the repeatable "how to work" for a card (investigate/plan/implement/review).
+- **Agent** = the "who", with permissions scoped to its function (research agents do not edit).
+- **Skill** = the "what to know" about the repo and the domain, to apply real patterns.
+- **MCP** = the "what data", in a stable and read-only way, without loose prompts.
 
-El conjunto convierte "haz un widget de insights" en un flujo gobernado: mapear → planificar con patrones reales →
-obtener datos del MCP → revisar safety → handoff.
+Together they turn "make an insights widget" into a governed flow: map → plan with real patterns →
+fetch data from the MCP → review safety → handoff.
 
-## 7. Qué construye cada equipo
+## 7. What each team builds
 
-- **Frontend**: FE-01/02/03 — widget/vista/botón de insights (plan o código mínimo).
-- **Backend**: BE-01/02 — endpoint mock + servicio de concentración (plan o código mínimo).
-- **Datos/Dominio**: FND-02, DATA-01/02 — contrato de insights y reglas de concentración/anomalías.
-- **MCP/Plataforma**: MCP-01/02/03 — servidor y tools read-only (estúdialo y extiéndelo).
-- **Safety**: SAFE-01/02 — guía de límites y gate de revisión (revisan a los demás).
-- **Integración/Facilitación**: INT-01/02 — happy path demostrable y handoffs.
+- **Frontend**: FE-01/02/03 — insights widget/view/button (plan or minimal code).
+- **Backend**: BE-01/02 — mock endpoint + concentration service (plan or minimal code).
+- **Data/Domain**: FND-02, DATA-01/02 — insights contract and concentration/anomaly rules.
+- **MCP/Platform**: MCP-01/02/03 — read-only server and tools (study it and extend it).
+- **Safety**: SAFE-01/02 — limits guide and review gate (they review the others).
+- **Integration/Facilitation**: INT-01/02 — demonstrable happy path and handoffs.
 
-## 8. Rama base vs rama de soluciones
+## 8. Base branch vs solutions branch
 
-- **Rama base** (la que ven los participantes al empezar): Ghostfolio funcionando en local con datos demo, los
-  scripts de arranque/seed y el dataset. **Sin** `.opencode/`, **sin** MCP, **sin** docs de workshop agentic.
-- **Rama de soluciones** (`workshop/solutions`, esta): añade `opencode.json`, `AGENTS.md`, `.opencode/` (agents,
-  commands, skills), el MCP `ghostfolio-demo-data`, los scripts `*-demo-mcp.*` y toda la doc de `docs/workshop/`.
-  Es la **solución de referencia**: los equipos pueden inspirarse, usar los componentes y extenderlos.
+- **Base branch** (what participants see at the start): Ghostfolio running locally with demo data, the
+  start/seed scripts and the dataset. **Without** `.opencode/`, **without** MCP, **without** agentic workshop docs.
+- **Solutions branch** (`workshop/solutions`, this one): adds `opencode.json`, `AGENTS.md`, `.opencode/` (agents,
+  commands, skills), the `ghostfolio-demo-data` MCP, the `*-demo-mcp.*` scripts and all the docs under `docs/workshop/`.
+  It is the **reference solution**: teams can draw inspiration from it, use the components and extend them.
 
-El facilitador decide si los equipos parten de la rama base (y reconstruyen) o de la rama de soluciones (y extienden).
-Ver `facilitator-guide.md`.
+The facilitator decides whether teams start from the base branch (and rebuild) or from the solutions branch (and extend).
+See `facilitator-guide.md`.
 
-## 9. Cómo se ejecuta la demo (resumen; detalle en `solution-runbook.md`)
+## 9. How the demo runs (summary; details in `solution-runbook.md`)
 
-1. Arrancar Ghostfolio: `./scripts/start.sh` (o `.ps1`). Sembrar datos si hace falta: `./scripts/seed-workshop-data.sh`.
-2. Verificar el MCP: `./scripts/check-demo-mcp.sh` (o `.ps1`) → 7 comprobaciones en verde.
-3. En OpenCode, ejecutar `/workshop-analyze-demo-portfolio` → insights con cifras del MCP.
-4. Ejecutar `/workshop-review-financial-safety` sobre esos insights → PASS.
-5. (Opcional) `/workshop-plan-frontend-card FE-01` para ver un plan de widget.
+1. Start Ghostfolio: `./scripts/start.sh` (or `.ps1`). Seed data if needed: `./scripts/seed-workshop-data.sh`.
+2. Verify the MCP: `./scripts/check-demo-mcp.sh` (or `.ps1`) → 7 checks in green.
+3. In OpenCode, run `/workshop-analyze-demo-portfolio` → insights with figures from the MCP.
+4. Run `/workshop-review-financial-safety` on those insights → PASS.
+5. (Optional) `/workshop-plan-frontend-card FE-01` to see a widget plan.
 
-## 10. Restricciones de seguridad
+## 10. Security restrictions
 
-- No tocar `.env`, `prisma/schema.prisma`, `prisma/migrations/`, `docker/`, `nx.json`.
-- No datos reales: solo dataset demo. MCP estrictamente read-only.
-- Nada de asesoramiento financiero personalizado (gate `financial-safety-reviewer`).
-- Cambios pequeños; `git status`/`git diff` alrededor; sin commit/push salvo petición explícita.
-- Sin LLM real en los cálculos de insights.
+- Do not touch `.env`, `prisma/schema.prisma`, `prisma/migrations/`, `docker/`, `nx.json`.
+- No real data: demo dataset only. MCP strictly read-only.
+- No personalised financial advice (gate `financial-safety-reviewer`).
+- Small changes; `git status`/`git diff` around them; no commit/push unless explicitly requested.
+- No real LLM in the insights calculations.
 
-## 11. Piezas read-only
+## 11. Read-only pieces
 
-- MCP `ghostfolio-demo-data` y todas sus tools.
-- Agentes `ghostfolio-architect`, `prisma-data-agent`, `portfolio-domain-agent`, `financial-safety-reviewer`
+- MCP `ghostfolio-demo-data` and all its tools.
+- Agents `ghostfolio-architect`, `prisma-data-agent`, `portfolio-domain-agent`, `financial-safety-reviewer`
   (`edit: deny`).
-- El dataset demo se trata como read-only salvo el seed oficial.
+- The demo dataset is treated as read-only except for the official seed.
 
 ---
 
-## Diagrama de flujo (tarea de producto → componentes)
+## Flow diagram (product task → components)
 
 ```text
 FE-01  Widget Portfolio Insights

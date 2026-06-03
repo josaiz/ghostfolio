@@ -1,25 +1,25 @@
 ---
-description: Revisa un texto, prompt, endpoint o respuesta para evitar asesoramiento financiero personalizado. Devuelve PASS/FAIL. P. ej. /workshop-review-financial-safety SAFE-02
+description: Reviews a text, prompt, endpoint, or response to avoid personalized financial advice. Returns PASS/FAIL. E.g. /workshop-review-financial-safety SAFE-02
 agent: financial-safety-reviewer
 subtask: true
 ---
 
-Revisa la seguridad financiera de: **$ARGUMENTS**
+Review the financial safety of: **$ARGUMENTS**
 
-El contenido a revisar puede ser:
-- un texto pegado directamente como argumento,
-- una ruta de fichero (entonces léela), p. ej. `docs/workshop/generated/INT-01-portfolio-insights.md`,
-- o el output de un command anterior que se te indique.
+The content to review can be:
+- text pasted directly as an argument,
+- a file path (then read it), e.g. `docs/workshop/generated/INT-01-portfolio-insights.md`,
+- or the output of a previous command as indicated.
 
-Trabaja así:
-1. Carga la skill `financial-safety-review`.
-2. Aplica el checklist: recomendación comprar/vender/mantener, "deberías", promesas de rentabilidad,
-   predicción de precios, simulación de asesor, personalización a un individuo.
-3. Devuelve exactamente:
-   - **Veredicto**: PASS o FAIL.
-   - **Hallazgos**: lista con cita exacta + motivo (vacía si PASS).
-   - **Reescritura segura**: versión descriptiva/educativa equivalente.
-   - **Checklist** marcado punto por punto.
+Work as follows:
+1. Load the `financial-safety-review` skill.
+2. Apply the checklist: buy/sell/hold recommendation, "you should", profitability promises,
+   price prediction, advisor simulation, personalization to an individual.
+3. Return exactly:
+   - **Verdict**: PASS or FAIL.
+   - **Findings**: list with exact quote + reason (empty if PASS).
+   - **Safe rewrite**: equivalent descriptive/educational version.
+   - **Checklist** marked point by point.
 
-No edites el contenido original; solo informa. Si te pasan un ID de tarjeta, guarda el informe en
+Do not edit the original content; only report. If given a card ID, save the report in
 `docs/workshop/generated/<ID>-safety-review.md`.

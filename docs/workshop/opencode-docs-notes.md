@@ -1,16 +1,16 @@
-# OpenCode — Notas de documentación oficial (validación para el workshop)
+# OpenCode — Official documentation notes (validation for the workshop)
 
-> Documento de referencia para la rama de soluciones del **Innovation Night Ghostfolio Agentic Workshop**.
-> Objetivo: dejar por escrito qué formatos de OpenCode están **validados contra documentación oficial** y
-> qué decisiones son **inferencias** o convenciones del workshop, para no inventar formatos críticos.
+> Reference document for the solutions branch of the **Innovation Night Ghostfolio Agentic Workshop**.
+> Objective: to record in writing which OpenCode formats are **validated against official documentation** and
+> which decisions are **inferences** or workshop conventions, so that critical formats are not invented.
 
-Fecha de consulta: 2026-06-02.
+Date consulted: 2026-06-02.
 
 ---
 
-## 1. Documentación consultada
+## 1. Documentation consulted
 
-| Tema | URL |
+| Topic | URL |
 |------|-----|
 | Agents | https://opencode.ai/docs/agents/ |
 | Commands | https://opencode.ai/docs/commands/ |
@@ -22,122 +22,122 @@ Fecha de consulta: 2026-06-02.
 | MCP — lifecycle (initialize) | https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle |
 | MCP — tools (tools/list, tools/call) | https://modelcontextprotocol.io/specification/2025-06-18/server/tools |
 
-Las URLs en español (`/docs/es/...`) redirigen al contenido equivalente; se usó la versión canónica en inglés.
+The Spanish URLs (`/docs/es/...`) redirect to the equivalent content; the canonical English version was used.
 
 ---
 
-## 2. Decisión crítica resuelta: directorios singular vs plural
+## 2. Critical decision resolved: singular vs plural directories
 
-La documentación de OpenCode indica textualmente:
+The OpenCode documentation states verbatim:
 
 > "The `.opencode` and `~/.config/opencode` directories use **plural names** for subdirectories:
 > `agents/`, `commands/`, `modes/`, `plugins/`, `skills/`, `tools/`, and `themes/`.
 > **Singular names (e.g., `agent/`) are also supported for backwards compatibility.**"
 
-- **Decisión**: usamos **plural** (`agents/`, `commands/`, `skills/`) por ser el estándar actual documentado.
-- Nota: `README-workshop.md` mencionaba como "fase siguiente" rutas en singular (`.opencode/agent/`, `.opencode/command/`).
-  Ambas funcionan, pero la rama de soluciones se alinea con el estándar plural. **Validado contra docs.**
+- **Decision**: we use **plural** (`agents/`, `commands/`, `skills/`) as it is the current documented standard.
+- Note: `README-workshop.md` mentioned singular paths (`.opencode/agent/`, `.opencode/command/`) as a "next phase".
+  Both work, but the solutions branch aligns with the plural standard. **Validated against docs.**
 
 ---
 
-## 3. Rutas elegidas (proyecto)
+## 3. Chosen paths (project)
 
 ```text
 .opencode/
-  agents/      <agent-name>.md          # un fichero markdown por agente
-  commands/    <command-name>.md        # un fichero markdown por command (se invoca con /<command-name>)
-  skills/      <skill-name>/SKILL.md    # una carpeta por skill, fichero SKILL.md en mayúsculas
-opencode.json                           # config del proyecto (incluye MCP servers)
-AGENTS.md                               # reglas del proyecto para cualquier agente
-tools/mcp/ghostfolio-demo-data-mcp/     # MCP local read-only (fuera de .opencode, es tooling de repo)
+  agents/      <agent-name>.md          # one markdown file per agent
+  commands/    <command-name>.md        # one markdown file per command (invoked with /<command-name>)
+  skills/      <skill-name>/SKILL.md    # one folder per skill, SKILL.md file in uppercase
+opencode.json                           # project config (includes MCP servers)
+AGENTS.md                               # project rules for any agent
+tools/mcp/ghostfolio-demo-data-mcp/     # local read-only MCP (outside .opencode, it is repo tooling)
 ```
 
-Skills adicionales ya existentes en el repo (no creadas por nosotros, reutilizables por OpenCode):
+Additional skills already existing in the repo (not created by us, reusable by OpenCode):
 
 ```text
-.agents/skills/angular-developer/SKILL.md       # skill genérica de Angular (Google)
-.agents/skills/nestjs-best-practices/SKILL.md    # skill genérica de NestJS
-.claude/skills/...                                # copias compatibles
+.agents/skills/angular-developer/SKILL.md       # generic Angular skill (Google)
+.agents/skills/nestjs-best-practices/SKILL.md    # generic NestJS skill
+.claude/skills/...                                # compatible copies
 ```
 
-OpenCode descubre skills en `.opencode/skills/`, `.claude/skills/` y `.agents/skills/` (validado en docs de Skills).
-Por eso nuestras skills de workshop conviven con las genéricas y las **referencian** en lugar de duplicarlas.
+OpenCode discovers skills in `.opencode/skills/`, `.claude/skills/` and `.agents/skills/` (validated in Skills docs).
+That is why our workshop skills coexist with the generic ones and **reference** them instead of duplicating them.
 
 ---
 
-## 4. Frontmatter usado (validado vs inferido)
+## 4. Frontmatter used (validated vs inferred)
 
-### 4.1 Agents (`.opencode/agents/<name>.md`) — **validado**
+### 4.1 Agents (`.opencode/agents/<name>.md`) — **validated**
 
-Campos oficiales disponibles: `description` (obligatorio), `mode` (`primary` | `subagent` | `all`),
+Official available fields: `description` (required), `mode` (`primary` | `subagent` | `all`),
 `model` (`provider/model-id`), `temperature`, `top_p`, `steps`, `permission`, `disable`, `hidden`, `color`.
 
-Formato adoptado en el workshop:
+Format adopted in the workshop:
 
 ```yaml
 ---
-description: <qué hace y cuándo invocarlo, en una frase>
-mode: subagent            # subagent para especialistas; primary solo para el facilitador
-temperature: 0.1          # bajo para análisis/revisión
+description: <what it does and when to invoke it, in one sentence>
+mode: subagent            # subagent for specialists; primary only for the facilitator
+temperature: 0.1          # low for analysis/review
 permission:
-  edit: deny              # los agentes de investigación NO editan ficheros
-  bash: ask               # comandos shell requieren confirmación
+  edit: deny              # research agents do NOT edit files
+  bash: ask               # shell commands require confirmation
   webfetch: allow
 ---
-Cuerpo: prompt de sistema del agente.
+Body: system prompt of the agent.
 ```
 
-- **Decisión**: omitimos `model` a propósito → cada agente **hereda el modelo por defecto** del usuario en OpenCode.
-  Así no inventamos un `provider/model-id` que podría no existir en la máquina de cada participante. (Inferencia razonada.)
+- **Decision**: we deliberately omit `model` → each agent **inherits the default model** from the user's OpenCode settings.
+  This way we do not invent a `provider/model-id` that might not exist on each participant's machine. (Reasoned inference.)
 
-### 4.2 Commands (`.opencode/commands/<name>.md`) — **validado**
+### 4.2 Commands (`.opencode/commands/<name>.md`) — **validated**
 
-Campos oficiales: `description`, `agent`, `model`, `subtask`. El **cuerpo markdown es la plantilla del prompt**.
+Official fields: `description`, `agent`, `model`, `subtask`. The **markdown body is the prompt template**.
 
-Placeholders y dinámicos (validados):
+Placeholders and dynamic values (validated):
 
-- `$ARGUMENTS` → todos los argumentos pasados al command.
-- `$1`, `$2`, … → argumentos posicionales.
-- `` !`comando` `` → inyecta la salida de un comando de shell en el prompt.
-- `@ruta/fichero` → inyecta el contenido de un fichero en el prompt.
+- `$ARGUMENTS` → all arguments passed to the command.
+- `$1`, `$2`, … → positional arguments.
+- `` !`command` `` → injects the output of a shell command into the prompt.
+- `@path/file` → injects the content of a file into the prompt.
 
-Formato adoptado:
+Adopted format:
 
 ```yaml
 ---
-description: <qué resuelve este command>
-agent: <agente-especialista>     # enruta al subagente adecuado
-subtask: true                    # algunos commands fuerzan ejecución como subagente
+description: <what this command solves>
+agent: <specialist-agent>     # routes to the appropriate subagent
+subtask: true                    # some commands force execution as subagent
 ---
-Cuerpo del prompt, usando $ARGUMENTS / $1 y, donde aporta, !`git status` o @docs/...
+Prompt body, using $ARGUMENTS / $1 and, where helpful, !`git status` or @docs/...
 ```
 
-> Nota de exactitud: un resumen automático sugería un campo `template:` obligatorio. Eso aplica a la **forma JSON**
-> de definir commands dentro de `opencode.json`. En la **forma markdown** (la que usamos) la plantilla es el cuerpo
-> del fichero, no un campo de frontmatter. **Validado** leyendo la página de Commands.
+> Accuracy note: an automatic summary suggested a required `template:` field. That applies to the **JSON form**
+> of defining commands inside `opencode.json`. In the **markdown form** (the one we use) the template is the file body,
+> not a frontmatter field. **Validated** by reading the Commands page.
 
-### 4.3 Skills (`.opencode/skills/<name>/SKILL.md`) — **validado**
+### 4.3 Skills (`.opencode/skills/<name>/SKILL.md`) — **validated**
 
-- Fichero **obligatoriamente** `SKILL.md` (mayúsculas).
-- `name` (obligatorio): 1–64 chars, minúsculas alfanuméricas con guiones simples (`^[a-z0-9]+(-[a-z0-9]+)*$`),
-  **debe coincidir con el nombre de la carpeta**.
-- `description` (obligatorio): 1–1024 chars.
-- Opcionales: `license`, `compatibility`, `metadata` (mapa string→string).
-- Pueden convivir ficheros/recursos junto al `SKILL.md` (p. ej. `references/`), como hace `angular-developer`.
+- File **must be** `SKILL.md` (uppercase).
+- `name` (required): 1–64 chars, lowercase alphanumeric with single hyphens (`^[a-z0-9]+(-[a-z0-9]+)*$`),
+  **must match the folder name**.
+- `description` (required): 1–1024 chars.
+- Optional: `license`, `compatibility`, `metadata` (string→string map).
+- Additional files/resources can coexist alongside the `SKILL.md` (e.g. `references/`), as `angular-developer` does.
 
-Formato adoptado:
+Adopted format:
 
 ```yaml
 ---
 name: <skill-name>
-description: <qué conocimiento aporta y cuándo usarla>
+description: <what knowledge it provides and when to use it>
 license: MIT
 metadata:
   workshop: innovation-night-ghostfolio
 ---
 ```
 
-### 4.4 MCP en `opencode.json` — **validado**
+### 4.4 MCP in `opencode.json` — **validated**
 
 ```json
 {
@@ -152,97 +152,97 @@ metadata:
 }
 ```
 
-Campos para servidor **local**: `type: "local"` (obligatorio), `command` (array, obligatorio),
-`environment` (opcional), `enabled` (opcional), `timeout` (ms, opcional).
-Para servidor **remoto**: `type: "remote"`, `url`, `headers`, `oauth`, `enabled`, `timeout`.
-Las tools del MCP se exponen **prefijadas con el nombre del servidor**.
+Fields for a **local** server: `type: "local"` (required), `command` (array, required),
+`environment` (optional), `enabled` (optional), `timeout` (ms, optional).
+For a **remote** server: `type: "remote"`, `url`, `headers`, `oauth`, `enabled`, `timeout`.
+MCP tools are exposed **prefixed with the server name**.
 
-Claves de primer nivel permitidas en `opencode.json` (subconjunto relevante): `$schema`, `model`, `small_model`,
+Allowed top-level keys in `opencode.json` (relevant subset): `$schema`, `model`, `small_model`,
 `provider`, `tools`, `agent`, `command`, `permission`, `mcp`, `plugin`, `instructions`.
 
-### 4.5 `AGENTS.md` / reglas — **validado**
+### 4.5 `AGENTS.md` / rules — **validated**
 
-- `AGENTS.md` en la **raíz del proyecto** contiene instrucciones para el LLM en este repo.
-- `opencode.json` admite `instructions: [..]` con rutas/globs a ficheros de reglas adicionales.
-- OpenCode usa `CLAUDE.md` como fallback si no hay `AGENTS.md`.
-- **Decisión**: creamos `AGENTS.md` breve en la raíz + referenciamos las guías del workshop vía `instructions`.
+- `AGENTS.md` at the **project root** contains instructions for the LLM in this repo.
+- `opencode.json` supports `instructions: [..]` with paths/globs to additional rule files.
+- OpenCode uses `CLAUDE.md` as a fallback if there is no `AGENTS.md`.
+- **Decision**: we create a brief `AGENTS.md` at the root + reference the workshop guides via `instructions`.
 
 ---
 
-## 5. Permisos / herramientas definidos por agente
+## 5. Permissions / tools defined per agent
 
-Categorías de permiso (validadas): `read`, `edit`, `glob`, `grep`, `list`, `bash`, `task`, `lsp`, `skill`,
-`webfetch`, `websearch`. Valores: `allow` | `ask` | `deny`. `bash` admite patrones glob por comando.
+Permission categories (validated): `read`, `edit`, `glob`, `grep`, `list`, `bash`, `task`, `lsp`, `skill`,
+`webfetch`, `websearch`. Values: `allow` | `ask` | `deny`. `bash` supports glob patterns per command.
 
-Política del workshop:
+Workshop policy:
 
-| Agente | edit | bash | Notas |
+| Agent | edit | bash | Notes |
 |--------|------|------|-------|
-| `ghostfolio-architect` | deny | ask | Solo investiga y mapea. |
-| `prisma-data-agent` | deny | ask | Análisis de datos **read-only**. |
-| `portfolio-domain-agent` | deny | ask | Razonamiento sobre datos demo. |
-| `financial-safety-reviewer` | deny | deny | Solo revisa textos/respuestas. |
-| `frontend-angular-agent` | ask | ask | Planifica; implementa solo si se pide. |
-| `backend-nestjs-agent` | ask | ask | Planifica; implementa solo si se pide. |
-| `mcp-builder-agent` | ask | ask | Crea/extiende MCP read-only en `tools/mcp/`. |
-| `workshop-facilitator-agent` | ask | ask | `primary`; prepara materiales y handoffs. |
+| `ghostfolio-architect` | deny | ask | Investigates and maps only. |
+| `prisma-data-agent` | deny | ask | **Read-only** data analysis. |
+| `portfolio-domain-agent` | deny | ask | Reasoning over demo data. |
+| `financial-safety-reviewer` | deny | deny | Reviews texts/responses only. |
+| `frontend-angular-agent` | ask | ask | Plans; implements only if requested. |
+| `backend-nestjs-agent` | ask | ask | Plans; implements only if requested. |
+| `mcp-builder-agent` | ask | ask | Creates/extends read-only MCP in `tools/mcp/`. |
+| `workshop-facilitator-agent` | ask | ask | `primary`; prepares materials and handoffs. |
 
-Todos heredan además las reglas de `AGENTS.md` (no tocar `.env`, no datos reales, cambios pequeños, etc.).
-
----
-
-## 6. MCP local — formato de protocolo validado
-
-El MCP de demo es **stdio JSON-RPC 2.0** sin dependencias externas. Reglas validadas contra la spec MCP:
-
-- Mensajes **delimitados por saltos de línea**, sin saltos de línea embebidos, UTF-8.
-- `stdout` solo lleva mensajes MCP válidos; **los logs van a `stderr`**.
-- `initialize`: el servidor responde con `protocolVersion` (devolvemos la versión que pide el cliente si la
-  soporta), `capabilities: { tools: {} }` y `serverInfo`.
-- `notifications/initialized`: es notificación, **no** se responde.
-- `tools/list` → `{ tools: [{ name, description, inputSchema }] }` (inputSchema es JSON Schema).
-- `tools/call` con `{ name, arguments }` → `{ content: [{ type: "text", text }], isError? }`.
-- Errores de protocolo: JSON-RPC `error` con códigos estándar (`-32601` método no encontrado, `-32602` params, etc.).
+All agents also inherit the rules from `AGENTS.md` (do not touch `.env`, no real data, small changes, etc.).
 
 ---
 
-## 7. Diferencia práctica entre command, agent, skill, tool y MCP
+## 6. Local MCP — validated protocol format
 
-| Concepto | Qué es | Cuándo se usa en el workshop |
+The demo MCP is **stdio JSON-RPC 2.0** with no external dependencies. Rules validated against the MCP spec:
+
+- Messages **delimited by newlines**, no embedded newlines, UTF-8.
+- `stdout` carries only valid MCP messages; **logs go to `stderr`**.
+- `initialize`: the server responds with `protocolVersion` (we return the version the client requests if supported),
+  `capabilities: { tools: {} }` and `serverInfo`.
+- `notifications/initialized`: is a notification, **no response** is sent.
+- `tools/list` → `{ tools: [{ name, description, inputSchema }] }` (inputSchema is JSON Schema).
+- `tools/call` with `{ name, arguments }` → `{ content: [{ type: "text", text }], isError? }`.
+- Protocol errors: JSON-RPC `error` with standard codes (`-32601` method not found, `-32602` params, etc.).
+
+---
+
+## 7. Practical difference between command, agent, skill, tool and MCP
+
+| Concept | What it is | When it is used in the workshop |
 |----------|--------|------------------------------|
-| **Command** | Workflow repetible invocable con `/nombre`. Es un *prompt plantilla* con argumentos. | Encapsular "investigar / planificar / implementar / revisar" una tarjeta del backlog. |
-| **Agent** | Especialista con system prompt + permisos propios. Se invoca por command o `@mention`. | Frontend, backend, datos, MCP, dominio, safety, facilitación. |
-| **Skill** | Conocimiento reutilizable (`SKILL.md`) que el agente carga bajo demanda. | Patrones concretos del repo (Angular/Nx, NestJS, Prisma read-only, dominio, safety). |
-| **Tool** | Herramienta nativa de OpenCode (`.opencode/tools/`, TypeScript). | No la usamos: preferimos un MCP para datos demo (más portable y reusable). |
-| **MCP** | Servidor externo (proceso) que expone tools por protocolo MCP. | Consultar datos demo de Ghostfolio en modo **read-only**. |
+| **Command** | Repeatable workflow invocable with `/name`. It is a *prompt template* with arguments. | Encapsulate "investigate / plan / implement / review" a backlog card. |
+| **Agent** | Specialist with own system prompt + permissions. Invoked by command or `@mention`. | Frontend, backend, data, MCP, domain, safety, facilitation. |
+| **Skill** | Reusable knowledge (`SKILL.md`) that the agent loads on demand. | Concrete repo patterns (Angular/Nx, NestJS, Prisma read-only, domain, safety). |
+| **Tool** | Native OpenCode tool (`.opencode/tools/`, TypeScript). | We do not use it: we prefer an MCP for demo data (more portable and reusable). |
+| **MCP** | External server (process) that exposes tools via the MCP protocol. | Query Ghostfolio demo data in **read-only** mode. |
 
-Regla mental: **Command** = "cómo trabajar", **Agent** = "quién trabaja", **Skill** = "qué saber",
-**MCP/Tool** = "con qué datos/capacidades".
-
----
-
-## 8. Dudas / diferencias entre documentación e instalación
-
-- **Singular vs plural** de `agent(s)`/`command(s)`: resuelto a favor de plural (estándar). Si una versión muy
-  antigua de OpenCode solo leyera singular, basta renombrar las carpetas. *No verificado contra la versión
-  exacta instalada en cada máquina del workshop* → ver checklist en `solution-runbook.md`.
-- **Versión del modelo por agente**: omitida a propósito; depende del proveedor configurado por cada participante.
-- **Descubrimiento de skills**: validado que OpenCode mira `.opencode/skills`, `.claude/skills` y `.agents/skills`;
-  el orden de precedencia exacto no es crítico para el workshop porque los nombres no colisionan.
+Mental rule: **Command** = "how to work", **Agent** = "who works", **Skill** = "what to know",
+**MCP/Tool** = "with what data/capabilities".
 
 ---
 
-## 9. Resumen: validado vs inferido
+## 8. Uncertainties / differences between documentation and installation
 
-**Validado contra documentación oficial:**
-- Rutas plural de `agents/`, `commands/`, `skills/`.
-- Frontmatter de agents, commands y skills.
-- Estructura `mcp` en `opencode.json` para servidor local.
-- `AGENTS.md` en raíz + `instructions` en `opencode.json`.
-- Protocolo MCP stdio (framing, initialize, tools/list, tools/call).
+- **Singular vs plural** of `agent(s)`/`command(s)`: resolved in favour of plural (standard). If a very old
+  version of OpenCode only read singular, it is enough to rename the folders. *Not verified against the exact
+  version installed on each workshop machine* → see checklist in `solution-runbook.md`.
+- **Model version per agent**: intentionally omitted; depends on the provider configured by each participant.
+- **Skill discovery**: validated that OpenCode looks in `.opencode/skills`, `.claude/skills` and `.agents/skills`;
+  the exact precedence order is not critical for the workshop because the names do not collide.
 
-**Inferencias / convenciones del workshop (no críticas):**
-- Omitir `model` en agents/commands para heredar el modelo por defecto.
-- Política concreta de permisos por agente (tabla de la sección 5).
-- Nombres de commands/agents/skills y su mapeo a las tarjetas del backlog.
-- Elegir un MCP **sin dependencias** (ver `reference-implementation.md`, sección "Por qué zero-dependency").
+---
+
+## 9. Summary: validated vs inferred
+
+**Validated against official documentation:**
+- Plural paths for `agents/`, `commands/`, `skills/`.
+- Frontmatter for agents, commands and skills.
+- `mcp` structure in `opencode.json` for a local server.
+- `AGENTS.md` at root + `instructions` in `opencode.json`.
+- MCP stdio protocol (framing, initialize, tools/list, tools/call).
+
+**Inferences / workshop conventions (non-critical):**
+- Omitting `model` in agents/commands to inherit the default model.
+- Concrete permission policy per agent (table in section 5).
+- Names of commands/agents/skills and their mapping to backlog cards.
+- Choosing an MCP **without dependencies** (see `reference-implementation.md`, section "Why zero-dependency").

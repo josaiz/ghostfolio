@@ -1,62 +1,62 @@
-# Plantilla de handoff de equipo
+# Team handoff template
 
-> Copia este fichero a `docs/workshop/generated/<ID>-handoff.md` (o deja que
-> `/workshop-prepare-team-handoff <ID>` lo rellene por ti). Lo que no conste, escribe "pendiente".
+> Copy this file to `docs/workshop/generated/<ID>-handoff.md` (or let
+> `/workshop-prepare-team-handoff <ID>` fill it in for you). For anything unknown, write "pending".
 
-## Tarjeta
+## Card
 
 - **ID**: <FE-01 | BE-01 | MCP-02 | ...>
-- **Título**:
-- **Swimlane / Equipo**:
-- **Objetivo funcional** (qué gana el producto):
+- **Title**:
+- **Swimlane / Team**:
+- **Functional goal** (what the product gains):
 
-## Componentes OpenCode creados / mejorados / usados
+## OpenCode components created / improved / used
 
-| Tipo | Nombre | Creado/Mejorado/Usado |
+| Type | Name | Created/Improved/Used |
 |------|--------|------------------------|
 | Command | | |
 | Agent | | |
 | Skill | | |
 | MCP / tool | | |
 
-## Decisiones tomadas (y por qué)
+## Decisions made (and why)
 
 - 
 - 
 
-## Comandos ejecutados
+## Commands executed
 
 ```text
-# p. ej.
+# e.g.
 /workshop-inspect-architecture ...
 /workshop-plan-frontend-card FE-01
 /workshop-review-financial-safety ...
 ```
 
-## Ficheros modificados
+## Modified files
 
-> De `git status` / `git diff`. Si no tocaste código (solo un plan), indícalo.
+> From `git status` / `git diff`. If you didn't touch any code (plan only), indicate that.
 
 ```text
 git status --short:
-<pegar aquí>
+<paste here>
 ```
 
-## Pruebas realizadas y resultado
+## Tests performed and results
 
-- [ ] Smoke test del MCP (`./scripts/check-demo-mcp.sh`): <PASS/FAIL>
-- [ ] `npm run lint` / `npm run test:api` (si aplica): <resultado>
-- [ ] Demo manual: <qué se vio>
+- [ ] MCP smoke test (`./scripts/check-demo-mcp.sh`): <PASS/FAIL>
+- [ ] `npm run lint` / `npm run test:api` (if applicable): <result>
+- [ ] Manual demo: <what was observed>
 
-## Revisión de safety
+## Safety review
 
-- Resultado de `/workshop-review-financial-safety`: <PASS/FAIL>
-- Hallazgos / reescritura aplicada:
+- Result of `/workshop-review-financial-safety`: <PASS/FAIL>
+- Findings / rewrite applied:
 
-## Dudas / riesgos abiertos
+## Open questions / risks
 
 - 
 
-## Siguiente paso (para quien recoja)
+## Next step (for whoever picks this up)
 
 - 

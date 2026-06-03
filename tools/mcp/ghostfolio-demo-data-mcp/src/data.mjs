@@ -20,7 +20,7 @@ const MAIN_FILE = 'ghostfolio-workshop-main.csv';
 const ANOMALIES_FILE = 'ghostfolio-workshop-anomalies-do-not-import-main.csv';
 
 export const DISCLAIMER =
-  'Datos sintéticos del workshop. Información descriptiva y educativa, no asesoramiento financiero.';
+  'Synthetic workshop data. Descriptive and educational information, not financial advice.';
 
 // ---------------------------------------------------------------------------
 // Small numeric helpers
@@ -74,8 +74,8 @@ function loadCsv(fileName) {
 
   if (!fs.existsSync(filePath)) {
     throw new Error(
-      `No se encuentra el dataset demo: ${path.relative(REPO_ROOT, filePath)}. ` +
-        'Asegúrate de que data/workshop/import/ contiene los CSV del workshop.'
+      `Demo dataset not found: ${path.relative(REPO_ROOT, filePath)}. ` +
+        'Make sure data/workshop/import/ contains the workshop CSV files.'
     );
   }
 
@@ -218,7 +218,7 @@ export function getPortfolioSummary() {
     generatedFrom: `data/workshop/import/${MAIN_FILE}`,
     disclaimer: DISCLAIMER,
     concentrationNote:
-      'Cuota de coste nominal dentro de cada cuenta; sin conversión de divisa ni valor de mercado actual.',
+      'Nominal cost share within each account; no currency conversion or current market value.',
     totals: {
       accounts: accounts.length,
       activities: activities.length,
@@ -236,7 +236,7 @@ export function getAccountSummary(accountName) {
 
   if (!found) {
     return {
-      error: `Cuenta no encontrada: ${accountName}`,
+      error: `Account not found: ${accountName}`,
       availableAccounts: summary.accounts.map((a) => a.name)
     };
   }
@@ -284,7 +284,7 @@ export function getSymbolExposure(symbol) {
 
   return {
     disclaimer: DISCLAIMER,
-    note: 'Coste nominal sin conversión de divisa.',
+    note: 'Nominal cost without currency conversion.',
     symbolCount: symbols.length,
     symbols
   };
@@ -410,7 +410,7 @@ export function detectAnomalies(source = 'anomalies') {
         account: group[0].account,
         symbol: group[0].symbol,
         date: group[0].date,
-        detail: `${group.length} actividades idénticas (mismo símbolo, fecha, tipo, cantidad y precio).`,
+        detail: `${group.length} identical activities (same symbol, date, type, quantity, and price).`,
         rows: group.map((g) => g.rowNumber)
       });
     }
@@ -430,7 +430,7 @@ export function detectAnomalies(source = 'anomalies') {
           account: a.account,
           symbol: a.symbol,
           date: a.date,
-          detail: `Comisión ${a.fee} = ${round1(feePct * 100)}% del importe (${round2(notional)} ${a.currency}).`,
+          detail: `Fee ${a.fee} = ${round1(feePct * 100)}% of the notional amount (${round2(notional)} ${a.currency}).`,
           rows: [a.rowNumber]
         });
       }
@@ -443,7 +443,7 @@ export function detectAnomalies(source = 'anomalies') {
         account: a.account,
         symbol: a.symbol,
         date: a.date,
-        detail: `Divisa ${a.currency} difiere de la habitual ${ref.modalCurrency} para ${a.symbol}.`,
+        detail: `Currency ${a.currency} differs from the usual ${ref.modalCurrency} for ${a.symbol}.`,
         rows: [a.rowNumber]
       });
     }
@@ -461,7 +461,7 @@ export function detectAnomalies(source = 'anomalies') {
         account: a.account,
         symbol: a.symbol,
         date: a.date,
-        detail: `Precio ${a.unitPrice} ${a.currency} fuera del rango de referencia [${round2(ref.minPrice)}, ${round2(ref.maxPrice)}] de ${a.symbol}.`,
+        detail: `Price ${a.unitPrice} ${a.currency} is outside the reference range [${round2(ref.minPrice)}, ${round2(ref.maxPrice)}] for ${a.symbol}.`,
         rows: [a.rowNumber]
       });
     }
@@ -489,7 +489,7 @@ export function detectAnomalies(source = 'anomalies') {
             account: a.account,
             symbol: a.symbol,
             date: a.date,
-            detail: `Venta de ${a.quantity} deja posición neta negativa (${round4(net)}) para ${a.symbol} en esta fuente.`,
+            detail: `Sale of ${a.quantity} leaves a negative net position (${round4(net)}) for ${a.symbol} in this source.`,
             rows: [a.rowNumber]
           });
         }
@@ -505,7 +505,7 @@ export function detectAnomalies(source = 'anomalies') {
   return {
     source: normalizedSource,
     disclaimer: DISCLAIMER,
-    note: 'Detección determinista basada en estadísticas del dataset limpio. No usa las etiquetas ANOMALY= del CSV.',
+    note: 'Deterministic detection based on statistics from the clean dataset. Does not use the ANOMALY= labels in the CSV.',
     scannedActivities: targets.length,
     findingCount: findings.length,
     byType: countBy(findings, (f) => f.type),

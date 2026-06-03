@@ -14,26 +14,26 @@ fi
 
 # Install dependencies only if the MCP ever declares some (it is zero-dependency today).
 if grep -q '"dependencies": {}' "$MCP_DIR/package.json"; then
-  echo "==> MCP zero-dependency: no hay nada que instalar."
+  echo "==> MCP zero-dependency: nothing to install."
 elif [ ! -d "$MCP_DIR/node_modules" ]; then
-  echo "==> Instalando dependencias del MCP"
+  echo "==> Installing MCP dependencies"
   (cd "$MCP_DIR" && npm install)
 fi
 
 if [ "${1:-}" = "--serve" ]; then
-  echo "==> Arrancando ghostfolio-demo-data en primer plano (Ctrl+C para salir)."
-  echo "    Habla JSON-RPC por stdin; los logs salen por stderr."
+  echo "==> Starting ghostfolio-demo-data in the foreground (Ctrl+C to exit)."
+  echo "    Speaks JSON-RPC over stdin; logs go to stderr."
   exec node "$MCP_DIR/src/index.mjs"
 fi
 
-echo "==> OpenCode arranca este MCP automáticamente vía opencode.json."
-echo "==> Verificando que funciona..."
+echo "==> OpenCode starts this MCP automatically via opencode.json."
+echo "==> Verifying it works..."
 node "$MCP_DIR/src/smoke-test.mjs"
 
 cat <<'EOF'
 
-Listo. Cómo usarlo:
-  - Desde OpenCode: el agente `portfolio-domain-agent` o el command `/workshop-analyze-demo-portfolio`.
-  - Smoke test cuando quieras: ./scripts/check-demo-mcp.sh
-  - Arranque manual en primer plano (depuración): ./scripts/start-demo-mcp.sh --serve
+Ready. How to use it:
+  - From OpenCode: the `portfolio-domain-agent` agent or the `/workshop-analyze-demo-portfolio` command.
+  - Smoke test whenever you like: ./scripts/check-demo-mcp.sh
+  - Manual foreground start (debugging): ./scripts/start-demo-mcp.sh --serve
 EOF

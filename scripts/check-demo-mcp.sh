@@ -10,5 +10,5 @@ if ! command -v node >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "==> Comprobando el MCP ghostfolio-demo-data (initialize + tools/list + tools/call)"
+echo "==> Checking the ghostfolio-demo-data MCP (initialize + tools/list + tools/call)"
 node tools/mcp/ghostfolio-demo-data-mcp/src/smoke-test.mjs

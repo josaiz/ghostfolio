@@ -1,24 +1,24 @@
 ---
-description: Investiga la arquitectura real de Ghostfolio para una tarjeta o tema y produce un mapa técnico accionable (FND-01).
+description: Investigates the real Ghostfolio architecture for a card or topic and produces an actionable technical map (FND-01).
 agent: ghostfolio-architect
 subtask: true
 ---
 
-Investiga la arquitectura de Ghostfolio relevante para: **$ARGUMENTS**
+Investigate the Ghostfolio architecture relevant to: **$ARGUMENTS**
 
-Backlog de referencia (busca la tarjeta si se te pasa un ID como `FE-01`):
+Reference backlog (look up the card if you are given an ID like `FE-01`):
 @docs/workshop/whiteboard-backlog.md
 
-Trabaja así:
-1. Carga la skill `ghostfolio-domain-analysis` si el tema toca portfolio/cuentas/actividades/insights.
-2. Confirma rutas reales con `grep`/`glob`/`read`. No inventes ficheros: si no lo has visto, búscalo.
-3. Entrega un **mapa técnico** con esta estructura:
-   - **Objetivo funcional** (en una frase)
-   - **Ficheros reales implicados** (rutas verificadas)
-   - **Contratos de datos** (interfaces/DTO/endpoints)
-   - **Patrón análogo a seguir** (módulo/componente existente que copiar)
-   - **Riesgos y zonas a no tocar**
-   - **Command siguiente recomendado** (`/workshop-plan-frontend-card`, `-backend-card` o `-mcp-card`)
+Work as follows:
+1. Load the `ghostfolio-domain-analysis` skill if the topic touches portfolio/accounts/activities/insights.
+2. Confirm real paths with `grep`/`glob`/`read`. Do not invent files: if you haven't seen it, search for it.
+3. Deliver a **technical map** with this structure:
+   - **Functional objective** (in one sentence)
+   - **Real files involved** (verified paths)
+   - **Data contracts** (interfaces/DTO/endpoints)
+   - **Analogous pattern to follow** (existing module/component to copy)
+   - **Risks and areas not to touch**
+   - **Recommended next command** (`/workshop-plan-frontend-card`, `-backend-card` or `-mcp-card`)
 
-Salida esperada: un mapa en markdown. Si te dan un ID de tarjeta, guárdalo en
-`docs/workshop/generated/<ID>-architecture-map.md`. No edites código funcional. Read-only.
+Expected output: a map in markdown. If given a card ID, save it in
+`docs/workshop/generated/<ID>-architecture-map.md`. Do not edit functional code. Read-only.
