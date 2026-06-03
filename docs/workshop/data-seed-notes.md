@@ -1,74 +1,74 @@
 # Workshop Data Seed Notes
 
-## Estrategia elegida
+## Chosen strategy
 
-Se eligio la opcion A: usar la API HTTP existente de Ghostfolio.
+Option A was chosen: use the existing Ghostfolio HTTP API.
 
-No se modifica codigo funcional de Ghostfolio y no se escriben datos directamente en PostgreSQL. El tooling llama a los endpoints existentes con un JWT obtenido desde el flujo de security token de Ghostfolio.
+No functional Ghostfolio code is modified and no data is written directly to PostgreSQL. The tooling calls the existing endpoints with a JWT obtained from the Ghostfolio security token flow.
 
-## Modelos de datos
+## Data models
 
-Los modelos principales estan en `prisma/schema.prisma`:
+The main models are in `prisma/schema.prisma`:
 
-- `Account`: cuenta del usuario. Campos relevantes: `id`, `userId`, `name`, `currency`, `balance`, `comment`, `isExcluded`, `platformId`.
-- `Order`: actividad/transaccion. Ghostfolio usa `Order` como modelo de actividad. Campos relevantes: `id`, `userId`, `accountId`, `comment`, `currency`, `date`, `fee`, `quantity`, `type`, `unitPrice`, `symbolProfileId`.
-- `SymbolProfile`: activo asociado a una actividad. Campos relevantes: `dataSource`, `symbol`, `currency`, `name`, `assetClass`, `assetSubClass`.
-- `Tag`: etiqueta opcional conectada a actividades.
-- `User`: usuario. No contiene email/password local; contiene `accessToken` hasheado para autenticacion anonima/security token, `provider` y `role`.
+- `Account`: user account. Relevant fields: `id`, `userId`, `name`, `currency`, `balance`, `comment`, `isExcluded`, `platformId`.
+- `Order`: activity/transaction. Ghostfolio uses `Order` as the activity model. Relevant fields: `id`, `userId`, `accountId`, `comment`, `currency`, `date`, `fee`, `quantity`, `type`, `unitPrice`, `symbolProfileId`.
+- `SymbolProfile`: asset associated with an activity. Relevant fields: `dataSource`, `symbol`, `currency`, `name`, `assetClass`, `assetSubClass`.
+- `Tag`: optional tag connected to activities.
+- `User`: user. Does not contain local email/password; contains hashed `accessToken` for anonymous/security token authentication, `provider` and `role`.
 
-## Cuentas
+## Accounts
 
-La creacion y consulta de cuentas usa:
+Account creation and lookup uses:
 
 - `apps/api/src/app/account/account.controller.ts`
 - `apps/api/src/app/account/account.service.ts`
 
-Endpoints relevantes:
+Relevant endpoints:
 
-- `GET /api/v1/account`: lista cuentas del usuario autenticado.
-- `POST /api/v1/account`: crea una cuenta. Requiere permiso `createAccount`.
-- `DELETE /api/v1/account/:id`: borra una cuenta solo si no tiene actividades. Requiere permiso `deleteAccount`.
+- `GET /api/v1/account`: lists accounts for the authenticated user.
+- `POST /api/v1/account`: creates an account. Requires `createAccount` permission.
+- `DELETE /api/v1/account/:id`: deletes an account only if it has no activities. Requires `deleteAccount` permission.
 
 DTO:
 
 - `libs/common/src/lib/dtos/create-account.dto.ts`
 
-## Actividades
+## Activities
 
-La gestion de actividades usa:
+Activity management uses:
 
 - `apps/api/src/app/activities/activities.controller.ts`
 - `apps/api/src/app/activities/activities.service.ts`
 
-Endpoints relevantes:
+Relevant endpoints:
 
-- `GET /api/v1/activities`: lista actividades del usuario autenticado.
-- `POST /api/v1/activities`: crea una actividad individual. Requiere permiso `createActivity`.
-- `DELETE /api/v1/activities/:id`: borra una actividad concreta. Requiere permiso `deleteActivity`.
-- `DELETE /api/v1/activities`: borra actividades filtradas, por ejemplo por cuenta, simbolo o tags.
+- `GET /api/v1/activities`: lists activities for the authenticated user.
+- `POST /api/v1/activities`: creates a single activity. Requires `createActivity` permission.
+- `DELETE /api/v1/activities/:id`: deletes a specific activity. Requires `deleteActivity` permission.
+- `DELETE /api/v1/activities`: deletes filtered activities, for example by account, symbol or tags.
 
 DTO:
 
 - `libs/common/src/lib/dtos/create-order.dto.ts`
 
-## Importacion CSV
+## CSV Import
 
-La UI no envia un fichero CSV crudo al backend. El cliente parsea el CSV con PapaParse en:
+The UI does not send a raw CSV file to the backend. The client parses the CSV with PapaParse in:
 
 - `apps/client/src/app/services/import-activities.service.ts`
 - `apps/client/src/app/pages/portfolio/activities/import-activities-dialog/import-activities-dialog.component.ts`
 
-Despues transforma cada fila a `CreateOrderDto` y llama a:
+It then transforms each row into a `CreateOrderDto` and calls:
 
 - `POST /api/v1/import?dryRun=true`
 - `POST /api/v1/import?dryRun=false`
 
-El backend de importacion esta en:
+The import backend is in:
 
 - `apps/api/src/app/import/import.controller.ts`
 - `apps/api/src/app/import/import.service.ts`
 
-El endpoint `POST /api/v1/import` requiere permisos `createActivity` y `createAccount`. Acepta un JSON con:
+The `POST /api/v1/import` endpoint requires `createActivity` and `createAccount` permissions. It accepts a JSON with:
 
 ```json
 {
@@ -79,88 +79,88 @@ El endpoint `POST /api/v1/import` requiere permisos `createActivity` y `createAc
 }
 ```
 
-## Autenticacion
+## Authentication
 
-Ghostfolio no tiene un login local email/password en el modelo inspeccionado. La autenticacion disponible para scripts es por security token:
+Ghostfolio does not have a local email/password login in the inspected model. The authentication available for scripts is via security token:
 
 - `POST /api/v1/auth/anonymous`
 - body: `{ "accessToken": "<security-token>" }`
 - response: `{ "authToken": "<jwt>" }`
 
-Ese JWT se usa como:
+That JWT is used as:
 
 ```text
 Authorization: Bearer <jwt>
 ```
 
-El security token se gestiona en:
+The security token is managed in:
 
 - `apps/api/src/app/auth/auth.controller.ts`
 - `apps/api/src/app/auth/auth.service.ts`
 - `apps/api/src/app/user/user.controller.ts`
 - `apps/api/src/app/user/user.service.ts`
 
-La UI de registro muestra el security token una sola vez. Si se pierde, puede regenerarse desde la UI, pero eso invalida el token anterior.
+The registration UI shows the security token only once. If lost, it can be regenerated from the UI, but that invalidates the previous token.
 
 ## Dataset
 
-El dataset existe en:
+The dataset exists in:
 
 ```text
 data/workshop/import/
 ```
 
-El seed usa por defecto:
+The seed uses by default:
 
 - `myinvestor-core-etf.csv` -> `MyInvestor Core ETF`
 - `trade-republic-growth.csv` -> `Trade Republic Growth`
 - `crypto-exchange.csv` -> `Crypto Exchange`
 
-Para esta version de Ghostfolio, el validador de importacion no acepta los
-tickers cripto de Yahoo con guion (`BTC-USD`, `ETH-USD`). El tooling de seed
-los normaliza al payload de importacion como `BTCUSD` y `ETHUSD`, sin modificar
-los CSV del dataset.
+For this version of Ghostfolio, the import validator does not accept
+crypto tickers from Yahoo with a hyphen (`BTC-USD`, `ETH-USD`). The seed
+tooling normalises them in the import payload to `BTCUSD` and `ETHUSD`, without modifying
+the dataset CSV files.
 
-No importa por defecto:
+Not imported by default:
 
 - `ghostfolio-workshop-anomalies-do-not-import-main.csv`
 
-Ese CSV queda reservado para fases posteriores de deteccion de anomalias.
+That CSV is reserved for later anomaly detection phases.
 
-## Idempotencia
+## Idempotency
 
-El seed marca cada actividad importada en `comment` con:
+The seed marks each imported activity in `comment` with:
 
 ```text
 WORKSHOP_DEMO_DATA file=<csv> row=<row>
 ```
 
-Antes de importar, el script lista actividades existentes y salta las que ya tengan esa marca. Tambien compara una tupla defensiva:
+Before importing, the script lists existing activities and skips any that already have that marker. It also compares a defensive tuple:
 
 ```text
 accountId | date | symbol | type | quantity | unitPrice | fee
 ```
 
-Esto evita duplicados si se ejecuta el seed dos veces.
+This prevents duplicates if the seed is run twice.
 
-## Reset seguro
+## Safe reset
 
-El reset solo borra actividades cuyo `comment` contiene:
+The reset only deletes activities whose `comment` contains:
 
 ```text
 WORKSHOP_DEMO_DATA
 ```
 
-Despues intenta borrar las cuentas demo solo si:
+It then attempts to delete the demo accounts only if:
 
-- el nombre coincide con una de las tres cuentas demo;
-- la cuenta fue creada por el seed, detectado por el marker en `Account.comment`;
-- la cuenta queda sin actividades tras borrar las actividades demo.
+- the name matches one of the three demo accounts;
+- the account was created by the seed, detected by the marker in `Account.comment`;
+- the account has no activities left after deleting the demo activities.
 
-Si una cuenta demo existia antes y no fue creada por el seed, el reset no la borra.
+If a demo account existed beforehand and was not created by the seed, the reset does not delete it.
 
-## Limitaciones
+## Limitations
 
-- No se puede implementar email/password porque esta version de Ghostfolio no expone ese tipo de login local.
-- El script pide el security token o usa variables temporales: `GHOSTFOLIO_ACCESS_TOKEN`, `GHOSTFOLIO_SECURITY_TOKEN`, `GHOSTFOLIO_AUTH_TOKEN` o, por compatibilidad con el prompt, `GHOSTFOLIO_ADMIN_PASSWORD` tratado como security token.
-- Si algun simbolo falla la validacion de proveedores de datos de Ghostfolio, el endpoint de importacion lo reportara y el seed fallara antes de hacer la importacion real gracias al `dryRun`.
+- Email/password cannot be implemented because this version of Ghostfolio does not expose that type of local login.
+- The script prompts for the security token or uses temporary variables: `GHOSTFOLIO_ACCESS_TOKEN`, `GHOSTFOLIO_SECURITY_TOKEN`, `GHOSTFOLIO_AUTH_TOKEN` or, for compatibility with the prompt, `GHOSTFOLIO_ADMIN_PASSWORD` treated as a security token.
+- If any symbol fails Ghostfolio's data provider validation, the import endpoint will report it and the seed will fail before performing the actual import thanks to `dryRun`.

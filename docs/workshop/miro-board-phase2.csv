@@ -1,0 +1,11 @@
+"Backend","Frontend"
+"P2-BE-01 — Plan: endpoint Portfolio Insights
+Medium · 30m · Backend
+/workshop-plan-backend-card P2-BE-01","P2-FE-01 — Plan: widget Portfolio Insights
+Medium · 30m · Frontend
+/workshop-plan-frontend-card P2-FE-01"
+"P2-BE-02 — Impl: endpoint Portfolio Insights
+Medium · 45m · Backend
+/workshop-implement-backend-slice P2-BE-02","P2-FE-02 — Impl: widget Portfolio Insights
+Medium · 45m · Frontend
+/workshop-implement-frontend-slice P2-FE-02"
