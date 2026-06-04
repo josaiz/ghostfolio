@@ -6,7 +6,6 @@ detects concentration and simple anomalies, and does so in a **descriptive** way
 
 > Each card is a **real product task**. The OpenCode component (command/agent/skill/MCP) is the **means**
 > to solve it, not the end. Copy this backlog to Microsoft Whiteboard in 7 swimlanes (one column per swimlane).
-> The equivalent CSV version is in `whiteboard-cards.csv`.
 
 Swimlanes: **Foundation · Frontend · Backend · Domain & Data · MCP · Safety & Review · Integration**
 

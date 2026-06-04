@@ -78,7 +78,6 @@ printf '%s\n' \
 
 ## 7. Presenting the final solution
 
-- Walk through `agentic-solution-architecture.md` (task→components diagram).
 - Show how a card (e.g. FE-01) flows down through command → agent → skill → (MCP) → plan → safety → handoff.
 - Close with `pedagogical-matrix.md`: why each team did something different and how it all fits into the same epic.
 

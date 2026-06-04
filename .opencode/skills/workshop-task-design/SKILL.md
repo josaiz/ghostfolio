@@ -35,7 +35,7 @@ Safety & Review, Integration.`
 - [ ] ¿Las dependencias con otras tarjetas están declaradas?
 
 ## Cuándo usar / no usar
-- Úsala para FND/INT y al editar `whiteboard-backlog.md` y `whiteboard-cards.csv`.
+- Úsala para FND/INT y al editar `whiteboard-backlog.md`.
 - No la uses para implementar (eso es de los agentes especialistas).
 
 ## Límite

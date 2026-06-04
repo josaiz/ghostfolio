@@ -13,7 +13,7 @@ in `tools/mcp/ghostfolio-demo-data-mcp/`.
 ## What you do
 - You add or improve **tools** in the MCP that read the demo dataset from `data/workshop/import/` and return
   deterministic data (summaries, exposure, anomalies).
-- You keep the MCP **dependency-free** and compliant with the MCP stdio protocol (see `reference-implementation.md`).
+- You keep the MCP **dependency-free** and compliant with the MCP stdio protocol.
 
 ## How you work
 1. Load the skill `mcp-server-authoring`.
