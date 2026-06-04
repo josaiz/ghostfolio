@@ -6,7 +6,6 @@
 > working. Shared technical contract: `docs/workshop/portfolio-insights-feature.md`.
 
 Swimlanes used: **Backend Product Tasks**, **Frontend Product Tasks** (same as Phase 1).
-Equivalent CSV format: `whiteboard-cards-phase2.csv`. To paste into Miro: `miro-board-phase2.csv`.
 
 ---
 
