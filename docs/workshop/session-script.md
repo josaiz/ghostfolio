@@ -1,291 +1,178 @@
 # Session Script — Innovation Night (OpenCode + Ghostfolio)
 
-> **Sticky Fingers** format: hands-on and collaborative, 2–2.5 h, teams working on a backlog. **Not** theory
-> or slides. This script is for you (facilitator): "what you say" out loud, "what you show" (real repo paths)
-> and the "exercise" that teams replicate locally.
+> **Document to guide the session.** It is self-contained: it explains what
+> OpenCode is and its 4 main components, how to start the project, and how the
+> practical part on the Whiteboard unfolds.
 
-**Goal**: teams learn to **structure in code** the 4 elements of OpenCode — **Commands, Skills,
-Agents and MCPs** — developing a real improvement on Ghostfolio (*Portfolio Insights Assistant*).
 
-**Timing**: Intro 15' · Block 1 Commands 30' · Block 2 Skills 30' · Block 3 Agents 40' · Block 4 MCPs 30' ·
-Close/Free Work (remainder). Total core ≈ 2 h 25.
+**Goal.** For the team to learn how to work in an **agentic, governed, and repeatable** way with OpenCode, developing
+**real** improvements on Ghostfolio. OpenCode's components are **the means**; the product is the end.
 
-**Golden rule you repeat in every block**: *the OpenCode component is the means; the end is the product improvement.*
+**Anchor idea (repeat often):** *Command = how to work · Agent = who works · Skill = what to know · MCP = what data to use.*
 
 ---
 
-## Pre-session (facilitator checklist, 10 min before)
+## Suggested Agenda (≈2 h)
 
-- Every team with the repo on the **`workshop/solutions`** branch (brings all components as a template to copy).
-  *Alternative for advanced groups*: `workshop/agentic-base` (clean) and they build from scratch.
-- Docker Desktop running. Node ≥ 22 (`node -v`). OpenCode installed and opened at the **root** of the repo.
-- Start Ghostfolio: `./scripts/start.sh` (Win: `.\scripts\start.ps1`) → `http://localhost:3333`. Create admin + `./scripts/seed-workshop-data.sh`.
-- Verify the MCP: `./scripts/check-demo-mcp.sh` (Win `.ps1`) → **7 checks green**.
-- Backlog projected (Whiteboard) and `docs/workshop/whiteboard-backlog.md` open.
-
-> **Key clarification about Docker** (say this at the start): *Ghostfolio* runs in Docker; *OpenCode and the MCP* run on your
-> machine (Node) reading the repo. **Editing `.opencode/` or the MCP does NOT require rebuilding Docker.** Only if you touch Ghostfolio
-> code in `apps/` do you run `./scripts/rebuild.sh`.
+| Block | Time | Content |
+|-------|------|---------|
+| 1. Opening | 5 min | Why OpenCode and what we take away. |
+| 2. Concepts | 25–30 min | The 4 components: Commands, Skills, Agents, MCPs (with real repo examples). |
+| 3. Setup + pre-flight | 15 min | Start the project and verify everyone is ready. |
+| 4. Team assignment + the Whiteboard | 10 min | Explain the 3 columns and assign swimlanes. |
+| 5. Board work | 60 min | Resolve *PROPOSED TASKS* and then *USE YOUR IMAGINATION*. |
+| 6. Demo + wrap-up | 15 min | Show the happy path and recap. |
 
 ---
 
-## Introduction and Group Dynamics (15 min)
+## Part A — Concepts (what to explain at the start)
 
-**What you say (5'):**
-- "Today I'm not teaching you OpenCode with slides: we're going to use it to actually improve Ghostfolio."
-- "OpenCode has 4 pieces. Phrase to remember them: **Command = how to work · Agent = who works · Skill = what to
-  know · MCP = what data/capabilities.**"
-- "You'll work in teams on a backlog. Each card is a product task that gets solved by creating or using
-  one of these pieces."
+> Tip: after explaining each component, **show it live** by opening its file or running the example command.
+> No long theory needed; seeing it in the repo makes it clear.
 
-**Ground rules (3') — show them in `AGENTS.md`:**
-- Do not touch `.env`, `prisma/schema.prisma`, `docker/`, `nx.json`. Demo data is **read-only**.
-- No **personalized financial advice** (describe, don't advise).
-- Small changes; `git status` / `git diff` before and after. Work on your branch.
+### 1. Introduction to OpenCode
+**Idea.** It is an AI-powered coding agent that lives in the terminal, **but governed by the repository itself**.
 
-**Dynamics and teams (7'):**
-- Form 4–6 teams by swimlane (Frontend, Backend, Data/Domain, MCP, Safety, Integration).
-- Everyone does the same "warm-up" in each block (guided exercise) and then picks a card from the Whiteboard.
-- Show the cycle in one phrase: **investigate → plan → implement → review → handoff** (each phase has its command).
+**How to explain it.** Instead of each person writing loose prompts in a chat, we define **in versioned repo files** *how* to work with AI. This way the whole team shares the same way of working, it is
+**repeatable**, and can be **reviewed in a pull request** like any other code. OpenCode has 4 components:
+**Commands, Skills, Agents, and MCPs.** Everything lives in `.opencode/` and `opencode.json`.
 
----
+**Why it matters (for the tech lead):** repeatability, traceability, and control over how the team uses AI.
 
-## Block 1 — Familiarization with OpenCode and Commands (30 min)
+### 2. Commands
+**Idea.** A **repeatable workflow** invoked with `/name`.
 
-**Concept, out loud (5'):**
-- "A **command** is a repeatable workflow: a versioned *prompt template* in the repo that you invoke with `/name`.
-  Instead of rewriting the prompt each time, you save it, share it and parameterize it."
+**How to explain it.** It is a *prompt template* saved in the repo, with arguments. Instead of re-explaining every time
+"investigate the architecture for X", you type `/workshop-inspect-architecture X`. It standardises tasks (investigate,
+plan, implement, review).
+- **Where it lives:** `.opencode/commands/<name>.md`.
+- **Examples (already in the repo):** `/workshop-analyze-demo-portfolio`, `/workshop-plan-backend-card`, `/workshop-implement-frontend-slice`.
 
-**What you show (8') — real paths:**
-- Folder: `.opencode/commands/`. Open two examples:
-  - `.opencode/commands/workshop-inspect-architecture.md`
-  - `.opencode/commands/workshop-analyze-demo-portfolio.md`
-- Point out the **format** (minimum): frontmatter + body = template.
+### 3. Skills
+**Idea.** **Reusable knowledge** that the agent loads **on demand**.
 
-```markdown
----
-description: Qué hace este command (se ve en el menú de OpenCode)
-agent: nombre-del-agente        # opcional: enruta a un especialista
-subtask: true                   # opcional: ejecútalo como subagente
----
-Cuerpo = el prompt. Usa $ARGUMENTS (todo) o $1 (posicional),
-@docs/ruta/fichero.md  (inyecta el fichero) y  !`git status`  (inyecta salida de shell).
-```
-- In OpenCode, type `/workshop-` and show that the 9 commands appear in autocomplete. Launch
-  `/workshop-inspect-architecture portfolio insights` to see it in action.
+**How to explain it.** They are like "project best-practice manuals" (patterns, checklists, constraints) that the AI reads
+**only when the task needs it**. They prevent reinvention: you give it the real patterns of *this* repo. If the command is
+*how to work*, the skill is *what to know*.
+- **Where it lives:** `.opencode/skills/<name>/SKILL.md`.
+- **Examples:** `ghostfolio-domain-analysis` (reason about the portfolio), `nestjs-api-development` (how to add an endpoint here).
 
-**Exercise — script step (15'):**
-1. Create `.opencode/commands/<team>-inspect.md` (e.g. `team1-inspect.md`):
-```markdown
----
-description: Investiga un tema del repo y devuelve un mini-mapa de ficheros.
-agent: ghostfolio-architect
-subtask: true
----
-Investiga y resume el tema: $ARGUMENTS.
-Lista los ficheros reales implicados (rutas verificadas) y el patrón a seguir. No edites nada.
-```
-2. In OpenCode, run `/<team>-inspect activities` and check the output.
-3. (Bonus) Add `@docs/workshop/architecture-notes.md` to the body so the command reads that context.
+### 4. Agents
+**Idea.** **Specialists** with their own role and **permissions**.
 
-**Checkpoint (2'):** one team shows their command appearing in `/` and executing. *No Docker rebuild needed.*
+**How to explain it.** Each agent has its system prompt and permissions: the backend one **can edit**, the security one
+**reads only**. They are invoked with `@name` or from a command. The **common rules** for the repo (don't touch `.env`, no real data, no financial advice…) are in `AGENTS.md`, which applies to all.
+- **Where it lives:** `.opencode/agents/<name>.md` (+ `AGENTS.md` at the root).
+- **Examples:** `backend-nestjs-agent`, `frontend-angular-agent`, `financial-safety-reviewer`.
+
+**Why it matters (for the tech lead):** per-agent permissions are **real governance** — the AI cannot do more than we allow.
+
+### 5. MCPs (Model Context Protocol)
+**Idea.** A **connector** to external data or tools via a standard protocol.
+
+**How to explain it.** An MCP is a process that exposes **tools** to OpenCode. Ours gives **read-only** access to demo
+data, so agents query **real product data** without touching the database or **making up numbers**.
+- **Where it is configured:** `opencode.json`; the code is in `tools/mcp/ghostfolio-demo-data-mcp/`.
+- **Example:** MCP `ghostfolio-demo-data` with tools such as `get_demo_portfolio_summary` and `detect_demo_anomalies`.
+
+**Why it matters (for the tech lead):** governed, read-only data → fewer hallucinations, no risk on real data.
 
 ---
 
-## Block 2 — Skills (30 min)
+## Part B — Session Dynamics
 
-**Concept, out loud (5'):**
-- "A **skill** is reusable knowledge that the agent **loads on demand**. If the command is *how to work*,
-  the skill is *what to know*: project patterns, checklists, limits."
-- "OpenCode discovers them automatically in `.opencode/skills/`, `.claude/skills/` and `.agents/skills/`."
+### 3. Prerequisites and setup (very simple)
 
-**What you show (8') — real paths:**
-- Ours (specific): `.opencode/skills/ghostfolio-domain-analysis/SKILL.md`,
-  `.opencode/skills/mcp-server-authoring/SKILL.md`.
-- The generic ones already in the repo: `.agents/skills/angular-developer/SKILL.md`,
-  `.agents/skills/nestjs-best-practices/SKILL.md`.
-- **Format** (minimum). Important: the file is `SKILL.md` (uppercase) and `name` = folder name.
+**Prerequisites** (on each machine):
+- **Git** installed.
+- **Docker** installed and **Docker Desktop running**.
+- Complementary: **OpenCode** installed + an **AI model** configured; **Node ≥ 22** (used by the MCP and the scripts).
 
-```markdown
----
-name: nombre-igual-que-la-carpeta      # minúsculas-con-guiones
-description: Qué sabe y cuándo usarla (esto decide cuándo se carga)
----
-# Instrucciones concretas
-- Cuándo usarla / cuándo NO usarla
-- Checklist de calidad
-- Límites de seguridad
-```
+**Starting the project** — 3 scripts (Mac/Linux `.sh` · Windows `.ps1`):
 
-**Exercise — script step (15'):**
-1. Create the folder and file `.opencode/skills/<team>-commit-style/SKILL.md`:
-```markdown
----
-name: <equipo>-commit-style
-description: Estilo de mensajes de commit del equipo. Úsala al redactar un commit.
----
-# Estilo de commit del equipo
-- Título en imperativo, < 72 caracteres.
-- Cuerpo: qué y por qué, no el cómo.
-- Referencia la tarjeta (p. ej. FE-01) cuando aplique.
-```
-2. In OpenCode ask the assistant: *"draft a commit following the skill `<team>-commit-style`"* and watch it load.
-3. (Bonus) Open `ghostfolio-domain-analysis/SKILL.md` and copy its structure (when to use / checklist / limits) into yours.
+1. **Start Ghostfolio** (Docker, from the repo code):
+   ```bash
+   ./scripts/start.sh          # Windows:  .\scripts\start.ps1
+   ```
+   Available at `http://localhost:3333`. The first run takes a while (builds the image).
 
-**Checkpoint (2'):** one team shows the agent **loading** their skill when asked.
+2. **Load demo data**: in the web app, create the user with *Get Started* (the first one becomes admin) and **copy their security token**; then:
+   ```bash
+   ./scripts/seed-workshop-data.sh    # Windows:  .\scripts\seed-workshop-data.ps1
+   ```
+   Creates 3 demo accounts (~54 activities).
 
----
+3. **Rebuild after changing code** (required to **see** frontend/backend changes):
+   ```bash
+   ./scripts/rebuild.sh        # Windows:  .\scripts\rebuild.ps1
+   ```
 
-## Block 3 — Creating Custom Agents (40 min)
+> In one sentence: **`start`** = launch · **`seed`** = load demo data · **`rebuild`** = see your code changes.
+> Editing `.opencode/` or the MCP **does not** require `rebuild`; only touching the app code (`apps/`) does.
 
-**Concept, out loud (7'):**
-- "An **agent** is a specialist: a *system prompt* + its own **permissions**. You invoke it with `@name` or from a command."
-- "The **global rules** of the repo for all agents are in `AGENTS.md` (root). It's the 'clean rules repo'
-  we start from."
-- "Two key things in the frontmatter: `mode` (`primary` or `subagent`) and `permission` (what it can touch). A
-  *research* agent goes with `edit: deny`; an *implementation* one with `edit: ask`."
+### 3.1 Pre-flight (quick check, everyone at once)
+- [ ] OpenCode installed and **AI model configured** (test: the agent responds to a "hello").
+- [ ] Repo cloned on the **session start branch** (comes with tasks resolved as *examples*; the proposed ones are not).
+- [ ] **Docker running** and Ghostfolio responding (`./scripts/check.sh`).
+- [ ] **Demo data loaded** (`seed-workshop-data`).
+- [ ] **MCP is green**: `./scripts/check-demo-mcp.sh` (Windows `.ps1`) → 7 checks OK.
 
-**What you show (8') — real paths:**
-- `AGENTS.md` (project rules) and the `.opencode/agents/` folder.
-- Compare two: `.opencode/agents/ghostfolio-architect.md` (read-only, `edit: deny`) vs
-  `.opencode/agents/frontend-angular-agent.md` (`edit: ask`).
-- **Format** (minimum):
+### 4. Team assignment
+Suggestion: small teams aligned with the board swimlanes (**Foundation, Frontend, Backend, DATA, MCP, Safety,
+Integration**). Each team picks a card from the *PROPOSED TASKS* column in their swimlane.
 
-```markdown
----
-description: Qué hace y cuándo invocarlo (una frase)
-mode: subagent              # subagent = especialista; primary = asistente principal
-temperature: 0.2
-permission:
-  edit: deny                # deny | ask | allow   (deny para agentes de solo análisis)
-  bash: ask
----
-Eres un especialista en X. Qué haces, cuándo usarte, cuándo NO, y tus límites de seguridad.
-```
+### 5. The Whiteboard
+The board has **3 columns** and the **7 swimlanes** above:
 
-**Exercise — script step (20'):** each team creates **their own agent**. Choose one:
+- **EXAMPLES** — Tasks **already resolved**: they come with their commands, agents, skills, and the MCP created. They are the **template** that
+  teams look at to learn the pattern before building.
+- **PROPOSED TASKS** — Tasks **to resolve**. On the start branch they **don't** include the finished components → here teams
+  **actually implement** (the *Portfolio Insights* feature: an endpoint and a widget), copying the analogous example.
+- **USE YOUR IMAGINATION** — When done, **propose their own tasks**. Guardrails: each proposal must
+  **create or use at least one OpenCode component** and follow the rules (demo data, no real data, no financial advice). To design them well, use the `workshop-task-design` skill.
 
-*Option A — testing* `.opencode/agents/test-writer-agent.md`:
-```markdown
----
-description: Escribe tests Jest pequeños para servicios/utilidades existentes de Ghostfolio. No cambia lógica de producción.
-mode: subagent
-temperature: 0.2
-permission:
-  edit: ask
-  bash: ask
----
-Eres un especialista en tests. Busca el `*.spec.ts` vecino y sigue su patrón.
-Cubre solo lo pedido, sin tocar la lógica de producción. Valida con `npm run test:api`.
-No toques `.env` ni el schema. Pide revisión antes de cambios grandes.
-```
-
-*Option B — Jira* `.opencode/agents/jira-card-writer.md` (read-only, drafts tickets):
-```markdown
----
-description: Redacta tickets de Jira (título, descripción, criterios de aceptación) a partir de una tarjeta o un handoff. Solo redacta, no ejecuta.
-mode: subagent
-temperature: 0.3
-permission:
-  edit: deny
-  bash: deny
----
-Eres un redactor de tickets. Dado un objetivo, produce: título, contexto, criterios de aceptación y tareas.
-Tono claro y accionable. No inventes datos; si falta algo, escribe "pendiente".
-```
-Steps: (1) create the file; (2) in OpenCode invoke it with `@test-writer-agent` (or `@jira-card-writer`) and give it a
-small real task from the repo; (3) observe that it respects its permissions.
-
-**Checkpoint (5'):** two teams do `@their-agent` live with a minimal request. *No Docker rebuild.*
-
----
-
-## Block 4 — MCP Integration (30 min)
-
-**Concept, out loud (6'):**
-- "An **MCP** (Model Context Protocol) is an *external server* that exposes **tools** to OpenCode via a standard protocol.
-  It's used to give agents **governed and reusable data or capabilities** — not loose prompts."
-- "Ours, `ghostfolio-demo-data`, reads the demo CSVs in **read-only**, is **zero-dependency** and starts on its own."
-
-**What you show (8') — real paths:**
-- Registration in `opencode.json` (root):
-```json
-{
-  "mcp": {
-    "ghostfolio-demo-data": {
-      "type": "local",
-      "command": ["node", "tools/mcp/ghostfolio-demo-data-mcp/src/index.mjs"],
-      "enabled": true
-    }
-  }
-}
-```
-- The server and the data layer: `tools/mcp/ghostfolio-demo-data-mcp/src/index.mjs` (array `TOOLS`) and `src/data.mjs`.
-- Verify live: `./scripts/check-demo-mcp.sh` → 7 green. Call a tool from OpenCode (`get_demo_portfolio_summary`).
-- Pattern of a tool (in `src/index.mjs`): `{ name, description, inputSchema, handler }`.
-
-**Exercise — script step (12'):** each team adds **one new read-only tool** following the pattern.
-1. In `tools/mcp/ghostfolio-demo-data-mcp/src/data.mjs` add a pure function:
-```js
-export function countActivitiesByType() {
-  const counts = {};
-  for (const a of loadActivities()) counts[a.type] = (counts[a.type] || 0) + 1;
-  return { disclaimer: DISCLAIMER, counts };
-}
-```
-2. In `src/index.mjs` import it and add an entry to the `TOOLS` array:
-```js
-{
-  name: 'count_activities_by_type',
-  description: 'Cuenta actividades demo por tipo (BUY/SELL/DIVIDEND/...). Read-only.',
-  inputSchema: { type: 'object', properties: {}, additionalProperties: false },
-  handler: () => countActivitiesByType()
-}
-```
-3. Verify: `./scripts/check-demo-mcp.sh` (Win `.ps1`). Restart OpenCode and call `count_activities_by_type`.
-
-**Checkpoint (4'):** smoke test green + one team calls their new tool. *The MCP runs in Node, not in Docker.*
-
----
-
-## Close and Free Team Work (rest of the time)
-
-**Free work:** each team picks a card from the Whiteboard (`docs/workshop/whiteboard-backlog.md`) and applies the
-full cycle with what they learned:
+**How to resolve a card** (mini-guide for teams):
 ```text
-/workshop-inspect-architecture <tema>     → entender
-/workshop-plan-frontend|backend|mcp-card <ID>  → planificar
-(implementar slice mínimo si la tarjeta lo pide)
-/workshop-analyze-demo-portfolio          → datos del MCP
-/workshop-review-financial-safety <texto> → gate de safety
-/workshop-prepare-team-handoff <ID>       → handoff
+1. Look at the analogous EXAMPLE (same swimlane) to see the pattern.
+2. Plan with its command:   /workshop-plan-backend-card    |  /workshop-plan-frontend-card
+3. Implement:               /workshop-implement-backend-slice  |  /workshop-implement-frontend-slice
+4. Verify:                  compile (build) and, to see it, ./scripts/rebuild.sh
+5. Security review:         /workshop-review-financial-safety
+6. Handoff:                 /workshop-prepare-team-handoff
 ```
 
-**Final demo (happy path, 5'):** launch `/workshop-analyze-demo-portfolio` (shows the summary with MCP figures: e.g.
-Trade Republic AAPL 26.2% / MSFT 21.8% / NVDA 19.7%; 5 anomalies) and run it through `/workshop-review-financial-safety` → PASS.
+**Full example (the session feature).** A **Backend** team picks `P2-BE-02`: they look at an already-done endpoint in
+*EXAMPLES*, run `/workshop-implement-backend-slice P2-BE-02`, the `backend-nestjs-agent` reads the technical contract
+(`portfolio-insights-feature.md`) and creates the `GET /api/v1/portfolio-insights` endpoint; validates with `build` and sees it with
+`rebuild`. In parallel, a **Frontend** team picks `P2-FE-02` and builds the *Portfolio Insights* widget on the Home page, which
+consumes that endpoint. Result: a visible panel with account concentration and demo portfolio anomalies.
 
-**Close (final message):** "We've created commands, skills, agents and an MCP tool — but the goal was to **improve
-Ghostfolio in a governed and repeatable way**. That is working agentic."
+**Facilitator checkpoints:**
+- **CP1 (halfway):** "Show me the plan and the command that generated it." → there should be a clear product objective.
+- **CP2:** "Run your change or your tool. What do you see? Does it pass the security review?" → ask for `git status` / `git diff`.
+- **Final:** the happy path runs end to end.
+
+### 6. Demo + wrap-up
+- **Demo:** the *Portfolio Insights* widget visible on Home/Analytics (concentration + anomalies), or
+  `/workshop-analyze-demo-portfolio` showing MCP figures, passing the security review.
+- **Wrap-up:** remind everyone we created/used commands, skills, agents, and an MCP — but the goal was to **improve
+  Ghostfolio in a governed and repeatable way**. That is agentic work.
 
 ---
 
-## Path cheat sheet (for you, during the session)
+## Notes for the tech lead (logistics and governance)
 
-| Piece | Where | Format |
-|------|-------|---------|
-| Command | `.opencode/commands/<name>.md` | frontmatter (`description`, `agent?`) + template body (`$ARGUMENTS`, `@file`, `` !`cmd` ``) |
-| Skill | `.opencode/skills/<name>/SKILL.md` | frontmatter (`name`=folder, `description`) + instructions |
-| Agent | `.opencode/agents/<name>.md` | frontmatter (`description`, `mode`, `permission`) + system prompt |
-| Rules | `AGENTS.md` (root) | markdown project rules |
-| MCP (registration) | `opencode.json` → `mcp` | `type: local`, `command`, `enabled` |
-| MCP (code) | `tools/mcp/ghostfolio-demo-data-mcp/src/` | `index.mjs` (TOOLS) + `data.mjs` (read-only data) |
-| Verify MCP | `./scripts/check-demo-mcp.sh` / `.ps1` | smoke test (7 checks) |
-| Backlog | `docs/workshop/whiteboard-backlog.md` | cards by swimlane |
+- **Start branch.** A branch is prepared with Phase 1 as *examples* and the *PROPOSED TASKS* **unresolved**, so
+  teams actually build. The full solution stays as an *answer key* on the solutions branch.
+- **Docker `rebuild` time.** Seeing a frontend/backend change requires rebuilding the image (several minutes).
+  Recommendation: **don't have everyone rebuild at once**; it is enough to validate that it **compiles**, and rebuild 1–2 teams as a showcase.
+- **Time budget.** In 2–2.5 h it is not realistic for all teams to both implement **and** rebuild; present
+  FE/BE as a full demo and treat the rest (MCP, Safety, Integration) as shorter tasks or plans.
+- **Security and governance.** The tooling does **not** touch real data or secrets, does **not** run `git commit`/`push`, avoids personalised financial advice (gated by `financial-safety-reviewer`), and produces small, reviewable changes with
+  `git diff`. The demo data MCP is **read-only**.
 
-## Quick fallbacks
-
-- **OpenCode doesn't see the components** → confirm repo root, folders in plural (`agents/`, `commands/`, `skills/`),
-  restart OpenCode after touching `opencode.json`.
-- **The MCP doesn't appear** → `./scripts/check-demo-mcp.sh`; check `opencode.json` and that `node` exists.
-- **Ghostfolio won't start** → the insights demo via MCP **doesn't need it** (reads CSV). Continue with OpenCode + MCP.
-- **A team is blocked** → have them use `workshop/solutions` as reference and the agent `@workshop-facilitator-agent`.
+## Supplementary material (in the repo)
+- `docs/workshop/whiteboard-backlog.md` and `whiteboard-backlog-phase2.md` — the cards (EXAMPLES and PROPOSED).
+- `docs/workshop/portfolio-insights-feature.md` — technical contract for the feature being implemented.
+- `docs/workshop/facilitator-guide.md` — facilitation support (checkpoints, fallbacks).
+- `docs/workshop/pedagogical-matrix.md` — task → learning objective mapping.
