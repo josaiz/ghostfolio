@@ -1,60 +1,60 @@
 ---
 name: mcp-server-authoring
-description: Crear y extender el MCP local read-only de datos demo de Ghostfolio. Explica el protocolo MCP stdio, el patrón zero-dependency usado en el workshop y cómo añadir una tool nueva de forma segura.
+description: Create and extend the local read-only Ghostfolio demo data MCP. Explains the MCP stdio protocol, the zero-dependency pattern used in the workshop, and how to add a new tool safely.
 license: MIT
 metadata:
   workshop: innovation-night-ghostfolio
 ---
 
-# Autoría del MCP de datos demo (workshop)
+# Demo Data MCP Authoring (workshop)
 
-Cómo trabajar el MCP local `ghostfolio-demo-data` en `tools/mcp/ghostfolio-demo-data-mcp/`.
+How to work on the local MCP `ghostfolio-demo-data` in `tools/mcp/ghostfolio-demo-data-mcp/`.
 
-## Por qué zero-dependency
-El MCP del workshop **no usa dependencias externas** (ni el SDK oficial): así "arranca con `node` y ya", es
-reproducible en Mac/Windows y no exige `npm install` con red durante la sesión. El protocolo MCP por stdio es
-JSON-RPC 2.0 simple y lo implementamos a mano. (Si algún día se quiere el SDK oficial, esta skill explica el
-equivalente, pero la opción por defecto es zero-dep.)
+## Why Zero Dependency
+The workshop MCP **does not use external dependencies** (not even the official SDK): this way it "starts with `node`, and that's it",
+is reproducible on Mac/Windows, and does not require a networked `npm install` during the session. MCP over stdio is
+simple JSON-RPC 2.0, and we implement it by hand. (If the official SDK is wanted someday, this skill explains the
+equivalent, but the default option is zero-dep.)
 
-## Protocolo MCP por stdio (lo esencial, validado contra la spec)
-- Mensajes **JSON-RPC 2.0 delimitados por `\n`**, sin saltos de línea embebidos, UTF-8.
-- **`stdout` solo lleva mensajes MCP**. Los logs van a **`stderr`** (`console.error`). Nunca `console.log` al stdout.
-- `initialize` → responde `{ protocolVersion, capabilities: { tools: {} }, serverInfo }`. Devuelve la
-  `protocolVersion` que pide el cliente.
-- `notifications/initialized` → es notificación, **no se responde**.
-- `tools/list` → `{ tools: [{ name, description, inputSchema }] }` (inputSchema es JSON Schema).
-- `tools/call` `{ name, arguments }` → `{ content: [{ type: "text", text }], isError? }`.
-- Métodos desconocidos → error JSON-RPC `-32601`.
+## MCP over stdio Protocol (essentials, validated against the spec)
+- **JSON-RPC 2.0 messages delimited by `\n`**, with no embedded newlines, UTF-8.
+- **`stdout` carries MCP messages only**. Logs go to **`stderr`** (`console.error`). Never `console.log` to stdout.
+- `initialize` -> respond with `{ protocolVersion, capabilities: { tools: {} }, serverInfo }`. Return the
+  `protocolVersion` requested by the client.
+- `notifications/initialized` -> this is a notification, **do not respond**.
+- `tools/list` -> `{ tools: [{ name, description, inputSchema }] }` (`inputSchema` is JSON Schema).
+- `tools/call` `{ name, arguments }` -> `{ content: [{ type: "text", text }], isError? }`.
+- Unknown methods -> JSON-RPC error `-32601`.
 
-## Estructura del MCP
+## MCP Structure
 ```text
 tools/mcp/ghostfolio-demo-data-mcp/
-  package.json     # metadata + scripts; sin dependencias de runtime
-  README.md        # cómo arrancarlo y probarlo
-  src/index.mjs    # servidor stdio (handshake + dispatch de tools)
-  src/data.mjs     # carga read-only del dataset demo (reutiliza tools/workshop/lib/workshop-data.mjs)
+  package.json     # metadata + scripts; no runtime dependencies
+  README.md        # how to start and test it
+  src/index.mjs    # stdio server (handshake + tool dispatch)
+  src/data.mjs     # read-only demo dataset loading (reuses tools/workshop/lib/workshop-data.mjs)
 ```
 
-## Cómo añadir una tool nueva (read-only)
-1. Decide `name`, `description` y `inputSchema` (JSON Schema con `type: "object"`, `properties`, `required`).
-2. Implementa la lógica como **función pura** que lee de `src/data.mjs` (nunca escribe).
-3. Regístrala en el array de tools (para `tools/list`) y en el dispatch de `tools/call`.
-4. Devuelve `content: [{ type: "text", text: JSON.stringify(resultado, null, 2) }]`.
-5. Valida con `scripts/check-demo-mcp.sh|.ps1` (hace `initialize` + `tools/list` + `tools/call`).
-6. Si la tool es nueva y debe usarse por agentes, confirma que `opencode.json` registra el MCP.
+## How to Add a New Tool (read-only)
+1. Decide `name`, `description`, and `inputSchema` (JSON Schema with `type: "object"`, `properties`, `required`).
+2. Implement the logic as a **pure function** that reads from `src/data.mjs` (never writes).
+3. Register it in the tools array (for `tools/list`) and in the `tools/call` dispatch.
+4. Return `content: [{ type: "text", text: JSON.stringify(result, null, 2) }]`.
+5. Validate with `scripts/check-demo-mcp.sh|.ps1` (runs `initialize` + `tools/list` + `tools/call`).
+6. If the tool is new and agents should use it, confirm that `opencode.json` registers the MCP.
 
-## Cuándo usar esta skill
-- MCP-01/02/03 y cualquier extensión del MCP demo.
+## When to Use This Skill
+- MCP-01/02/03 and any demo MCP extension.
 
-## Cuándo NO usarla
-- Para tocar el backend/frontend de Ghostfolio (otras skills).
+## When NOT to Use It
+- To touch the Ghostfolio backend/frontend (use other skills).
 
-## Checklist de calidad
-- [ ] La tool es **estrictamente read-only**; no escribe ni borra nada.
-- [ ] `inputSchema` válido; valida argumentos; errores como `isError: true` con mensaje claro.
-- [ ] Reutiliza `src/data.mjs`; no duplica el parser de CSV.
-- [ ] Cero dependencias nuevas; logs a `stderr`, no a `stdout`.
-- [ ] Smoke test verde. Textos de salida sin consejo financiero personalizado.
+## Quality Checklist
+- [ ] The tool is **strictly read-only**; it does not write or delete anything.
+- [ ] Valid `inputSchema`; validates arguments; errors are `isError: true` with a clear message.
+- [ ] Reuses `src/data.mjs`; does not duplicate the CSV parser.
+- [ ] Zero new dependencies; logs to `stderr`, not `stdout`.
+- [ ] Smoke test is green. Output texts contain no personalized financial advice.
 
-## Límites de seguridad
-- No conectes a PostgreSQL en esta versión; la fuente es CSV demo. No expongas `.env` ni secretos.
+## Safety Limits
+- Do not connect to PostgreSQL in this version; the source is the demo CSV. Do not expose `.env` or secrets.

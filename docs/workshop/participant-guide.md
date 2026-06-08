@@ -19,8 +19,8 @@ account/symbol, detect simple anomalies, display insights and do it all **withou
 
 Mac/Linux:
 ```bash
-./scripts/start.sh        # arranca con Docker build desde código local (http://localhost:3333)
-./scripts/check.sh        # comprobar estado
+./scripts/start.sh        # starts with a Docker build from local code (http://localhost:3333)
+./scripts/check.sh        # check status
 ```
 Windows (PowerShell):
 ```powershell
@@ -34,7 +34,7 @@ The first build takes a while. If you modify Ghostfolio code: `./scripts/rebuild
 1. Open `http://localhost:3333`, create the user with *Get Started* (the first one is ADMIN) and save their **security token**.
 2. Seed the demo data:
 ```bash
-./scripts/seed-workshop-data.sh           # te pedirá el security token
+./scripts/seed-workshop-data.sh           # asks for the security token
 # Windows: .\scripts\seed-workshop-data.ps1
 ```
 Creates 3 demo accounts (MyInvestor Core ETF, Trade Republic Growth, Crypto Exchange) with ~54 activities.
@@ -61,11 +61,11 @@ Verify the MCP:
 ## 7. How to work a card (the cycle)
 
 ```text
-investigar  -> /workshop-inspect-architecture
-planificar  -> /workshop-plan-frontend-card | -backend-card | -mcp-card | /workshop-analyze-demo-portfolio
-implementar -> /workshop-implement-small-product-slice   (solo si la tarjeta lo pide; cambios mínimos)
-revisar     -> /workshop-review-financial-safety
-entregar    -> /workshop-prepare-team-handoff
+investigate -> /workshop-inspect-architecture
+plan        -> /workshop-plan-frontend-card | -backend-card | -mcp-card | /workshop-analyze-demo-portfolio
+implement   -> /workshop-implement-small-product-slice   (only if the card asks for it; minimal changes)
+review      -> /workshop-review-financial-safety
+handoff     -> /workshop-prepare-team-handoff
 ```
 
 - Use the **command** that matches your card; it invokes the appropriate **agent**, which loads the correct **skill**
@@ -75,8 +75,8 @@ entregar    -> /workshop-prepare-team-handoff
 ## 8. Reviewing your changes with Git
 
 ```bash
-git status          # qué ficheros tocaste
-git diff            # el contenido exacto de los cambios
+git status          # which files you touched
+git diff            # the exact contents of the changes
 ```
 Do this **before and after**. Do **not** run `git commit` or `git push` unless the facilitator asks for it.
 
