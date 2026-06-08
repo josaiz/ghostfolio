@@ -158,7 +158,7 @@ npm run lint
 Recommended focused checks:
 
 - Unit test: `PortfolioInsightsService` returns exactly `3` accounts, `54` activities, `14` symbols.
-- Unit test: response contains the disclaimer “información descriptiva y educativa, no asesoramiento financiero” or equivalent English copy.
+- Unit test: response contains the disclaimer “descriptive and educational information, not financial advice” or equivalent English copy.
 - Safety check: visible strings contain no buy/sell/hold/rebalance recommendations or price predictions.
 - Manual smoke: authenticated `GET /api/v1/portfolio-insights/demo` returns `200` and matches `PortfolioInsightsResponse`.
 
@@ -194,9 +194,9 @@ Do not edit:
 
 ## Financial safety self-review
 
-Veredicto: PASS
+Verdict: PASS
 
-Hallazgos:
+Findings:
 
 - No recommendations to buy, sell, hold, or rebalance.
 - No personalised instruction to a user.

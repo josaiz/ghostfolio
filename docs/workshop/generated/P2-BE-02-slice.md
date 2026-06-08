@@ -11,7 +11,7 @@
 
 - The endpoint returns a deterministic constant payload from `docs/workshop/portfolio-insights-feature.md`.
 - It does not read CSV files, query the database, or call an LLM at runtime.
-- Visible text is descriptive and educational: “Información descriptiva y educativa, no asesoramiento financiero. Datos demo del workshop.”
+- Visible text is descriptive and educational: “Descriptive and educational information, not financial advice. Workshop demo data.”
 
 ## Validation
 

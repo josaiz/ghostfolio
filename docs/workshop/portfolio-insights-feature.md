@@ -54,7 +54,7 @@ The service always returns this (consistent with `/workshop-analyze-demo-portfol
 ```json
 {
   "insights": {
-    "disclaimer": "Información descriptiva y educativa, no asesoramiento financiero. Datos demo del workshop.",
+    "disclaimer": "Descriptive and educational information, not financial advice. Workshop demo data.",
     "source": "data/workshop/import/ghostfolio-workshop-main.csv",
     "accounts": [
       { "name": "MyInvestor Core ETF", "currencies": ["EUR"], "topConcentration": { "symbol": "VWCE.DE", "costSharePct": 39.5 } },

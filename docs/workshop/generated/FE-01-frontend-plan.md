@@ -60,7 +60,7 @@ Data source in the workshop: **deterministic mock** aligned with the MCP `get_de
 export class GfPortfolioInsightsComponent {
   protected readonly insights = signal<PortfolioInsights | null>(null);
   protected readonly title = $localize`Portfolio Insights`;
-  protected readonly disclaimer = $localize`Información descriptiva, no asesoramiento financiero.`;
+  protected readonly disclaimer = $localize`Descriptive information, not financial advice.`;
 }
 ```
 
