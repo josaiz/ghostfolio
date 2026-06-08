@@ -1,42 +1,42 @@
 ---
 name: workshop-task-design
-description: Diseñar y afinar tarjetas del backlog del workshop para que sean tareas de PRODUCTO reales sobre Ghostfolio y, además, requieran crear/mejorar/usar un componente OpenCode. Úsala al crear o ajustar tarjetas del whiteboard.
+description: Design and refine workshop backlog cards so they are real PRODUCT tasks for Ghostfolio and also require creating/improving/using an OpenCode component. Use it when creating or adjusting whiteboard cards.
 license: MIT
 metadata:
   workshop: innovation-night-ghostfolio
 ---
 
-# Diseño de tarjetas del workshop
+# Workshop Card Design
 
-Garantiza que cada tarjeta sea **desarrollo de producto** (no "crear un agente porque sí") y que el componente
-OpenCode sea el **medio** para lograrlo.
+Ensure every card is **product development** (not "create an agent for its own sake") and that the OpenCode component
+is the **means** to achieve it.
 
-## Regla de oro
-Una buena tarjeta tiene a la vez:
-- un **objetivo funcional** real en Ghostfolio (algo que un usuario o el producto gana), y
-- un **entregable agentic**: qué command/agent/skill/MCP hay que crear, mejorar o usar.
+## Golden Rule
+A good card has both:
+- a real **functional objective** in Ghostfolio (something a user or the product gains), and
+- an **agentic deliverable**: which command/agent/skill/MCP must be created, improved, or used.
 
-Si una tarjeta solo dice "crea una skill" → está mal diseñada. Reescríbela alrededor del valor de producto.
+If a card only says "create a skill", it is poorly designed. Rewrite it around product value.
 
-## Plantilla de tarjeta (campos)
-`ID, Título, Swimlane, Equipo sugerido, Objetivo funcional, Entregable de producto, Entregable agentic,
-Concepto OpenCode trabajado, Dependencias, Criterio de aceptación, Pistas, Dificultad, Tiempo estimado.`
+## Card Template (fields)
+`ID, Title, Swimlane, Suggested Team, Functional Objective, Product Deliverable, Agentic Deliverable,
+OpenCode Concept Practiced, Dependencies, Acceptance Criterion, Hints, Difficulty, Estimated Time.`
 
 ## Swimlanes
 `Foundation, Frontend Product Tasks, Backend Product Tasks, Domain & Data Product Tasks, MCP Product Tasks,
 Safety & Review, Integration.`
 
-## Test de calidad de una tarjeta
-- [ ] ¿Se entiende el valor de producto sin mencionar OpenCode?
-- [ ] ¿Exige crear/mejorar/usar al menos un command/agent/skill/MCP?
-- [ ] ¿El criterio de aceptación es observable (algo que se ve o se ejecuta)?
-- [ ] ¿Es alcanzable en el tiempo estimado por un equipo pequeño?
-- [ ] ¿Respeta las reglas de seguridad (read-only, sin tocar `.env`/schema, sin consejo financiero)?
-- [ ] ¿Las dependencias con otras tarjetas están declaradas?
+## Card Quality Test
+- [ ] Is the product value understandable without mentioning OpenCode?
+- [ ] Does it require creating/improving/using at least one command/agent/skill/MCP?
+- [ ] Is the acceptance criterion observable (something visible or executable)?
+- [ ] Is it achievable within the estimated time by a small team?
+- [ ] Does it respect the safety rules (read-only, no touching `.env`/schema, no financial advice)?
+- [ ] Are dependencies on other cards declared?
 
-## Cuándo usar / no usar
-- Úsala para FND/INT y al editar `whiteboard-backlog.md`.
-- No la uses para implementar (eso es de los agentes especialistas).
+## When to Use / Not Use
+- Use it for FND/INT and when editing `whiteboard-backlog.md`.
+- Do not use it for implementation (that belongs to the specialist agents).
 
-## Límite
-- Mantén el backlog entre 14 y 18 tarjetas, equilibrado entre swimlanes; no infles con tareas "meta".
+## Limit
+- Keep the backlog between 14 and 18 cards, balanced across swimlanes; do not inflate it with "meta" tasks.

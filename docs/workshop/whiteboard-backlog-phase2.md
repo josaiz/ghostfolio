@@ -77,7 +77,7 @@ Swimlanes used: **Backend Product Tasks**, **Frontend Product Tasks** (same as P
 ## Suggested flow and dependencies
 
 ```text
-P2-BE-01 (plan)  ──►  P2-BE-02 (impl endpoint)  ──►  P2-FE-02 (impl widget, consume el endpoint)
+P2-BE-01 (plan)  ──►  P2-BE-02 (impl endpoint)  ──►  P2-FE-02 (impl widget, consume the endpoint)
 P2-FE-01 (plan)  ──────────────────────────────────►  P2-FE-02
 ```
 Recommended: one backend team does P2-BE-01 → P2-BE-02; one frontend team does P2-FE-01 in parallel and then P2-FE-02

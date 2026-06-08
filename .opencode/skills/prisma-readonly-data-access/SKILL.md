@@ -1,47 +1,47 @@
 ---
 name: prisma-readonly-data-access
-description: Acceder a datos de Ghostfolio de forma SOLO LECTURA y segura. Entender el schema Prisma, preferir servicios/API existentes o el MCP CSV demo, y nunca modificar esquema ni datos. Úsala al diseñar consultas o decidir la fuente de datos.
+description: Access Ghostfolio data safely in READ-ONLY mode. Understand the Prisma schema, prefer existing services/APIs or the demo CSV MCP, and never modify schema or data. Use it when designing queries or choosing the data source.
 license: MIT
 metadata:
   workshop: innovation-night-ghostfolio
 ---
 
-# Acceso a datos read-only en Ghostfolio (workshop)
+# Read-Only Data Access in Ghostfolio (workshop)
 
-Cómo leer datos sin riesgo. La regla número uno: **no se modifica el esquema ni los datos**.
+How to read data without risk. Rule number one: **do not modify the schema or the data**.
 
-## Modelos (en `prisma/schema.prisma`)
+## Models (in `prisma/schema.prisma`)
 - `Account` (`id`, `userId`, `name`, `currency`, `balance`, `comment`, `isExcluded`, `platformId`).
-- `Order` = actividad (`type`, `date`, `quantity`, `unitPrice`, `fee`, `currency`, `accountId`, `symbolProfileId`).
+- `Order` = activity (`type`, `date`, `quantity`, `unitPrice`, `fee`, `currency`, `accountId`, `symbolProfileId`).
 - `SymbolProfile` (`symbol`, `name`, `dataSource`, `assetClass`, `assetSubClass`).
-- `Tag`, `User` (sin email/password local; `accessToken` hasheado).
+- `Tag`, `User` (without local email/password; hashed `accessToken`).
 
-## Jerarquía de fuentes de datos (de más a menos preferente en el workshop)
-1. **MCP `ghostfolio-demo-data`** (lee CSV demo, read-only, reproducible) → primera opción para insights demo.
-2. **API HTTP existente** (`GET /api/v1/account`, `GET /api/v1/activities`) con JWT del security token → para datos vivos.
-3. **Servicios Prisma existentes** (`account.service.ts`, `activities.service.ts`) si trabajas dentro del backend.
-4. Acceso Prisma directo **solo lectura** (`findMany`/`findUnique`/`aggregate`/`count`) como último recurso.
+## Data Source Hierarchy (most to least preferred in the workshop)
+1. **MCP `ghostfolio-demo-data`** (reads demo CSV, read-only, reproducible) -> first choice for demo insights.
+2. **Existing HTTP API** (`GET /api/v1/account`, `GET /api/v1/activities`) with security-token JWT -> for live data.
+3. **Existing Prisma services** (`account.service.ts`, `activities.service.ts`) if you work inside the backend.
+4. Direct Prisma access, **read-only** (`findMany`/`findUnique`/`aggregate`/`count`), as a last resort.
 
-Nunca: `create`/`update`/`delete`/`upsert`/`executeRaw` de escritura, ni `prisma migrate`/`db push`.
+Never: write-oriented `create`/`update`/`delete`/`upsert`/`executeRaw`, nor `prisma migrate`/`db push`.
 
-## Patrones de consulta read-only útiles
-- Holdings por cuenta: agrupar `Order` por `accountId` + `symbol`, sumar `quantity` con signo según `type`.
-- Exposición por símbolo: coste = `Σ(BUY qty·price) − Σ(SELL qty·price)`.
-- Anomalías: trabajar sobre el CSV de anomalías (no importado) vía el MCP.
+## Useful Read-Only Query Patterns
+- Holdings by account: group `Order` by `accountId` + `symbol`, sum `quantity` with a sign based on `type`.
+- Exposure by symbol: cost = `Σ(BUY qty·price) − Σ(SELL qty·price)`.
+- Anomalies: work on the anomalies CSV (not imported) through the MCP.
 
-## Cuándo usar esta skill
-- BE-02, DATA-01/02, y siempre que haya que decidir "¿de dónde saco estos datos sin romper nada?".
+## When to Use This Skill
+- BE-02, DATA-01/02, and whenever you need to decide "where do I get this data without breaking anything?"
 
-## Cuándo NO usarla
-- Para crear endpoints (eso es `nestjs-api-development`) o razonar sobre el significado (es `ghostfolio-domain-analysis`).
+## When NOT to Use It
+- To create endpoints (that is `nestjs-api-development`) or reason about meaning (that is `ghostfolio-domain-analysis`).
 
-## Checklist de calidad
-- [ ] La operación es estrictamente de lectura.
-- [ ] Se eligió la fuente más reproducible (CSV/MCP) cuando es posible.
-- [ ] No se toca `schema.prisma` ni migraciones.
-- [ ] Solo dataset demo; no datos reales de usuarios.
-- [ ] Se distingue coste invertido de valor de mercado.
+## Quality Checklist
+- [ ] The operation is strictly read-only.
+- [ ] The most reproducible source (CSV/MCP) was chosen when possible.
+- [ ] `schema.prisma` and migrations are not touched.
+- [ ] Demo dataset only; no real user data.
+- [ ] Invested cost is distinguished from market value.
 
-## Límites de seguridad
-- Cualquier necesidad de escribir/migrar → **rechazar** y proponer alternativa read-only o vía seed oficial.
-- No imprimas secretos ni cadenas de conexión. No toques `.env`.
+## Safety Limits
+- Any need to write/migrate -> **reject** and propose a read-only alternative or the official seed path.
+- Do not print secrets or connection strings. Do not touch `.env`.

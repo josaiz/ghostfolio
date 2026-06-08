@@ -1,50 +1,50 @@
 ---
 name: angular-nx-development
-description: Cómo aplicar Angular 21 + Nx EN ESTE repo (Ghostfolio) sin romper nada. Localizar componentes análogos, respetar la estructura Nx, hacer cambios pequeños y validarlos. Para mecánica pura de Angular, apóyate en la skill angular-developer.
+description: How to apply Angular 21 + Nx IN THIS repo (Ghostfolio) without breaking anything. Locate analogous components, respect the Nx structure, make small changes, and validate them. For pure Angular mechanics, rely on the angular-developer skill.
 license: MIT
 metadata:
   workshop: innovation-night-ghostfolio
 ---
 
-# Desarrollo frontend Angular/Nx en Ghostfolio (workshop)
+# Angular/Nx Frontend Development in Ghostfolio (workshop)
 
-No es una guía genérica de Angular. Es **cómo trabajar el frontend de este repo** con cambios mínimos y seguros.
-Para sintaxis/feature de Angular (signals, forms, etc.) carga además la skill genérica `angular-developer`.
+This is not a generic Angular guide. It explains **how to work on this repo's frontend** with minimal, safe changes.
+For Angular syntax/features (signals, forms, etc.), also load the generic `angular-developer` skill.
 
-## Mapa del frontend (verificado)
-- App cliente: `apps/client/` (Angular 21 + Angular Material + Bootstrap utilities).
-- Componentes de página: `apps/client/src/app/components/<component>/` (p. ej. `home-overview/`, `home-holdings/`,
+## Frontend Map (verified)
+- Client app: `apps/client/` (Angular 21 + Angular Material + Bootstrap utilities).
+- Page components: `apps/client/src/app/components/<component>/` (e.g. `home-overview/`, `home-holdings/`,
   `home-summary/`, `portfolio-summary/`).
-- Páginas: `apps/client/src/app/pages/<page>/` (`home/`, `portfolio/`, `demo/`).
-- Componentes UI reutilizables: `libs/ui/src/lib/<component>/` (incluye `chart/`, `activities-table/`, `assistant/`).
-- Servicios cliente: `apps/client/src/app/services/`.
+- Pages: `apps/client/src/app/pages/<page>/` (`home/`, `portfolio/`, `demo/`).
+- Reusable UI components: `libs/ui/src/lib/<component>/` (includes `chart/`, `activities-table/`, `assistant/`).
+- Client services: `apps/client/src/app/services/`.
 
-## Método (copia un patrón, no inventes)
-1. **Encuentra el análogo**: ¿qué componente existente se parece a lo que pides? Para un widget de resumen,
-   estudia `home-overview` o `portfolio-summary`. Léelo entero antes de escribir.
-2. **Replica su estructura**: mismo estilo de `@Component`, mismos imports, misma forma de recibir datos (inputs/servicios),
-   mismos patrones de i18n y de estilos (`.scss` del componente). No introduzcas librerías nuevas.
-3. **Datos**: consume un contrato determinista (mock o endpoint). En el workshop, **sin LLM real**.
-4. **Monta el componente** donde corresponda (página `home`/`portfolio`) siguiendo cómo se montan los vecinos.
-5. **Valida**: `npm run lint` y build del cliente. Revisa que no rompes módulos compartidos.
+## Method (copy a pattern, do not invent one)
+1. **Find the analogue**: which existing component resembles what you are being asked for? For a summary widget,
+   study `home-overview` or `portfolio-summary`. Read it fully before writing.
+2. **Replicate its structure**: same `@Component` style, same imports, same way of receiving data (inputs/services),
+   same i18n and component `.scss` style patterns. Do not introduce new libraries.
+3. **Data**: consume a deterministic contract (mock or endpoint). In the workshop, **no real LLM**.
+4. **Mount the component** where it belongs (`home`/`portfolio` page), following how neighboring components are mounted.
+5. **Validate**: `npm run lint` and the client build. Check that shared modules were not broken.
 
-## Generar con Nx (si procede)
-- Usa la CLI de Nx/Angular en vez de crear ficheros a mano cuando sea posible (respeta `nx.json` generators).
-- No cambies configuración global de Nx, routing global ni theming global.
+## Generate with Nx (if appropriate)
+- Use the Nx/Angular CLI instead of creating files by hand when possible (respect `nx.json` generators).
+- Do not change global Nx configuration, global routing, or global theming.
 
-## Cuándo usar esta skill
-- FE-01 (widget Portfolio Insights), FE-02 (vista Demo Portfolio Health), FE-03 (botón "Explain demo portfolio").
+## When to Use This Skill
+- FE-01 (Portfolio Insights widget), FE-02 (Demo Portfolio Health view), FE-03 ("Explain demo portfolio" button).
 
-## Cuándo NO usarla
-- Para lógica de negocio/cálculo (backend o dominio). Para el MCP (otra skill).
+## When NOT to Use It
+- For business/calculation logic (backend or domain). For the MCP, use another skill.
 
-## Checklist de calidad
-- [ ] Existe un componente análogo identificado y seguido.
-- [ ] Cambios mínimos: pocos ficheros, ningún refactor transversal.
-- [ ] Sin dependencias nuevas; estilos e i18n al estilo del repo.
-- [ ] `npm run lint` y build del cliente pasan.
-- [ ] Textos de UI revisados por `financial-safety-review` (nada de consejo personalizado).
-- [ ] `git status` antes / `git diff` después; sin commit/push.
+## Quality Checklist
+- [ ] An analogous component has been identified and followed.
+- [ ] Minimal changes: few files, no cross-cutting refactor.
+- [ ] No new dependencies; styles and i18n follow the repo style.
+- [ ] `npm run lint` and the client build pass.
+- [ ] UI texts reviewed with `financial-safety-review` (no personalized advice).
+- [ ] `git status` before / `git diff` after; no commit/push.
 
-## Límites de seguridad
-- No toques `.env`, `nx.json`, `tsconfig.base.json`, routing/theming globales. Pide revisión humana si el cambio crece.
+## Safety Limits
+- Do not touch `.env`, `nx.json`, `tsconfig.base.json`, or global routing/theming. Ask for human review if the change grows.

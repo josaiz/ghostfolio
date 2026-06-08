@@ -1,25 +1,25 @@
 ---
-description: Produce un plan para crear o extender el MCP local read-only de datos demo. P. ej. /workshop-plan-mcp-card MCP-02
+description: Produces a plan to create or extend the local read-only demo data MCP. E.g. /workshop-plan-mcp-card MCP-02
 agent: mcp-builder-agent
 subtask: true
 ---
 
-Planifica el trabajo de MCP para la tarjeta: **$ARGUMENTS**
+Plan the MCP work for the card: **$ARGUMENTS**
 
-Backlog (localiza la tarjeta $1):
+Backlog (locate card $1):
 @docs/workshop/whiteboard-backlog.md
 
-Contexto del MCP existente:
+Existing MCP context:
 @tools/mcp/ghostfolio-demo-data-mcp/README.md
 
-Trabaja así:
-1. Carga la skill `mcp-server-authoring`.
-2. Revisa la capa de datos actual (`tools/mcp/ghostfolio-demo-data-mcp/src/data.mjs`) y reutilízala. No dupliques parseo de CSV.
-3. Entrega un **plan**:
-   - Nombre y propósito de la tool nueva (o cambio), `inputSchema` (JSON Schema) y forma de la salida.
-   - Qué datos del dataset demo usa y cómo (read-only).
-   - Dónde se registra (`tools/list` y `tools/call` en `src/index.mjs`).
-   - Cómo se prueba: `scripts/check-demo-mcp.sh|.ps1` y un ejemplo de `tools/call`.
-4. Si se te pide implementar, hazlo en `tools/mcp/ghostfolio-demo-data-mcp/`, mantén **cero dependencias** y verifica con el smoke test.
+Work like this:
+1. Load the `mcp-server-authoring` skill.
+2. Review and reuse the current data layer (`tools/mcp/ghostfolio-demo-data-mcp/src/data.mjs`). Do not duplicate CSV parsing.
+3. Deliver a **plan**:
+   - Name and purpose of the new tool (or change), `inputSchema` (JSON Schema), and output shape.
+   - Which demo dataset fields it uses and how (read-only).
+   - Where it is registered (`tools/list` and `tools/call` in `src/index.mjs`).
+   - How to test it: `scripts/check-demo-mcp.sh|.ps1` and an example `tools/call`.
+4. If you are asked to implement it, do so in `tools/mcp/ghostfolio-demo-data-mcp/`, keep **zero dependencies**, and verify with the smoke test.
 
-Guarda el plan en `docs/workshop/generated/$1-mcp-plan.md`. Solo lectura sobre datos demo. No commit/push.
+Save the plan in `docs/workshop/generated/$1-mcp-plan.md`. Demo data is read-only. No commit/push.

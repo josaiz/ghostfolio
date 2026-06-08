@@ -1,27 +1,27 @@
 ---
-description: Implementa una happy path mínima de extremo a extremo para una tarjeta de integración (p. ej. INT-01), con el menor cambio posible y revisión de safety.
+description: Implements a minimal end-to-end happy path for an integration card (e.g. INT-01), with the smallest possible change and a safety review.
 ---
 
-Implementa una porción de producto **mínima** y demostrable para: **$ARGUMENTS**
+Implement a **minimal** and demonstrable product slice for: **$ARGUMENTS**
 
-Estado actual del repo:
+Current repo state:
 !`git status --short`
 
-Backlog (localiza la tarjeta $1):
+Backlog (locate card $1):
 @docs/workshop/whiteboard-backlog.md
 
-Reglas de implementación (estrictas):
-1. Carga la skill `product-slice-delivery`.
-2. **Primero un plan corto** (qué ficheros, por qué) y pide confirmación si el cambio toca código funcional de Ghostfolio.
-3. Cambia el **mínimo** número de ficheros. Respeta patrones existentes. Sin LLM real. Sin consejo financiero personalizado.
-4. La happy path por defecto del workshop es **read-only por MCP** (`ghostfolio-demo-data`) + el command
-   `/workshop-analyze-demo-portfolio`, sin tocar `apps/`. Solo toca `apps/api` o `apps/client` si la tarjeta lo pide
-   y tras confirmación humana, delegando en `frontend-angular-agent` / `backend-nestjs-agent`.
-5. **Prohibido** tocar `.env`, `prisma/schema.prisma`, `prisma/migrations/`, `docker/`, `nx.json`.
+Implementation rules (strict):
+1. Load the `product-slice-delivery` skill.
+2. **Start with a short plan** (which files, why) and ask for confirmation if the change touches functional Ghostfolio code.
+3. Change the **minimum** number of files. Respect existing patterns. No real LLM. No personalised financial advice.
+4. The workshop's default happy path is **read-only via MCP** (`ghostfolio-demo-data`) + the
+   `/workshop-analyze-demo-portfolio` command, without touching `apps/`. Only touch `apps/api` or `apps/client` if the card asks for it
+   and after human confirmation, delegating to `frontend-angular-agent` / `backend-nestjs-agent`.
+5. **Forbidden**: touching `.env`, `prisma/schema.prisma`, `prisma/migrations/`, `docker/`, `nx.json`.
 
-Al terminar:
-- Muestra `git diff` de lo cambiado y explícalo.
-- Indica cómo probar la happy path (comandos exactos).
-- Pasa cualquier texto visible por `/workshop-review-financial-safety`.
-- Documenta el cambio en `docs/workshop/generated/$1-slice.md`.
-- **No** hagas `git commit` ni `git push`.
+When finished:
+- Show the `git diff` for what changed and explain it.
+- Explain how to test the happy path (exact commands).
+- Run any visible text through `/workshop-review-financial-safety`.
+- Document the change in `docs/workshop/generated/$1-slice.md`.
+- **Do not** run `git commit` or `git push`.
