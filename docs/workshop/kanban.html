@@ -32,7 +32,6 @@
     .lswatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
     .lswatch-orange { background: #F5A623; }
     .lswatch-blue   { background: #5B87C5; }
-    .lswatch-green  { background: #5EAB61; }
 
     /* ── Filter bar ── */
     .filterbar {
@@ -86,7 +85,7 @@
     /* ── Section header row ── */
     .col-headers {
       display: grid;
-      grid-template-columns: 118px 1fr 1fr 260px;
+      grid-template-columns: 118px 1fr 1fr;
     }
     .ch-spacer {
       background: #eef0f5;
@@ -105,12 +104,11 @@
     }
     .ch.ch-examples    { background: #F5A623; color: #3D1E00; }
     .ch.ch-proposed    { background: #5B87C5; color: #ffffff; }
-    .ch.ch-imagination { background: #5EAB61; color: #ffffff; }
 
     /* ── Swimlane row ── */
     .lane-row {
       display: grid;
-      grid-template-columns: 118px 1fr 1fr 260px;
+      grid-template-columns: 118px 1fr 1fr;
       min-height: 150px;
       border-bottom: 2px solid #d0d5e0;
     }
@@ -148,7 +146,6 @@
     .lane-section:last-child { border-right: none; }
     .lane-section.sec-examples    { background: #FFFBF0; }
     .lane-section.sec-proposed    { background: #F0F5FC; }
-    .lane-section.sec-imagination { background: #F0F9F0; }
 
     .cards-flex {
       display: flex;
@@ -160,10 +157,11 @@
     /* ── Card base ── */
     .card {
       border-radius: 5px;
-      padding: 9px 10px;
+      padding: 11px 12px;
       box-shadow: 1px 2px 6px rgba(0,0,0,.13);
-      width: 178px;
-      cursor: pointer;
+      width: auto;
+      min-width: 230px;
+      max-width: 380px;
       transition: box-shadow .15s, transform .12s;
       position: relative;
     }
@@ -206,7 +204,7 @@
     }
 
     .card-author {
-      font-size: 9.5px;
+      font-size: 11px;
       font-weight: 700;
       color: #666;
       padding-bottom: 4px;
@@ -214,18 +212,18 @@
       border-bottom: 1px solid rgba(0,0,0,.09);
     }
     .card-id {
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 800;
       color: #333;
       letter-spacing: .3px;
       margin-bottom: 2px;
     }
     .card-title {
-      font-size: 11px;
+      font-size: 14px;
       font-weight: 700;
       color: #111;
       line-height: 1.35;
-      margin-bottom: 5px;
+      margin-bottom: 7px;
     }
     .card-tags {
       display: flex;
@@ -234,8 +232,8 @@
       margin-bottom: 5px;
     }
     .ctag {
-      font-size: 9px;
-      padding: 1px 5px;
+      font-size: 11px;
+      padding: 2px 6px;
       border-radius: 3px;
       background: rgba(0,0,0,.08);
       color: #555;
@@ -243,32 +241,62 @@
     .ctag.low  { background: rgba(134,239,172,.35); color: #14532d; }
     .ctag.med  { background: rgba(252,211,77,.35);  color: #713f12; }
     .ctag.high { background: rgba(248,113,113,.35); color: #7f1d1d; }
-    .card-goal { font-size: 10px; color: #555; line-height: 1.4; }
+    .card-goal { font-size: 12px; color: #555; line-height: 1.45; }
 
     /* ── Expanded detail ── */
-    .card-detail { display: none; margin-top: 7px; padding-top: 7px; border-top: 1px solid rgba(0,0,0,.1); }
-    .card.open .card-detail { display: block; }
-    .card.open {
-      width: auto;
-      min-width: 178px;
-      max-width: 310px;
-      z-index: 20;
-      box-shadow: 3px 6px 20px rgba(0,0,0,.28);
-    }
-    .drow { display: flex; gap: 5px; margin-bottom: 4px; font-size: 10px; }
-    .dlabel { min-width: 62px; font-weight: 700; color: #888; flex-shrink: 0; }
+    .card-detail { margin-top: 7px; padding-top: 7px; border-top: 1px solid rgba(0,0,0,.1); }
+    .drow { display: flex; gap: 6px; margin-bottom: 6px; font-size: 12px; }
+    .dlabel { min-width: 76px; font-weight: 700; color: #888; flex-shrink: 0; }
     .dval { color: #222; line-height: 1.4; }
     .dval code {
       background: rgba(0,0,0,.06);
       border-radius: 2px;
       padding: 0 3px;
       font-family: 'SF Mono', monospace;
-      font-size: 9px;
+      font-size: 11px;
     }
+    .cmd-row {
+      align-items: flex-start;
+    }
+    .cmd-val {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .cmd-main {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .cmd-line {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .cmd-label {
+      color: #777;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+    .cmd-copy-btn {
+      border: 1px solid rgba(0,0,0,.15);
+      border-radius: 3px;
+      background: rgba(255,255,255,.75);
+      color: #555;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 11px;
+      line-height: 1;
+      padding: 4px 6px;
+    }
+    .cmd-copy-btn:hover { background: white; color: #222; border-color: rgba(0,0,0,.3); }
+    .cmd-copy-btn.copied { background: #22c55e; border-color: #22c55e; color: white; }
     .dep-chip {
       display: inline-block;
-      font-size: 9px;
-      padding: 0 4px;
+      font-size: 11px;
+      padding: 1px 5px;
       border-radius: 3px;
       background: rgba(74,136,196,.18);
       color: #1a5a9e;
@@ -277,29 +305,13 @@
     .hint-box {
       background: rgba(0,0,0,.05);
       border-radius: 3px;
-      padding: 5px 7px;
-      font-size: 10px;
+      padding: 7px 8px;
+      font-size: 12px;
       color: #555;
       margin-top: 5px;
       line-height: 1.4;
     }
     .hint-box b { color: #b45309; }
-
-    /* ── Placeholder cards ── */
-    .card-placeholder {
-      background: #C5E8C7;
-      border: 1px dashed #74B876;
-      border-radius: 5px;
-      width: 178px;
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #2E7D32;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: .2px;
-    }
 
     /* ── Visibility ── */
     .card.hidden { display: none; }
@@ -311,12 +323,11 @@
 <div class="topbar">
   <div>
     <h1>Portfolio Insights Assistant — Innovation Night Backlog</h1>
-    <p>7 swimlanes · 16 tasks · Ghostfolio + OpenCode · click a card to expand</p>
+    <p>7 swimlanes · 16 tasks · Ghostfolio + OpenCode · cards always expanded</p>
   </div>
   <div class="legend">
     <div class="legend-item"><div class="lswatch lswatch-orange"></div>Resolved (Examples)</div>
     <div class="legend-item"><div class="lswatch lswatch-blue"></div>Tooling ready (Build it)</div>
-    <div class="legend-item"><div class="lswatch lswatch-green"></div>Your ideas</div>
   </div>
 </div>
 
@@ -361,7 +372,7 @@ const CARDS = [
     title:'Functional contract of the Portfolio Insights Assistant',
     goal:'Define what insights the feature offers and in what data shape, so FE/BE/MCP fit together.',
     deliverable:'Insights data contract (fields, types, examples) consumed by frontend and backend.',
-    agentCmd:'skill ghostfolio-domain-analysis + agent portfolio-domain-agent + MCP',
+    agentCmd:'portfolio-domain-agent → ghostfolio-domain-analysis skill + MCP',
     deps:['FND-01'], acceptance:'Contract with 3–5 descriptive insights, each traceable to an MCP metric.',
     hint:'Use get_demo_portfolio_summary; nothing about "buy/sell".' },
 
@@ -527,6 +538,29 @@ function diffLabel(d) {
   return d === 'low' ? 'Low' : d === 'medium' ? 'Med' : 'High';
 }
 
+function commandToCopy(agentCmd) {
+  return agentCmd.split('→')[0].trim();
+}
+
+function commandHtml(agentCmd) {
+  const parts = agentCmd.split('→').map(p => p.trim());
+  const userInvokes = parts[0];
+  const agentInvokes = parts.slice(1).join(' → ');
+
+  if (!agentInvokes) {
+    return `
+      <span class="cmd-main">
+        <span class="cmd-line"><span class="cmd-label">User invokes</span><code>${esc(userInvokes)}</code></span>
+      </span>`;
+  }
+
+  return `
+    <span class="cmd-main">
+      <span class="cmd-line"><span class="cmd-label">User invokes</span><code>${esc(userInvokes)}</code></span>
+      <span class="cmd-line"><span class="cmd-label">Then invokes</span><code>${esc(agentInvokes)}</code></span>
+    </span>`;
+}
+
 function cardHtml(c) {
   const cls = c.status === 'examples' ? 'card-ex' : 'card-pr';
   const deps = c.deps.length
@@ -537,8 +571,7 @@ function cardHtml(c) {
     <div class="card ${cls}"
          data-id="${c.id}"
          data-status="${c.status}"
-         data-diff="${c.diff}"
-         onclick="toggleCard(this)">
+         data-diff="${c.diff}">
       <button class="copy-btn" title="Copy card" onclick="copyCard('${c.id}',event)">⎘</button>
       <div class="card-author">${esc(c.team)}</div>
       <div class="card-id">${c.id}</div>
@@ -551,16 +584,12 @@ function cardHtml(c) {
       <div class="card-goal">${esc(c.goal)}</div>
       <div class="card-detail">
         <div class="drow"><span class="dlabel">Deliverable</span><span class="dval">${esc(c.deliverable)}</span></div>
-        <div class="drow"><span class="dlabel">Agent cmd</span><span class="dval"><code>${esc(c.agentCmd)}</code></span></div>
+        <div class="drow cmd-row"><span class="dlabel">Invocation</span><span class="dval cmd-val">${commandHtml(c.agentCmd)}<button class="cmd-copy-btn" title="Copy user invocation" onclick="copyCommand('${c.id}',event)">Copy</button></span></div>
         <div class="drow"><span class="dlabel">Acceptance</span><span class="dval">${esc(c.acceptance)}</span></div>
         <div class="drow"><span class="dlabel">Deps</span><span class="dval">${deps}</span></div>
         <div class="hint-box"><b>Hint:</b> ${esc(c.hint)}</div>
       </div>
     </div>`;
-}
-
-function toggleCard(el) {
-  el.classList.toggle('open');
 }
 
 function copyCard(id, event) {
@@ -589,6 +618,20 @@ function copyCard(id, event) {
   });
 }
 
+function copyCommand(id, event) {
+  event.stopPropagation();
+  const c = CARDS.find(x => x.id === id);
+  if (!c) return;
+
+  navigator.clipboard.writeText(commandToCopy(c.agentCmd)).then(() => {
+    const btn = document.querySelector(`.card[data-id="${id}"] .cmd-copy-btn`);
+    if (!btn) return;
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
 // ── Render ─────────────────────────────────────────────────────────────────
 
 function render() {
@@ -600,7 +643,6 @@ function render() {
       <div class="ch-spacer"></div>
       <div class="ch ch-examples">EXAMPLES</div>
       <div class="ch ch-proposed">PROPOSED TASKS</div>
-      <div class="ch ch-imagination">USE YOUR IMAGINATION</div>
     </div>`;
 
   // Swimlane rows
@@ -610,9 +652,6 @@ function render() {
 
     const exCards  = ex.map(cardHtml).join('');
     const prCards  = pr.map(cardHtml).join('');
-    const ph1 = `<div class="card-placeholder">Add text</div>`;
-    const ph2 = `<div class="card-placeholder">Add text</div>`;
-
     html += `
       <div class="lane-row" data-lane="${lane}">
         <div class="lane-label">
@@ -623,9 +662,6 @@ function render() {
         </div>
         <div class="lane-section sec-proposed">
           <div class="cards-flex">${prCards}</div>
-        </div>
-        <div class="lane-section sec-imagination">
-          <div class="cards-flex">${ph1}${ph2}</div>
         </div>
       </div>`;
   });
