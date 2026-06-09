@@ -32,6 +32,7 @@
     .lswatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
     .lswatch-orange { background: #F5A623; }
     .lswatch-blue   { background: #5B87C5; }
+    .lswatch-green  { background: #5EAB61; }
 
     /* ── Filter bar ── */
     .filterbar {
@@ -85,7 +86,7 @@
     /* ── Section header row ── */
     .col-headers {
       display: grid;
-      grid-template-columns: 118px 1fr 1fr;
+      grid-template-columns: 118px 1fr 1fr 260px;
     }
     .ch-spacer {
       background: #eef0f5;
@@ -104,11 +105,12 @@
     }
     .ch.ch-examples    { background: #F5A623; color: #3D1E00; }
     .ch.ch-proposed    { background: #5B87C5; color: #ffffff; }
+    .ch.ch-imagination { background: #5EAB61; color: #ffffff; }
 
     /* ── Swimlane row ── */
     .lane-row {
       display: grid;
-      grid-template-columns: 118px 1fr 1fr;
+      grid-template-columns: 118px 1fr 1fr 260px;
       min-height: 150px;
       border-bottom: 2px solid #d0d5e0;
     }
@@ -146,6 +148,7 @@
     .lane-section:last-child { border-right: none; }
     .lane-section.sec-examples    { background: #FFFBF0; }
     .lane-section.sec-proposed    { background: #F0F5FC; }
+    .lane-section.sec-imagination { background: #F0F9F0; }
 
     .cards-flex {
       display: flex;
@@ -313,6 +316,22 @@
     }
     .hint-box b { color: #b45309; }
 
+    /* ── Placeholder cards ── */
+    .card-placeholder {
+      background: #C5E8C7;
+      border: 1px dashed #74B876;
+      border-radius: 5px;
+      width: 230px;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2E7D32;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+
     /* ── Visibility ── */
     .card.hidden { display: none; }
     .lane-row[data-visible="0"] { display: none; }
@@ -328,6 +347,7 @@
   <div class="legend">
     <div class="legend-item"><div class="lswatch lswatch-orange"></div>Resolved (Examples)</div>
     <div class="legend-item"><div class="lswatch lswatch-blue"></div>Tooling ready (Build it)</div>
+    <div class="legend-item"><div class="lswatch lswatch-green"></div>Your ideas</div>
   </div>
 </div>
 
@@ -561,6 +581,12 @@ function commandHtml(agentCmd) {
     </span>`;
 }
 
+function invocationRowHtml(c) {
+  if (c.status !== 'examples') return '';
+
+  return `<div class="drow cmd-row"><span class="dlabel">Invocation</span><span class="dval cmd-val">${commandHtml(c.agentCmd)}<button class="cmd-copy-btn" title="Copy user invocation" onclick="copyCommand('${c.id}',event)">Copy</button></span></div>`;
+}
+
 function cardHtml(c) {
   const cls = c.status === 'examples' ? 'card-ex' : 'card-pr';
   const deps = c.deps.length
@@ -584,7 +610,7 @@ function cardHtml(c) {
       <div class="card-goal">${esc(c.goal)}</div>
       <div class="card-detail">
         <div class="drow"><span class="dlabel">Deliverable</span><span class="dval">${esc(c.deliverable)}</span></div>
-        <div class="drow cmd-row"><span class="dlabel">Invocation</span><span class="dval cmd-val">${commandHtml(c.agentCmd)}<button class="cmd-copy-btn" title="Copy user invocation" onclick="copyCommand('${c.id}',event)">Copy</button></span></div>
+        ${invocationRowHtml(c)}
         <div class="drow"><span class="dlabel">Acceptance</span><span class="dval">${esc(c.acceptance)}</span></div>
         <div class="drow"><span class="dlabel">Deps</span><span class="dval">${deps}</span></div>
         <div class="hint-box"><b>Hint:</b> ${esc(c.hint)}</div>
@@ -603,11 +629,11 @@ function copyCard(id, event) {
     ``,
     `Goal: ${c.goal}`,
     `Deliverable: ${c.deliverable}`,
-    `Agent cmd: ${c.agentCmd}`,
+    c.status === 'examples' ? `Agent cmd: ${c.agentCmd}` : null,
     `Deps: ${deps}`,
     `Acceptance: ${c.acceptance}`,
     `Hint: ${c.hint}`,
-  ].join('\n');
+  ].filter(line => line !== null).join('\n');
 
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector(`.card[data-id="${id}"] .copy-btn`);
@@ -643,6 +669,7 @@ function render() {
       <div class="ch-spacer"></div>
       <div class="ch ch-examples">EXAMPLES</div>
       <div class="ch ch-proposed">PROPOSED TASKS</div>
+      <div class="ch ch-imagination">USE YOUR IMAGINATION</div>
     </div>`;
 
   // Swimlane rows
@@ -652,6 +679,9 @@ function render() {
 
     const exCards  = ex.map(cardHtml).join('');
     const prCards  = pr.map(cardHtml).join('');
+    const ph1 = `<div class="card-placeholder">Add text</div>`;
+    const ph2 = `<div class="card-placeholder">Add text</div>`;
+
     html += `
       <div class="lane-row" data-lane="${lane}">
         <div class="lane-label">
@@ -662,6 +692,9 @@ function render() {
         </div>
         <div class="lane-section sec-proposed">
           <div class="cards-flex">${prCards}</div>
+        </div>
+        <div class="lane-section sec-imagination">
+          <div class="cards-flex">${ph1}${ph2}</div>
         </div>
       </div>`;
   });
