@@ -1,0 +1,172 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link [ref=e8] [cursor=pointer]:
+          - /url: /en/
+        - list [ref=e14]:
+          - listitem [ref=e15]:
+            - link [ref=e116] [cursor=pointer]:
+              - /url: /en/features
+              - generic [ref=e17]: Features
+          - listitem [ref=e19]:
+            - link [ref=e117] [cursor=pointer]:
+              - /url: /en/about
+              - generic [ref=e21]: About
+          - listitem [ref=e23]:
+            - link [ref=e24] [cursor=pointer]:
+              - /url: https://github.com/ghostfolio/ghostfolio
+              - generic [ref=e25]:
+                - img:
+                  - generic:
+                    - img
+          - listitem [ref=e27]:
+            - button [ref=e118] [cursor=pointer]:
+              - generic [ref=e29]: Sign in
+    - main [ref=e6]:
+      - generic [ref=e35]:
+        - generic [ref=e37]:
+          - generic [ref=e41]: Ghostfolio
+          - paragraph [ref=e42]: Wealth Management Software
+        - button [ref=e119] [cursor=pointer]:
+          - generic [ref=e47]: Create Account
+    - contentinfo [ref=e49]:
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]:
+            - link [ref=e120] [cursor=pointer]:
+              - /url: /en/
+              - generic [ref=e58]: Ghostfolio
+            - generic [ref=e59]:
+              - generic [ref=e60]: Personal Finance
+              - list [ref=e61]:
+                - listitem [ref=e62]:
+                  - link [ref=e121] [cursor=pointer]:
+                    - /url: /en/resources
+                    - text: Resources
+            - generic [ref=e64]:
+              - generic [ref=e65]: Ghostfolio
+              - list [ref=e66]:
+                - listitem [ref=e67]:
+                  - link [ref=e122] [cursor=pointer]:
+                    - /url: /en/about
+                    - text: About
+                - listitem [ref=e69]:
+                  - link [ref=e123] [cursor=pointer]:
+                    - /url: /en/about/changelog
+                    - text: Changelog
+                - listitem [ref=e71]:
+                  - link [ref=e124] [cursor=pointer]:
+                    - /url: /en/features
+                    - text: Features
+                - listitem [ref=e73]:
+                  - link [ref=e125] [cursor=pointer]:
+                    - /url: /en/about/license
+                    - text: License
+            - generic [ref=e75]:
+              - generic [ref=e76]: Community
+              - list [ref=e77]:
+                - listitem [ref=e78]:
+                  - link [ref=e126] [cursor=pointer]:
+                    - /url: https://github.com/ghostfolio/ghostfolio
+                    - text: GitHub
+                    - img:
+                      - generic:
+                        - img
+                - listitem [ref=e80]:
+                  - link [ref=e127] [cursor=pointer]:
+                    - /url: https://linkedin.com/company/ghostfolio
+                    - text: LinkedIn
+                    - img:
+                      - generic:
+                        - img
+                - listitem [ref=e82]:
+                  - link [ref=e128] [cursor=pointer]:
+                    - /url: https://join.slack.com/t/ghostfolio/shared_invite/zt-vsaan64h-F_I0fEo5M0P88lP9ibCxFg
+                    - text: Slack
+                    - img:
+                      - generic:
+                        - img
+                - listitem [ref=e84]:
+                  - link [ref=e129] [cursor=pointer]:
+                    - /url: https://x.com/ghostfolio_
+                    - text: X (formerly Twitter)
+                    - img:
+                      - generic:
+                        - img
+                - listitem [ref=e86]
+                - listitem [ref=e87]:
+                  - link [ref=e130] [cursor=pointer]:
+                    - /url: ../zh
+                    - text: Chinese (简体中文)
+                - listitem [ref=e89]:
+                  - link [ref=e131] [cursor=pointer]:
+                    - /url: ../de
+                    - text: Deutsch
+                - listitem [ref=e91]:
+                  - link [ref=e132] [cursor=pointer]:
+                    - /url: ../en
+                    - text: English
+                - listitem [ref=e93]:
+                  - link [ref=e133] [cursor=pointer]:
+                    - /url: ../es
+                    - text: Español
+                - listitem [ref=e95]:
+                  - link [ref=e134] [cursor=pointer]:
+                    - /url: ../fr
+                    - text: Français
+                - listitem [ref=e97]:
+                  - link [ref=e135] [cursor=pointer]:
+                    - /url: ../it
+                    - text: Italiano
+                - listitem [ref=e99]:
+                  - link [ref=e136] [cursor=pointer]:
+                    - /url: ../nl
+                    - text: Nederlands
+                - listitem [ref=e101]:
+                  - link [ref=e137] [cursor=pointer]:
+                    - /url: ../pl
+                    - text: Polski
+                - listitem [ref=e103]:
+                  - link [ref=e138] [cursor=pointer]:
+                    - /url: ../pt
+                    - text: Português
+                - listitem [ref=e105]:
+                  - link [ref=e139] [cursor=pointer]:
+                    - /url: ../tr
+                    - text: Türkçe
+          - generic [ref=e108]:
+            - text: © 2021 - 2026
+            - link [ref=e140] [cursor=pointer]:
+              - /url: https://ghostfol.io
+              - text: Ghostfolio
+          - generic [ref=e112]: The risk of loss in trading can be substantial. It is not advisable to invest money you may need in the short term.
+        - generic [ref=e115]: Ghostfolio
+  - dialog "Create Account" [ref=e145]:
+    - generic [ref=e148]:
+      - heading "Create Account" [level=1] [ref=e149]
+      - generic [ref=e152]:
+        - tablist [ref=e153]:
+          - tab "Terms and Conditions" [selected] [ref=e154] [cursor=pointer]:
+            - generic [ref=e157]: "1"
+            - generic [ref=e159]: Terms and Conditions
+          - tab "Security Token" [disabled] [ref=e161] [cursor=pointer]:
+            - generic [ref=e164]: "2"
+            - generic [ref=e166]: Security Token
+        - tabpanel "Terms and Conditions" [ref=e168]:
+          - generic [ref=e169]: Please keep your security token safe. If you lose it, you will not be able to recover your account.
+          - generic [ref=e171]:
+            - generic [ref=e172] [cursor=pointer]:
+              - checkbox "I understand that if I lose my security token, I cannot recover my account." [checked] [active] [ref=e173]
+              - generic:
+                - img
+            - generic [ref=e174] [cursor=pointer]: I understand that if I lose my security token, I cannot recover my account.
+          - generic [ref=e175]:
+            - button "Cancel" [ref=e177] [cursor=pointer]:
+              - generic [ref=e178]: Cancel
+            - button "Continue" [ref=e182] [cursor=pointer]:
+              - generic [ref=e183]:
+                - generic [ref=e184]: Continue
+                - img:
+                  - generic:
+                    - img

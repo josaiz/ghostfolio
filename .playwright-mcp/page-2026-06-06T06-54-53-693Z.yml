@@ -1,0 +1,366 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link [ref=e351] [cursor=pointer]:
+          - /url: /en/
+          - generic [ref=e12]: Ghostfolio
+        - list [ref=e14]:
+          - listitem [ref=e15]:
+            - link [ref=e352] [cursor=pointer]:
+              - /url: /en/features
+              - generic [ref=e17]: Features
+          - listitem [ref=e19]:
+            - link [ref=e353] [cursor=pointer]:
+              - /url: /en/about
+              - generic [ref=e21]: About
+          - listitem [ref=e23]:
+            - link [ref=e24] [cursor=pointer]:
+              - /url: https://github.com/ghostfolio/ghostfolio
+              - generic [ref=e25]:
+                - img:
+                  - generic:
+                    - img
+          - listitem [ref=e27]:
+            - button [ref=e354] [cursor=pointer]:
+              - generic [ref=e29]: Sign in
+          - listitem [ref=e31]:
+            - link [ref=e355] [cursor=pointer]:
+              - /url: /en/register
+              - generic [ref=e33]: Get Started
+    - main [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e39]:
+          - heading [level=1] [ref=e356]: Manage your wealth like a boss
+          - paragraph [ref=e42]: Ghostfolio is a privacy-first, open source dashboard for your personal finances. Break down your asset allocation, know your net worth and make solid, data-driven investment decisions.
+          - link [ref=e357] [cursor=pointer]:
+            - /url: https://www.youtube.com/watch?v=yY6ObSQVJZk
+            - img [ref=e358]
+        - generic [ref=e46]:
+          - link [ref=e359] [cursor=pointer]:
+            - /url: /en/register
+            - generic [ref=e50]: Get Started
+          - generic [ref=e52]:
+            - generic [ref=e53]: As seen in
+            - generic [ref=e57]:
+              - link [ref=e360] [cursor=pointer]:
+                - /url: https://alternativeto.net
+              - link [ref=e361] [cursor=pointer]:
+                - /url: https://github.com/awesome-selfhosted/awesome-selfhosted
+              - link [ref=e362] [cursor=pointer]:
+                - /url: https://dev.to
+              - link [ref=e363] [cursor=pointer]:
+                - /url: https://euroalternative.eu/ghostfolio
+              - link [ref=e364] [cursor=pointer]:
+                - /url: https://news.ycombinator.com
+              - link [ref=e365] [cursor=pointer]:
+                - /url: https://openalternative.co
+              - link [ref=e366] [cursor=pointer]:
+                - /url: https://oss.gallery
+              - link [ref=e367] [cursor=pointer]:
+                - /url: https://www.privacytools.io
+              - link [ref=e368] [cursor=pointer]:
+                - /url: https://www.producthunt.com
+              - link [ref=e369] [cursor=pointer]:
+                - /url: https://www.reddit.com
+              - link [ref=e370] [cursor=pointer]:
+                - /url: https://www.sackgeld.com
+              - link [ref=e371] [cursor=pointer]:
+                - /url: https://selfh.st
+              - link [ref=e372] [cursor=pointer]:
+                - /url: https://selfhostedhub.com
+              - link [ref=e373] [cursor=pointer]:
+                - /url: https://sourceforge.net
+              - link [ref=e374] [cursor=pointer]:
+                - /url: https://umbrel.com
+              - link [ref=e375] [cursor=pointer]:
+                - /url: https://unraid.net
+              - link [ref=e376] [cursor=pointer]:
+                - /url: https://alternativeto.net
+              - link [ref=e377] [cursor=pointer]:
+                - /url: https://github.com/awesome-selfhosted/awesome-selfhosted
+              - link [ref=e378] [cursor=pointer]:
+                - /url: https://dev.to
+              - link [ref=e379] [cursor=pointer]:
+                - /url: https://euroalternative.eu/ghostfolio
+              - link [ref=e380] [cursor=pointer]:
+                - /url: https://news.ycombinator.com
+              - link [ref=e381] [cursor=pointer]:
+                - /url: https://openalternative.co
+              - link [ref=e382] [cursor=pointer]:
+                - /url: https://oss.gallery
+              - link [ref=e383] [cursor=pointer]:
+                - /url: https://www.privacytools.io
+              - link [ref=e384] [cursor=pointer]:
+                - /url: https://www.producthunt.com
+              - link [ref=e385] [cursor=pointer]:
+                - /url: https://www.reddit.com
+              - link [ref=e386] [cursor=pointer]:
+                - /url: https://www.sackgeld.com
+              - link [ref=e387] [cursor=pointer]:
+                - /url: https://selfh.st
+              - link [ref=e388] [cursor=pointer]:
+                - /url: https://selfhostedhub.com
+              - link [ref=e389] [cursor=pointer]:
+                - /url: https://sourceforge.net
+              - link [ref=e390] [cursor=pointer]:
+                - /url: https://umbrel.com
+              - link [ref=e391] [cursor=pointer]:
+                - /url: https://unraid.net
+          - generic [ref=e123]:
+            - heading [level=2] [ref=e392]:
+              - text: Protect your
+              - strong [ref=e125]: assets
+              - text: . Refine your
+              - strong [ref=e126]: personal investment strategy
+              - text: .
+            - paragraph [ref=e127]: Ghostfolio empowers busy people to keep track of stocks, ETFs or cryptocurrencies without being tracked.
+          - generic [ref=e128]:
+            - generic [ref=e130]:
+              - generic [ref=e133]: 360° View
+              - generic [ref=e134]: Get the full picture of your personal finances across multiple platforms.
+            - generic [ref=e136]:
+              - generic [ref=e139]: Web3 Ready
+              - generic [ref=e140]: Use Ghostfolio anonymously and own your financial data.
+            - generic [ref=e142]:
+              - generic [ref=e145]: Open Source
+              - generic [ref=e146]: Benefit from continuous improvements through a strong community.
+          - generic [ref=e148]:
+            - heading [level=2] [ref=e393]:
+              - text: Why
+              - strong [ref=e150]: Ghostfolio
+              - text: "?"
+            - paragraph [ref=e151]: Ghostfolio is for you if you are...
+            - list [ref=e152]:
+              - listitem [ref=e153]:
+                - generic [ref=e154]: 💼
+                - generic [ref=e155]: trading stocks, ETFs or cryptocurrencies on multiple platforms
+              - listitem [ref=e156]:
+                - generic [ref=e157]: 🏦
+                - generic [ref=e158]: pursuing a buy & hold strategy
+              - listitem [ref=e159]:
+                - generic [ref=e160]: 🎯
+                - generic [ref=e161]: interested in getting insights of your portfolio composition
+              - listitem [ref=e162]:
+                - generic [ref=e163]: 👻
+                - generic [ref=e164]: valuing privacy and data ownership
+              - listitem [ref=e165]:
+                - generic [ref=e166]: 🧘
+                - generic [ref=e167]: into minimalism
+              - listitem [ref=e168]:
+                - generic [ref=e169]: 🧺
+                - generic [ref=e170]: caring about diversifying your financial resources
+              - listitem [ref=e171]:
+                - generic [ref=e172]: 🆓
+                - generic [ref=e173]: interested in financial independence
+              - listitem [ref=e174]:
+                - generic [ref=e175]: 🙅
+                - generic [ref=e176]: saying no to spreadsheets in 2026
+              - listitem [ref=e177]:
+                - generic [ref=e178]: 😎
+                - generic [ref=e179]: still reading this list
+            - link [ref=e394] [cursor=pointer]:
+              - /url: /en/about
+              - generic [ref=e182]: Learn more about Ghostfolio
+          - generic [ref=e184]:
+            - heading [level=2] [ref=e395]:
+              - text: What our
+              - strong [ref=e187]: users
+              - text: are saying
+            - generic [ref=e189]:
+              - region [ref=e190]:
+                - list [ref=e191]:
+                  - generic [ref=e197]:
+                    - generic [ref=e198]: Ghostfolio helps me track all my investments in one place, it has a built-in portfolio analyzer and a very neat, seamless user interface.
+                    - generic [ref=e199]: — Damjan , Slovenia 🇸🇮
+                  - generic [ref=e205]:
+                    - generic [ref=e206]: A fantastic open source app to track my investments across platforms. Love the simplicity of its design and the depth of the insights.
+                    - generic [ref=e207]: — Ivo , Netherlands 🇳🇱
+                  - generic [ref=e213]:
+                    - generic [ref=e214]: Great app!
+                    - generic [ref=e215]: — Lars , Denmark 🇩🇰
+                  - generic [ref=e221]:
+                    - generic [ref=e222]: Ghostfolio is an awesome project. It helps me keep track of cryptocurrencies in an easy way. I really like it!
+                    - generic [ref=e223]:
+                      - text: —
+                      - link [ref=e396] [cursor=pointer]:
+                        - /url: https://mariushosting.com
+                        - text: Marius
+                      - text: ", Romania 🇷🇴"
+                  - generic [ref=e230]:
+                    - generic [ref=e231]: Ghostfolio looks like the perfect portfolio tracker I’ve been searching for all these years.
+                    - generic [ref=e232]: — Onur , Switzerland 🇨🇭
+                  - generic [ref=e238]:
+                    - generic [ref=e239]: Super slim app with a great user interface. On top of that, it’s open source.
+                    - generic [ref=e240]: — Philipp , Germany 🇩🇪
+                  - generic [ref=e246]:
+                    - generic [ref=e247]: Ghostfolio is one of the best tools I have used for tracking my investments. I intend to spread the word to all my friends.
+                    - generic [ref=e248]: — Sal , Canada 🇨🇦
+                  - generic [ref=e254]:
+                    - generic [ref=e255]: My investment strategy has become more structured through the daily use of Ghostfolio.
+                    - generic [ref=e256]:
+                      - text: —
+                      - link [ref=e397] [cursor=pointer]:
+                        - /url: https://dotsilver.ch
+                        - text: Thomas
+                      - text: ", Creator of Ghostfolio, Switzerland 🇨🇭"
+              - button [ref=e258] [cursor=pointer]:
+                - generic [ref=e259]:
+                  - img:
+                    - generic:
+                      - img
+          - generic [ref=e262]:
+            - heading [level=2] [ref=e398]:
+              - text: Are
+              - strong [ref=e264]: you
+              - text: ready?
+            - paragraph [ref=e265]: Join now
+            - link [ref=e399] [cursor=pointer]:
+              - /url: /en/register
+              - generic [ref=e268]: Get Started
+        - generic [ref=e270]:
+          - generic [ref=e275]:
+            - generic [ref=e279]: Ghostfolio
+            - generic [ref=e280]: Wealth Management Software
+          - link [ref=e400] [cursor=pointer]:
+            - /url: https://www.gnu.org/licenses/agpl-3.0.html
+    - contentinfo [ref=e284]:
+      - generic [ref=e285]:
+        - generic [ref=e286]:
+          - generic [ref=e287]:
+            - link [ref=e401] [cursor=pointer]:
+              - /url: /en/
+              - generic [ref=e293]: Ghostfolio
+            - generic [ref=e294]:
+              - generic [ref=e295]: Personal Finance
+              - list [ref=e296]:
+                - listitem [ref=e297]:
+                  - link [ref=e402] [cursor=pointer]:
+                    - /url: /en/resources
+                    - text: Resources
+            - generic [ref=e299]:
+              - generic [ref=e300]: Ghostfolio
+              - list [ref=e301]:
+                - listitem [ref=e302]:
+                  - link [ref=e403] [cursor=pointer]:
+                    - /url: /en/about
+                    - text: About
+                - listitem [ref=e304]:
+                  - link [ref=e404] [cursor=pointer]:
+                    - /url: /en/about/changelog
+                    - text: Changelog
+                - listitem [ref=e306]:
+                  - link [ref=e405] [cursor=pointer]:
+                    - /url: /en/features
+                    - text: Features
+                - listitem [ref=e308]:
+                  - link [ref=e406] [cursor=pointer]:
+                    - /url: /en/about/license
+                    - text: License
+            - generic [ref=e310]:
+              - generic [ref=e311]: Community
+              - list [ref=e312]:
+                - listitem [ref=e313]:
+                  - link [ref=e407] [cursor=pointer]:
+                    - /url: https://github.com/ghostfolio/ghostfolio
+                    - text: GitHub
+                    - img:
+                      - generic:
+                        - img
+                - listitem [ref=e315]:
+                  - link [ref=e408] [cursor=pointer]:
+                    - /url: https://linkedin.com/company/ghostfolio
+                    - text: LinkedIn
+                    - img:
+                      - generic:
+                        - img
+                - listitem [ref=e317]:
+                  - link [ref=e409] [cursor=pointer]:
+                    - /url: https://join.slack.com/t/ghostfolio/shared_invite/zt-vsaan64h-F_I0fEo5M0P88lP9ibCxFg
+                    - text: Slack
+                    - img:
+                      - generic:
+                        - img
+                - listitem [ref=e319]:
+                  - link [ref=e410] [cursor=pointer]:
+                    - /url: https://x.com/ghostfolio_
+                    - text: X (formerly Twitter)
+                    - img:
+                      - generic:
+                        - img
+                - listitem [ref=e321]
+                - listitem [ref=e322]:
+                  - link [ref=e411] [cursor=pointer]:
+                    - /url: ../zh
+                    - text: Chinese (简体中文)
+                - listitem [ref=e324]:
+                  - link [ref=e412] [cursor=pointer]:
+                    - /url: ../de
+                    - text: Deutsch
+                - listitem [ref=e326]:
+                  - link [ref=e413] [cursor=pointer]:
+                    - /url: ../en
+                    - text: English
+                - listitem [ref=e328]:
+                  - link [ref=e414] [cursor=pointer]:
+                    - /url: ../es
+                    - text: Español
+                - listitem [ref=e330]:
+                  - link [ref=e415] [cursor=pointer]:
+                    - /url: ../fr
+                    - text: Français
+                - listitem [ref=e332]:
+                  - link [ref=e416] [cursor=pointer]:
+                    - /url: ../it
+                    - text: Italiano
+                - listitem [ref=e334]:
+                  - link [ref=e417] [cursor=pointer]:
+                    - /url: ../nl
+                    - text: Nederlands
+                - listitem [ref=e336]:
+                  - link [ref=e418] [cursor=pointer]:
+                    - /url: ../pl
+                    - text: Polski
+                - listitem [ref=e338]:
+                  - link [ref=e419] [cursor=pointer]:
+                    - /url: ../pt
+                    - text: Português
+                - listitem [ref=e340]:
+                  - link [ref=e420] [cursor=pointer]:
+                    - /url: ../tr
+                    - text: Türkçe
+          - generic [ref=e343]:
+            - text: © 2021 - 2026
+            - link [ref=e421] [cursor=pointer]:
+              - /url: https://ghostfol.io
+              - text: Ghostfolio
+          - generic [ref=e347]: The risk of loss in trading can be substantial. It is not advisable to invest money you may need in the short term.
+        - generic [ref=e350]: Ghostfolio
+  - dialog "Sign in" [active] [ref=e426]:
+    - generic [ref=e429]:
+      - generic [ref=e431]:
+        - generic [ref=e432]: Sign in
+        - button [ref=e433] [cursor=pointer]:
+          - generic [ref=e434]:
+            - img:
+              - generic:
+                - img
+      - generic [ref=e441]:
+        - generic [ref=e442]:
+          - text: Security Token
+          - generic [ref=e443]: "*"
+        - textbox "Security Token" [ref=e445]
+        - button [ref=e447] [cursor=pointer]:
+          - img:
+            - generic:
+              - img
+      - generic [ref=e449]:
+        - generic [ref=e452]:
+          - generic [ref=e453] [cursor=pointer]:
+            - checkbox "Stay signed in" [ref=e454]
+            - generic:
+              - img
+          - generic [ref=e455] [cursor=pointer]: Stay signed in
+        - generic [ref=e456]:
+          - button "Sign in" [disabled]:
+            - generic: Sign in
