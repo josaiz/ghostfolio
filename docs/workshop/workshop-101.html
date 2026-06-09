@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghostfolio Workshop 101</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-2: #21253a;
+      --border: #2d3148;
+      --accent: #6c63ff;
+      --accent-2: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --blue: #60a5fa;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --code-bg: #111827;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 0 1rem;
+    }
+
+    .page { max-width: 960px; margin: 0 auto; padding: 3rem 0 6rem; }
+
+    .header {
+      text-align: center;
+      padding: 3rem 0 2.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+    .header .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 40%, var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.8rem;
+    }
+    .header p { color: var(--text-muted); font-size: 1.05rem; max-width: 680px; margin: 0 auto; }
+
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .toc-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+    .toc ol { padding-left: 1.2rem; }
+    .toc li { margin-bottom: 0.35rem; }
+    .toc a { color: var(--accent-2); text-decoration: none; font-size: 0.9rem; }
+    .toc a:hover { color: #fff; }
+
+    .section { margin-bottom: 3.5rem; }
+    .step-label { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+    .step-num {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .step-title { font-size: 1.35rem; font-weight: 700; color: var(--text); }
+
+    p { color: var(--text-muted); margin-bottom: 1rem; }
+    h2 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 1.5rem 0 0.7rem; }
+    strong { color: var(--text); }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .card-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.8rem; }
+    .card p:last-child { margin-bottom: 0; }
+
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .grid-four { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+    .concept-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+    .concept-card .name { color: var(--text); font-weight: 800; margin-bottom: 0.2rem; }
+    .concept-card .tagline { color: var(--accent-2); font-size: 0.8rem; font-weight: 700; margin-bottom: 0.55rem; }
+    .concept-card p { font-size: 0.86rem; margin-bottom: 0; }
+
+    .callout { border-radius: var(--radius); padding: 1.1rem 1.3rem; margin-bottom: 1.2rem; border-left: 3px solid; }
+    .callout.try { background: #0d2135; border-color: var(--blue); }
+    .callout.try .callout-label { color: var(--blue); }
+    .callout.warn { background: #1e1800; border-color: var(--yellow); }
+    .callout.warn .callout-label { color: var(--yellow); }
+    .callout.tip { background: #081f18; border-color: var(--green); }
+    .callout.tip .callout-label { color: var(--green); }
+    .callout-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.45rem; }
+    .callout p { margin-bottom: 0; color: var(--text); font-size: 0.92rem; }
+    .callout ul { color: var(--text); font-size: 0.92rem; padding-left: 1.2rem; }
+    .callout li { margin-bottom: 0.2rem; }
+
+    code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      font-family: 'JetBrains Mono', Menlo, monospace;
+      font-size: 0.82em;
+      color: var(--accent-2);
+    }
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow-x: auto;
+    }
+    .code-block pre { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, monospace; font-size: 0.85rem; color: #e2e8f0; white-space: pre; }
+    .code-block .lang-tag { position: absolute; top: 0.5rem; right: 0.7rem; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+    .copy-btn { position: absolute; top: 0.4rem; right: 3.5rem; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted); border-radius: 5px; padding: 0.2rem 0.6rem; font-size: 0.7rem; cursor: pointer; transition: all 0.15s; }
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+    .timeline { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.7rem; margin: 1.2rem 0; }
+    .timebox { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.85rem; min-height: 7rem; }
+    .timebox .time { color: var(--green); font-size: 0.75rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .timebox .label { color: var(--text); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .timebox p { font-size: 0.78rem; margin-bottom: 0; }
+
+    .flow { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin: 1.2rem 0; }
+    .flow-box { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 0.55rem 1rem; font-size: 0.82rem; font-weight: 600; text-align: center; min-width: 120px; }
+    .flow-box.highlight { border-color: var(--accent); color: var(--accent-2); }
+    .flow-arrow { color: var(--text-muted); }
+
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.4rem 0; font-size: 0.92rem; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li input[type=checkbox] { margin-top: 0.3rem; accent-color: var(--accent); flex-shrink: 0; }
+
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; overflow: hidden; border-radius: var(--radius); }
+    th, td { border: 1px solid var(--border); padding: 0.75rem; vertical-align: top; text-align: left; }
+    th { background: var(--surface-2); color: var(--text); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    td { background: var(--surface); color: var(--text-muted); font-size: 0.88rem; }
+
+    .footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; padding-top: 2rem; border-top: 1px solid var(--border); margin-top: 4rem; }
+
+    @media (max-width: 860px) {
+      .grid, .grid-four, .timeline { grid-template-columns: 1fr; }
+      .header h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="badge">Innovation Night Workshop</div>
+    <h1>Workshop 101</h1>
+    <p>The fast guide to the Ghostfolio + OpenCode session: what we are building, how the agentic system works, and how to complete a card safely.</p>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#north-star">The north star</a></li>
+      <li><a href="#what-you-build">What you will build</a></li>
+      <li><a href="#opencode-model">OpenCode model</a></li>
+      <li><a href="#agenda">Suggested agenda</a></li>
+      <li><a href="#preflight">Setup and pre-flight</a></li>
+      <li><a href="#board">Whiteboard and card cycle</a></li>
+      <li><a href="#learning-matrix">Learning matrix</a></li>
+      <li><a href="#guardrails">Guardrails and done checklist</a></li>
+    </ol>
+  </nav>
+
+  <div class="section" id="north-star">
+    <div class="step-label">
+      <div class="step-num">1</div>
+      <div class="step-title">The north star</div>
+    </div>
+    <div class="callout tip">
+      <div class="callout-label">Repeat this often</div>
+      <p>We are not asking AI for code. We are building an agentic development system to implement a real product improvement.</p>
+    </div>
+    <p>
+      Commands, agents, skills, and MCPs are the means. The goal is a useful Ghostfolio feature delivered in a governed,
+      repeatable, reviewable way. Every card must have a functional product objective and must create, improve, or use at
+      least one OpenCode component.
+    </p>
+    <div class="card">
+      <div class="card-title">Anchor idea</div>
+      <p><strong>Command</strong> = how to work. <strong>Agent</strong> = who works. <strong>Skill</strong> = what to know. <strong>MCP</strong> = what data to use.</p>
+    </div>
+  </div>
+
+  <div class="section" id="what-you-build">
+    <div class="step-label">
+      <div class="step-num">2</div>
+      <div class="step-title">What you will build</div>
+    </div>
+    <p>
+      The shared epic is <strong>Portfolio Insights Assistant</strong>. It summarises the demo portfolio, detects concentration by
+      account and symbol, identifies simple deterministic anomalies, displays educational insights, and avoids personalised
+      financial advice.
+    </p>
+    <div class="grid">
+      <div class="concept-card">
+        <div class="name">Demo portfolio summary</div>
+        <div class="tagline">Descriptive insight</div>
+        <p>Show account totals, holdings, cost, and concentration using the workshop demo data.</p>
+      </div>
+      <div class="concept-card">
+        <div class="name">Concentration signals</div>
+        <div class="tagline">Account and symbol view</div>
+        <p>Identify where nominal cost is concentrated without saying what to buy or sell.</p>
+      </div>
+      <div class="concept-card">
+        <div class="name">Anomaly detection</div>
+        <div class="tagline">Deterministic heuristics</div>
+        <p>Flag examples such as duplicates, high fees, currency mismatches, price outliers, and oversell risk.</p>
+      </div>
+      <div class="concept-card">
+        <div class="name">Safe explanation</div>
+        <div class="tagline">Governed language</div>
+        <p>Review visible copy so it remains descriptive and educational, not personalised financial advice.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="opencode-model">
+    <div class="step-label">
+      <div class="step-num">3</div>
+      <div class="step-title">OpenCode model</div>
+    </div>
+    <p>
+      OpenCode is an AI-powered coding agent that lives in the terminal, but the important part for this workshop is that
+      it is <strong>governed by the repository itself</strong>. Instead of everyone writing loose prompts in a chat, the team defines
+      how to work with AI in versioned files that can be reviewed like code.
+    </p>
+    <div class="card">
+      <div class="card-title">Why this matters</div>
+      <p>
+        The workflow becomes repeatable, traceable, and controllable. Commands standardise how work starts, agents limit who
+        does what, skills carry project knowledge, and MCPs provide governed data access instead of invented context.
+      </p>
+    </div>
+    <div class="grid-four">
+      <div class="concept-card">
+        <div class="name">Commands</div>
+        <div class="tagline">Repeatable workflows</div>
+        <p>Prompt templates invoked with <code>/name</code>. They standardise tasks such as investigate, plan, implement, and review.</p>
+        <p style="margin-top: 0.6rem;">Where: <code>.opencode/commands/&lt;name&gt;.md</code>. Examples: <code>/workshop-analyze-demo-portfolio</code>, <code>/workshop-plan-backend-card</code>, <code>/workshop-implement-frontend-slice</code>.</p>
+      </div>
+      <div class="concept-card">
+        <div class="name">Agents</div>
+        <div class="tagline">Specialists with permissions</div>
+        <p>Role-specific workers with their own prompt and permissions. A backend agent can edit backend code; a safety reviewer can stay read-only.</p>
+        <p style="margin-top: 0.6rem;">Where: <code>.opencode/agents/&lt;name&gt;.md</code> plus root rules in <code>AGENTS.md</code>. Examples: <code>backend-nestjs-agent</code>, <code>frontend-angular-agent</code>, <code>financial-safety-reviewer</code>.</p>
+      </div>
+      <div class="concept-card">
+        <div class="name">Skills</div>
+        <div class="tagline">Reusable knowledge</div>
+        <p>Project best-practice manuals loaded only when the task needs them. They prevent the agent from reinventing repo patterns.</p>
+        <p style="margin-top: 0.6rem;">Where: <code>.opencode/skills/&lt;name&gt;/SKILL.md</code>. Examples: <code>ghostfolio-domain-analysis</code>, <code>nestjs-api-development</code>, <code>angular-nx-development</code>.</p>
+      </div>
+      <div class="concept-card">
+        <div class="name">MCPs</div>
+        <div class="tagline">Governed data access</div>
+        <p>Standard connectors that expose external tools or data to OpenCode. The workshop MCP gives read-only access to real demo portfolio data.</p>
+        <p style="margin-top: 0.6rem;">Where: configured in <code>opencode.json</code>, implemented in <code>tools/mcp/ghostfolio-demo-data-mcp/</code>. Examples: <code>get_demo_portfolio_summary</code>, <code>detect_demo_anomalies</code>.</p>
+      </div>
+    </div>
+    <div class="callout try">
+      <div class="callout-label">Show live</div>
+      <p>Open <code>.opencode/commands/</code>, <code>.opencode/agents/</code>, <code>.opencode/skills/</code>, and <code>opencode.json</code> so participants see that the AI workflow is versioned in the repo.</p>
+    </div>
+    <div class="callout warn">
+      <div class="callout-label">Governance point</div>
+      <p>Per-agent permissions and repository rules are real control mechanisms: the AI cannot do more than the workspace allows, and the shared rules protect secrets, real data, and financial-safety boundaries.</p>
+    </div>
+  </div>
+
+  <div class="section" id="agenda">
+    <div class="step-label">
+      <div class="step-num">4</div>
+      <div class="step-title">Suggested agenda</div>
+    </div>
+    <div class="timeline">
+      <div class="timebox"><div class="time">5 min</div><div class="label">Opening</div><p>Why OpenCode and what participants take away.</p></div>
+      <div class="timebox"><div class="time">25-30 min</div><div class="label">Concepts</div><p>Commands, skills, agents, and MCPs with repo examples.</p></div>
+      <div class="timebox"><div class="time">15 min</div><div class="label">Setup</div><p>Start Ghostfolio and run pre-flight checks.</p></div>
+      <div class="timebox"><div class="time">10 min</div><div class="label">Assignment</div><p>Explain columns, swimlanes, and cards.</p></div>
+      <div class="timebox"><div class="time">60 min</div><div class="label">Board work</div><p>Resolve proposed tasks, then propose new ones.</p></div>
+      <div class="timebox"><div class="time">15 min</div><div class="label">Wrap-up</div><p>Demo the happy path and recap the workflow.</p></div>
+    </div>
+  </div>
+
+  <div class="section" id="preflight">
+    <div class="step-label">
+      <div class="step-num">5</div>
+      <div class="step-title">Setup and pre-flight</div>
+    </div>
+    <p>Start with <a href="getting-started.html" style="color: var(--accent-2);">Getting Started</a> if Ghostfolio is not already running.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Start Ghostfolio</div>
+        <div class="code-block">
+          <span class="lang-tag">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>./scripts/start.sh
+./scripts/check.sh</pre>
+        </div>
+        <p>Windows: use <code>.\scripts\start.ps1</code> and <code>.\scripts\check.ps1</code>.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Seed demo data</div>
+        <div class="code-block">
+          <span class="lang-tag">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>./scripts/seed-workshop-data.sh</pre>
+        </div>
+        <p>Create the first admin user in the UI, save the security token, then seed the three demo accounts.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Verify MCP</div>
+        <div class="code-block">
+          <span class="lang-tag">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>./scripts/check-demo-mcp.sh</pre>
+        </div>
+        <p>The MCP insights demo can run even if Ghostfolio is not running because it reads CSV files.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Rebuild app changes</div>
+        <div class="code-block">
+          <span class="lang-tag">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>./scripts/rebuild.sh</pre>
+        </div>
+        <p>Use this only after changing Ghostfolio app code under <code>apps/</code>. OpenCode config and MCP edits do not need rebuild.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Everyone checks</div>
+      <ul class="checklist">
+        <li><input type="checkbox" /> <span>OpenCode installed and an AI model configured.</span></li>
+        <li><input type="checkbox" /> <span>Docker Desktop running and Ghostfolio responding.</span></li>
+        <li><input type="checkbox" /> <span>Demo data loaded with <code>seed-workshop-data</code>.</span></li>
+        <li><input type="checkbox" /> <span>MCP green with <code>check-demo-mcp</code>.</span></li>
+        <li><input type="checkbox" /> <span>Repo opened at the root so OpenCode detects <code>opencode.json</code>.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="board">
+    <div class="step-label">
+      <div class="step-num">6</div>
+      <div class="step-title">Whiteboard and card cycle</div>
+    </div>
+    <p>The board uses swimlanes such as Foundation, Frontend, Backend, DATA, MCP, Safety, and Integration. Each swimlane has three columns.</p>
+    <div class="grid">
+      <div class="concept-card"><div class="name">Examples</div><div class="tagline">Already resolved</div><p>Use these as templates. Study the command, agent, skill, and product deliverable.</p></div>
+      <div class="concept-card"><div class="name">Proposed tasks</div><div class="tagline">Resolve during session</div><p>These are the main workshop cards. Pick one from your swimlane.</p></div>
+      <div class="concept-card"><div class="name">Use your imagination</div><div class="tagline">Extend safely</div><p>After finishing, propose a new card that still uses OpenCode components and follows guardrails.</p></div>
+      <div class="concept-card"><div class="name">Facilitator checkpoints</div><div class="tagline">Keep teams aligned</div><p>Show the generated plan, the command used, the diff, and the safety review result.</p></div>
+    </div>
+    <h2>Work a card</h2>
+    <div class="flow">
+      <div class="flow-box highlight">Investigate</div>
+      <div class="flow-arrow">-&gt;</div>
+      <div class="flow-box">Plan</div>
+      <div class="flow-arrow">-&gt;</div>
+      <div class="flow-box">Implement</div>
+      <div class="flow-arrow">-&gt;</div>
+      <div class="flow-box">Review</div>
+      <div class="flow-arrow">-&gt;</div>
+      <div class="flow-box">Handoff</div>
+    </div>
+    <div class="code-block">
+      <span class="lang-tag">text</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre>investigate -&gt; /workshop-inspect-architecture &lt;your-topic&gt;
+plan        -&gt; /workshop-plan-frontend-card | /workshop-plan-backend-card | /workshop-plan-mcp-card
+implement   -&gt; /workshop-implement-small-product-slice   (only when the card asks for it)
+review      -&gt; /workshop-review-financial-safety
+handoff     -&gt; /workshop-prepare-team-handoff</pre>
+    </div>
+  </div>
+
+  <div class="section" id="learning-matrix">
+    <div class="step-label">
+      <div class="step-num">7</div>
+      <div class="step-title">Learning matrix</div>
+    </div>
+    <p>Every card connects a product task to an OpenCode concept, a concrete component, and a learning outcome.</p>
+    <table>
+      <thead>
+        <tr><th>Card family</th><th>OpenCode concept</th><th>What participants learn</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Foundation</td><td>Command + Agent + Skill + MCP</td><td>Investigate a real repository and translate product goals into stable contracts.</td></tr>
+        <tr><td>Frontend</td><td>Command + Agent + Angular skill</td><td>Plan visual changes that respect existing Nx and Angular patterns.</td></tr>
+        <tr><td>Backend</td><td>Agent + NestJS skill + read-only data access</td><td>Design small contract-first endpoints and descriptive concentration services.</td></tr>
+        <tr><td>DATA</td><td>MCP + domain skill + safety</td><td>Use demo data to define deterministic concentration and anomaly rules.</td></tr>
+        <tr><td>MCP</td><td>MCP tool + agent + config</td><td>Expose product capabilities as read-only tools with explicit schemas.</td></tr>
+        <tr><td>Safety</td><td>Agent + financial safety skill</td><td>Turn product constraints into reusable quality gates.</td></tr>
+        <tr><td>Integration</td><td>Command + handoff agent</td><td>Orchestrate components into a minimal demo and transfer context between teams.</td></tr>
+      </tbody>
+    </table>
+    <div class="callout tip">
+      <div class="callout-label">Mastery levels</div>
+      <p>Level 1: use an existing component. Level 2: improve or extend a component. Level 3: create a new component connected to a product card.</p>
+    </div>
+  </div>
+
+  <div class="section" id="guardrails">
+    <div class="step-label">
+      <div class="step-num">8</div>
+      <div class="step-title">Guardrails and done checklist</div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Do not touch</div>
+        <ul class="checklist">
+          <li><input type="checkbox" /> <span>No <code>.env</code>, <code>.env.dev</code>, <code>.env.example</code>, or secrets.</span></li>
+          <li><input type="checkbox" /> <span>No real user data. Use only the demo dataset.</span></li>
+          <li><input type="checkbox" /> <span>No <code>prisma/schema.prisma</code>, migrations, Docker files, <code>nx.json</code>, or <code>tsconfig.base.json</code>.</span></li>
+          <li><input type="checkbox" /> <span>No personalised financial advice. Describe, do not advise.</span></li>
+          <li><input type="checkbox" /> <span>No <code>git commit</code> or <code>git push</code> unless the facilitator asks.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Card done</div>
+        <ul class="checklist">
+          <li><input type="checkbox" /> <span>Functional objective met with a plan or minimal code.</span></li>
+          <li><input type="checkbox" /> <span>At least one command, agent, skill, or MCP was created, improved, or used.</span></li>
+          <li><input type="checkbox" /> <span>Visible text passes <code>/workshop-review-financial-safety</code>.</span></li>
+          <li><input type="checkbox" /> <span><code>git status</code> and <code>git diff</code> reviewed.</span></li>
+          <li><input type="checkbox" /> <span>Handoff prepared with <code>/workshop-prepare-team-handoff</code>.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout warn">
+      <div class="callout-label">Safety wording</div>
+      <p>Insights should be descriptive and educational. Avoid instructions such as buy, sell, rebalance now, increase exposure, or reduce this position.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Innovation Night · Ghostfolio Agentic Workshop · June 2026<br />
+    Sources: <code>participant-guide.md</code> · <code>pedagogical-matrix.md</code> · <code>session-script.md</code>
+  </div>
+
+</div>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.parentElement.querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1800);
+    });
+  }
+</script>
+</body>
+</html>

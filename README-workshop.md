@@ -5,6 +5,7 @@
 | Resource | Description |
 |----------|-------------|
 | [Getting Started](https://htmlpreview.github.io/?https://raw.githubusercontent.com/josaiz/ghostfolio/refs/heads/workshop/exercises/docs/workshop/getting-started.html) | Install, run, and configure Ghostfolio step by step |
+| [Workshop 101](https://htmlpreview.github.io/?https://raw.githubusercontent.com/josaiz/ghostfolio/refs/heads/workshop/exercises/docs/workshop/workshop-101.html) | Workshop purpose, OpenCode model, card cycle, and safety checklist |
 | [Backlog (Kanban)](https://htmlpreview.github.io/?https://raw.githubusercontent.com/josaiz/ghostfolio/refs/heads/workshop/exercises/docs/workshop/kanban.html) | Workshop task cards, filterable by difficulty and team |
 
 ---
