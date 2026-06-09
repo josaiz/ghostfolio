@@ -4,8 +4,8 @@
 
 | Resource | Description |
 |----------|-------------|
-| [Getting Started](docs/workshop/getting-started.html) | Install, run, and configure Ghostfolio step by step |
-| [Backlog (Kanban)](docs/workshop/kanban.html) | Workshop task cards, filterable by difficulty and team |
+| [Getting Started](https://htmlpreview.github.io/?https://raw.githubusercontent.com/josaiz/ghostfolio/refs/heads/workshop/exercises/docs/workshop/getting-started.html) | Install, run, and configure Ghostfolio step by step |
+| [Backlog (Kanban)](https://htmlpreview.github.io/?https://raw.githubusercontent.com/josaiz/ghostfolio/refs/heads/workshop/exercises/docs/workshop/kanban.html) | Workshop task cards, filterable by difficulty and team |
 
 ---
 
