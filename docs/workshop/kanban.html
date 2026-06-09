@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Innovation Night · Portfolio Insights Backlog</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #dde1e8;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 12px;
+      min-height: 100vh;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: #1a1f35;
+      color: white;
+      padding: 13px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .topbar h1 { font-size: 15px; font-weight: 700; letter-spacing: -.2px; }
+    .topbar p  { font-size: 11px; color: #7a84a8; margin-top: 2px; }
+    .legend { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #7a84a8; }
+    .lswatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+    .lswatch-orange { background: #F5A623; }
+    .lswatch-blue   { background: #5B87C5; }
+    .lswatch-green  { background: #5EAB61; }
+
+    /* ── Filter bar ── */
+    .filterbar {
+      background: #232840;
+      padding: 7px 24px;
+      display: flex;
+      gap: 7px;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #1a1f35;
+    }
+    .flabel { font-size: 10px; color: #7a84a8; text-transform: uppercase; letter-spacing: .6px; margin-right: 2px; }
+    .fbtn {
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid #3a4060;
+      background: transparent;
+      color: #7a84a8;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .fbtn:hover { border-color: #6366f1; color: #e2e8f0; }
+    .fbtn.active { background: rgba(99,102,241,.2); border-color: #6366f1; color: #e2e8f0; }
+    .sep { width: 1px; height: 16px; background: #3a4060; margin: 0 4px; }
+
+    /* ── Stats bar ── */
+    .statsbar {
+      background: #1e2338;
+      padding: 5px 24px;
+      display: flex;
+      gap: 20px;
+      font-size: 11px;
+      color: #7a84a8;
+      flex-wrap: wrap;
+    }
+    .statsbar strong { color: #e2e8f0; }
+
+    /* ── Board wrap ── */
+    .board-wrap { overflow-x: auto; padding: 20px 24px 32px; }
+
+    /* ── Board ── */
+    .board {
+      min-width: 860px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 18px rgba(0,0,0,.18);
+      overflow: hidden;
+    }
+
+    /* ── Section header row ── */
+    .col-headers {
+      display: grid;
+      grid-template-columns: 118px 1fr 1fr 260px;
+    }
+    .ch-spacer {
+      background: #eef0f5;
+      border-right: 2px solid #d0d5e0;
+      border-bottom: 3px solid #c0c6d4;
+    }
+    .ch {
+      padding: 15px 20px;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      border-right: 2px solid rgba(0,0,0,.1);
+      border-bottom: 3px solid rgba(0,0,0,.12);
+    }
+    .ch.ch-examples    { background: #F5A623; color: #3D1E00; }
+    .ch.ch-proposed    { background: #5B87C5; color: #ffffff; }
+    .ch.ch-imagination { background: #5EAB61; color: #ffffff; }
+
+    /* ── Swimlane row ── */
+    .lane-row {
+      display: grid;
+      grid-template-columns: 118px 1fr 1fr 260px;
+      min-height: 150px;
+      border-bottom: 2px solid #d0d5e0;
+    }
+    .lane-row:last-child { border-bottom: none; }
+
+    /* ── Arrow label cell ── */
+    .lane-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 6px;
+      background: #eef0f5;
+      border-right: 2px solid #d0d5e0;
+    }
+    .arrow-shape {
+      background: #4A88C4;
+      color: white;
+      font-weight: 800;
+      font-size: 10.5px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+      line-height: 1.3;
+      text-align: center;
+      /* pentagon pointing right */
+      padding: 9px 26px 9px 10px;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%);
+      width: 100%;
+    }
+
+    /* ── Cards cell ── */
+    .lane-section {
+      padding: 10px 10px 12px;
+      border-right: 2px solid #d0d5e0;
+    }
+    .lane-section:last-child { border-right: none; }
+    .lane-section.sec-examples    { background: #FFFBF0; }
+    .lane-section.sec-proposed    { background: #F0F5FC; }
+    .lane-section.sec-imagination { background: #F0F9F0; }
+
+    .cards-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-content: flex-start;
+    }
+
+    /* ── Card base ── */
+    .card {
+      border-radius: 5px;
+      padding: 9px 10px;
+      box-shadow: 1px 2px 6px rgba(0,0,0,.13);
+      width: 178px;
+      cursor: pointer;
+      transition: box-shadow .15s, transform .12s;
+      position: relative;
+    }
+    .card:hover { box-shadow: 2px 4px 12px rgba(0,0,0,.22); transform: translateY(-1px); }
+
+    /* ── Copy button ── */
+    .copy-btn {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,.15);
+      background: rgba(255,255,255,.7);
+      color: #666;
+      font-size: 11px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .15s, background .15s, color .15s;
+      z-index: 5;
+    }
+    .card:hover .copy-btn { opacity: 1; }
+    .copy-btn:hover { background: white; color: #222; border-color: rgba(0,0,0,.3); }
+    .copy-btn.copied { background: #22c55e; border-color: #22c55e; color: white; opacity: 1; }
+
+    /* EXAMPLES card — warm cream */
+    .card-ex {
+      background: #FFF8D6;
+      border: 1px solid #E8C840;
+    }
+    /* PROPOSED card — light blue */
+    .card-pr {
+      background: #DCEcF9;
+      border: 1px solid #90BBE0;
+    }
+
+    .card-author {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #666;
+      padding-bottom: 4px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid rgba(0,0,0,.09);
+    }
+    .card-id {
+      font-size: 10px;
+      font-weight: 800;
+      color: #333;
+      letter-spacing: .3px;
+      margin-bottom: 2px;
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.35;
+      margin-bottom: 5px;
+    }
+    .card-tags {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      margin-bottom: 5px;
+    }
+    .ctag {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: rgba(0,0,0,.08);
+      color: #555;
+    }
+    .ctag.low  { background: rgba(134,239,172,.35); color: #14532d; }
+    .ctag.med  { background: rgba(252,211,77,.35);  color: #713f12; }
+    .ctag.high { background: rgba(248,113,113,.35); color: #7f1d1d; }
+    .card-goal { font-size: 10px; color: #555; line-height: 1.4; }
+
+    /* ── Expanded detail ── */
+    .card-detail { display: none; margin-top: 7px; padding-top: 7px; border-top: 1px solid rgba(0,0,0,.1); }
+    .card.open .card-detail { display: block; }
+    .card.open {
+      width: auto;
+      min-width: 178px;
+      max-width: 310px;
+      z-index: 20;
+      box-shadow: 3px 6px 20px rgba(0,0,0,.28);
+    }
+    .drow { display: flex; gap: 5px; margin-bottom: 4px; font-size: 10px; }
+    .dlabel { min-width: 62px; font-weight: 700; color: #888; flex-shrink: 0; }
+    .dval { color: #222; line-height: 1.4; }
+    .dval code {
+      background: rgba(0,0,0,.06);
+      border-radius: 2px;
+      padding: 0 3px;
+      font-family: 'SF Mono', monospace;
+      font-size: 9px;
+    }
+    .dep-chip {
+      display: inline-block;
+      font-size: 9px;
+      padding: 0 4px;
+      border-radius: 3px;
+      background: rgba(74,136,196,.18);
+      color: #1a5a9e;
+      margin: 1px 2px 0 0;
+    }
+    .hint-box {
+      background: rgba(0,0,0,.05);
+      border-radius: 3px;
+      padding: 5px 7px;
+      font-size: 10px;
+      color: #555;
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+    .hint-box b { color: #b45309; }
+
+    /* ── Placeholder cards ── */
+    .card-placeholder {
+      background: #C5E8C7;
+      border: 1px dashed #74B876;
+      border-radius: 5px;
+      width: 178px;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2E7D32;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+
+    /* ── Visibility ── */
+    .card.hidden { display: none; }
+    .lane-row[data-visible="0"] { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <h1>Portfolio Insights Assistant — Innovation Night Backlog</h1>
+    <p>7 swimlanes · 16 tasks · Ghostfolio + OpenCode · click a card to expand</p>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="lswatch lswatch-orange"></div>Resolved (Examples)</div>
+    <div class="legend-item"><div class="lswatch lswatch-blue"></div>Tooling ready (Build it)</div>
+    <div class="legend-item"><div class="lswatch lswatch-green"></div>Your ideas</div>
+  </div>
+</div>
+
+<div class="filterbar">
+  <span class="flabel">Filter</span>
+  <button class="fbtn active" data-filter="all">All</button>
+  <button class="fbtn" data-filter="examples">Examples</button>
+  <button class="fbtn" data-filter="proposed">Proposed</button>
+  <div class="sep"></div>
+  <button class="fbtn" data-filter="low">Low</button>
+  <button class="fbtn" data-filter="medium">Medium</button>
+  <button class="fbtn" data-filter="high">High</button>
+</div>
+
+<div class="statsbar" id="statsbar"></div>
+
+<div class="board-wrap">
+  <div class="board" id="board"></div>
+</div>
+
+<script>
+const SWIMLANES = [
+  'Foundation',
+  'Frontend',
+  'Backend',
+  'Domain & Data',
+  'MCP',
+  'Safety & Review',
+  'Integration',
+];
+
+const CARDS = [
+  { id:'FND-01', swimlane:'Foundation',      status:'examples', team:'Any',                  diff:'low',    time:20, concept:'Command + Agent',
+    title:'Technical map of Ghostfolio',
+    goal:'Understand where everything lives so nothing breaks when building insights.',
+    deliverable:'Technical map (files, contracts, endpoints, risks) of the portfolio/insights area.',
+    agentCmd:'/workshop-inspect-architecture → ghostfolio-architect agent',
+    deps:[], acceptance:'Document with verified real paths and the recommended planning command.',
+    hint:'Start from docs/workshop/architecture-notes.md; ask the agent to confirm paths with grep.' },
+
+  { id:'FND-02', swimlane:'Foundation',      status:'examples', team:'Data/Domain',           diff:'medium', time:30, concept:'Skill + Agent + MCP',
+    title:'Functional contract of the Portfolio Insights Assistant',
+    goal:'Define what insights the feature offers and in what data shape, so FE/BE/MCP fit together.',
+    deliverable:'Insights data contract (fields, types, examples) consumed by frontend and backend.',
+    agentCmd:'skill ghostfolio-domain-analysis + agent portfolio-domain-agent + MCP',
+    deps:['FND-01'], acceptance:'Contract with 3–5 descriptive insights, each traceable to an MCP metric.',
+    hint:'Use get_demo_portfolio_summary; nothing about "buy/sell".' },
+
+  { id:'P2-FE-01', swimlane:'Frontend',    status:'proposed', team:'Frontend',              diff:'medium', time:35, concept:'Command + Agent + Skill (planning)',
+    title:'Plan: widget Portfolio Insights',
+    goal:'Define how the demo portfolio insights summary will be displayed in the UI.',
+    deliverable:'Plan for the gf-portfolio-insights component and its mount point (inline in Home/Analytics).',
+    agentCmd:'/workshop-plan-frontend-card P2-FE-01 → frontend-angular-agent + angular-nx-development',
+    deps:['portfolio-insights-feature.md'], acceptance:'Plan with standalone component (home-overview pattern), how it consumes DataService.fetchPortfolioInsights, inline mounting and validation (npx nx run client:build:development-en).',
+    hint:'Plain text (no $localize) to avoid breaking build:production/Docker; no new libraries.' },
+
+  { id:'P2-FE-02', swimlane:'Frontend',    status:'proposed', team:'Frontend',              diff:'high',   time:50, concept:'Command + Agent + Skill + Safety',
+    title:'Implementation: widget Portfolio Insights',
+    goal:'Let the user see a panel in Home/Analytics with account concentration and anomalies.',
+    deliverable:'Visible widget consuming GET /api/v1/portfolio-insights.',
+    agentCmd:'/workshop-implement-frontend-slice P2-FE-02 → frontend-angular-agent + angular-nx-development + product-slice-delivery; text reviewed with /workshop-review-financial-safety',
+    deps:['P2-FE-01','P2-BE-02'], acceptance:'npx nx run client:build:development-en green; after ./scripts/rebuild.sh the "Portfolio Insights" widget appears in Home/Analytics with endpoint figures; text passes safety review (PASS).',
+    hint:'Create apps/client/src/app/components/portfolio-insights/{component.ts,html,scss}, add fetchPortfolioInsights to libs/ui/.../data.service.ts, and mount inline in home-overview.' },
+
+  { id:'FE-01', swimlane:'Frontend',         status:'examples', team:'Frontend',              diff:'medium', time:40, concept:'Command + Agent + Skill',
+    title:'"Portfolio Insights" widget in the UI',
+    goal:'Allow a user to see a panel with the demo portfolio insights.',
+    deliverable:'Plan (or component) for a visible widget showing concentration/anomalies.',
+    agentCmd:'/workshop-plan-frontend-card FE-01 → frontend-angular-agent + angular-nx-development',
+    deps:['FND-02'], acceptance:'Plan with real component path, analogous component, inputs/contract, lint validation.',
+    hint:'Copy the home-overview/portfolio-summary pattern; do not add libraries.' },
+
+  { id:'FE-02', swimlane:'Frontend',         status:'examples', team:'Frontend',              diff:'medium', time:35, concept:'Command + Agent + Skill',
+    title:'"Demo Portfolio Health" section',
+    goal:'A view that summarises the descriptive "health" of the demo portfolio.',
+    deliverable:'Plan (or view) with a simple health/insights visualisation.',
+    agentCmd:'/workshop-plan-frontend-card FE-02 → frontend-angular-agent + angular-nx-development',
+    deps:['FE-01','FND-02'], acceptance:'Plan with mount point, metrics shown and their sources.',
+    hint:'Health = descriptive metrics, not a score that looks like a recommendation.' },
+
+  { id:'FE-03', swimlane:'Frontend',         status:'examples', team:'Frontend',              diff:'medium', time:35, concept:'Command + Agent + Safety',
+    title:'"Explain demo portfolio" button',
+    goal:'An interaction that requests and displays the demo portfolio summary.',
+    deliverable:'Plan (or implementation) of a button that consumes the endpoint/MCP and shows the summary.',
+    agentCmd:'/workshop-plan-frontend-card FE-03 + /workshop-review-financial-safety',
+    deps:['FE-01','BE-01','MCP-02'], acceptance:'Displayed text passes the safety review (PASS) and is descriptive.',
+    hint:'The "explain" describes; it does not advise.' },
+
+  { id:'P2-BE-01', swimlane:'Backend',     status:'proposed', team:'Backend',               diff:'medium', time:35, concept:'Command + Agent + Skill (planning)',
+    title:'Plan: endpoint Portfolio Insights',
+    goal:'Define how Ghostfolio will expose a deterministic insights summary for the frontend to consume.',
+    deliverable:'Technical plan for the GET /api/v1/portfolio-insights endpoint (module/controller/service + contract).',
+    agentCmd:'/workshop-plan-backend-card P2-BE-01 → backend-nestjs-agent + nestjs-api-development',
+    deps:['portfolio-insights-feature.md'], acceptance:'Plan with NestJS interface in libs/common, the route, the pattern to copy (endpoints/benchmarks/), files to create and validation (npx nx run api:build).',
+    hint:'Public endpoint; constant payload (CSVs do not enter Docker); copy the @Controller decorator.' },
+
+  { id:'P2-BE-02', swimlane:'Backend',     status:'proposed', team:'Backend',               diff:'high',   time:50, concept:'Command + Agent + Skill (implementation)',
+    title:'Implementation: endpoint Portfolio Insights',
+    goal:'Make GET /api/v1/portfolio-insights return the deterministic summary, ready for the widget.',
+    deliverable:'Working endpoint (real code) according to the contract.',
+    agentCmd:'/workshop-implement-backend-slice P2-BE-02 → backend-nestjs-agent + nestjs-api-development + product-slice-delivery',
+    deps:['P2-BE-01'], acceptance:'npx nx run api:build --configuration=development green; curl -s http://localhost:3333/api/v1/portfolio-insights returns JSON with 3 accounts + 5 anomalies (section 3 of the contract).',
+    hint:'Create apps/api/src/app/endpoints/portfolio-insights/{module,controller,service}.ts, interface in libs/common/.../interfaces/ (+ export in barrel index.ts), register module in app.module.ts. Pure service with constant payload.' },
+
+  { id:'BE-01', swimlane:'Backend',          status:'examples', team:'Backend',               diff:'medium', time:40, concept:'Command + Agent + Skill',
+    title:'Mocked portfolio insights endpoint',
+    goal:'Expose a deterministic demo summary for the frontend to consume.',
+    deliverable:'Technical plan for the endpoint (module/controller/service + DTO) returning demo insights.',
+    agentCmd:'/workshop-plan-backend-card BE-01 → backend-nestjs-agent + nestjs-api-development',
+    deps:['FND-02'], acceptance:'Plan with contract in libs/common, route /api/v1/..., analogous module, npm run test:api. No real LLM.',
+    hint:'Follow the apps/api/src/app/endpoints/<feature>/ convention.' },
+
+  { id:'BE-02', swimlane:'Backend',          status:'examples', team:'Backend',               diff:'high',   time:45, concept:'Agent + Skill',
+    title:'Concentration service by account/symbol',
+    goal:'Calculate the exposure/concentration of each account as a reusable data point.',
+    deliverable:'Backend service (or plan) calculating cost per symbol and share per account.',
+    agentCmd:'backend-nestjs-agent + prisma-readonly-data-access',
+    deps:['FND-02','DATA-01'], acceptance:'Documented read-only logic that reproduces the MCP figures (get_symbol_exposure).',
+    hint:'Compare your calculation with get_demo_portfolio_summary to validate.' },
+
+  { id:'DATA-01', swimlane:'Domain & Data',  status:'examples', team:'Data/Domain',           diff:'medium', time:35, concept:'Command + Agent + Skill + MCP',
+    title:'Concentration/exposure rules for the demo portfolio',
+    goal:'Define how concentration is measured (thresholds, "high concentration") descriptively.',
+    deliverable:'Exposure rules document with real figures from the demo dataset.',
+    agentCmd:'/workshop-analyze-demo-portfolio → portfolio-domain-agent + ghostfolio-domain-analysis + MCP',
+    deps:['MCP-02'], acceptance:'Rules with MCP figures (e.g. "Trade Republic Growth: AAPL 26.2%") and currency/cost caveat.',
+    hint:'All data comes from the MCP; describe, do not recommend.' },
+
+  { id:'DATA-02', swimlane:'Domain & Data',  status:'examples', team:'Data/Domain',           diff:'medium', time:35, concept:'MCP + Skill + Safety',
+    title:'Anomaly rules for imported data',
+    goal:'Define what counts as an anomaly (duplicate, high commission, currency, price, oversell).',
+    deliverable:'Anomaly catalogue with definition and severity, validated against the anomaly dataset.',
+    agentCmd:'MCP detect_demo_anomalies + prisma-readonly-data-access + /workshop-review-financial-safety',
+    deps:['MCP-03'], acceptance:'Catalogue explaining the 5 types and why each is flagged; matches MCP output.',
+    hint:'The detector does NOT use CSV labels; explain the heuristic.' },
+
+  { id:'MCP-01', swimlane:'MCP',             status:'examples', team:'MCP/Platform',          diff:'medium', time:40, concept:'MCP + Agent + Skill + Config',
+    title:'Local read-only MCP for demo data',
+    goal:'Give OpenCode a stable tool to query demo data without loose prompts or destructive access.',
+    deliverable:'Local MCP server registered in opencode.json with list_demo_accounts.',
+    agentCmd:'agent mcp-builder-agent + skill mcp-server-authoring; config in opencode.json',
+    deps:[], acceptance:'./scripts/check-demo-mcp.sh passes green; OpenCode lists the server tools.',
+    hint:'Already in tools/mcp/ghostfolio-demo-data-mcp/; study it and extend it.' },
+
+  { id:'MCP-02', swimlane:'MCP',             status:'examples', team:'MCP/Platform',          diff:'medium', time:35, concept:'MCP tool',
+    title:'Tool get_demo_portfolio_summary',
+    goal:'Allow any agent to obtain a deterministic summary of the demo portfolio.',
+    deliverable:'MCP tool returning totals, holdings and concentration per account.',
+    agentCmd:'/workshop-plan-mcp-card MCP-02 → mcp-builder-agent + mcp-server-authoring',
+    deps:['MCP-01'], acceptance:'Tool returns 3 accounts, 54 activities and shares per symbol; smoke test passes.',
+    hint:'Reuse src/data.mjs; do not duplicate the CSV parser.' },
+
+  { id:'MCP-03', swimlane:'MCP',             status:'examples', team:'MCP/Platform',          diff:'high',   time:45, concept:'MCP tool + Safety',
+    title:'Tool detect_demo_anomalies',
+    goal:'Deterministically detect simple anomalies in imported data.',
+    deliverable:'MCP tool reporting duplicates, high commission, unexpected currency, atypical price and oversell.',
+    agentCmd:'mcp-builder-agent + mcp-server-authoring + /workshop-review-financial-safety',
+    deps:['MCP-01'], acceptance:'Detects the 5 types in the anomaly CSV and ~0 in the clean dataset.',
+    hint:'Derive thresholds from the clean dataset; do not read the ANOMALY= labels.' },
+
+  { id:'SAFE-01', swimlane:'Safety & Review', status:'examples', team:'Safety',               diff:'low',    time:25, concept:'Agent + Skill',
+    title:'Assistant limits guide',
+    goal:'Make clear what the feature can and cannot say (informs, does not advise).',
+    deliverable:'Limits guide + safety acceptance checklist.',
+    agentCmd:'agent financial-safety-reviewer + skill financial-safety-review',
+    deps:[], acceptance:'7-point checklist and PASS/FAIL examples applicable to FE/MCP/INT.',
+    hint:'There is already a base in the skill financial-safety-review; turn it into a guide for your team.' },
+
+  { id:'SAFE-02', swimlane:'Safety & Review', status:'examples', team:'Safety (reviews others)', diff:'low', time:20, concept:'Command + Agent + Skill',
+    title:'Review: no buy/sell recommendations',
+    goal:'Ensure no visible text recommends personalised financial actions.',
+    deliverable:'PASS/FAIL report with findings and safe rewrite.',
+    agentCmd:'/workshop-review-financial-safety <text|path> → financial-safety-reviewer',
+    deps:['FE-03','DATA-01','INT-01'], acceptance:'Report with verdict and, if FAIL, a rewrite keeping the information without the advice.',
+    hint:'Use it as a gate before any demo.' },
+
+  { id:'INT-01', swimlane:'Integration',     status:'examples', team:'Integration',           diff:'medium', time:40, concept:'Command + Skill',
+    title:'End-to-end demo happy path',
+    goal:'Demonstrate the full cycle: demo data → MCP → analysis → insights → safety review.',
+    deliverable:'A demonstrable and reproducible path (Portfolio Insights Demo).',
+    agentCmd:'/workshop-implement-small-product-slice INT-01 + /workshop-demo-runbook + product-slice-delivery',
+    deps:['MCP-02','MCP-03','SAFE-02'], acceptance:'/workshop-analyze-demo-portfolio runs, produces MCP-grounded summary that passes safety; steps are repeatable.',
+    hint:'The reference happy path is read-only via MCP and does not touch apps/.' },
+
+  { id:'INT-02', swimlane:'Integration',     status:'examples', team:'Integration/Facilitation', diff:'low', time:20, concept:'Command + Agent',
+    title:'Team handoff',
+    goal:"Allow a team to continue another team's work without losing context.",
+    deliverable:'Handoff document per card (what was done, what is missing).',
+    agentCmd:'/workshop-prepare-team-handoff <ID> → workshop-facilitator-agent + team-handoff-template.md',
+    deps:[], acceptance:'Handoff with components used, files touched (git status), tests and next step.',
+    hint:"Do not invent; anything not recorded is 'pending'." },
+];
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function diffClass(d) {
+  return d === 'low' ? 'low' : d === 'medium' ? 'med' : 'high';
+}
+function diffLabel(d) {
+  return d === 'low' ? 'Low' : d === 'medium' ? 'Med' : 'High';
+}
+
+function cardHtml(c) {
+  const cls = c.status === 'examples' ? 'card-ex' : 'card-pr';
+  const deps = c.deps.length
+    ? c.deps.map(d => `<span class="dep-chip">${d}</span>`).join('')
+    : '<span style="color:#aaa;font-size:9px">—</span>';
+
+  return `
+    <div class="card ${cls}"
+         data-id="${c.id}"
+         data-status="${c.status}"
+         data-diff="${c.diff}"
+         onclick="toggleCard(this)">
+      <button class="copy-btn" title="Copy card" onclick="copyCard('${c.id}',event)">⎘</button>
+      <div class="card-author">${esc(c.team)}</div>
+      <div class="card-id">${c.id}</div>
+      <div class="card-title">${esc(c.title)}</div>
+      <div class="card-tags">
+        <span class="ctag ${diffClass(c.diff)}">${diffLabel(c.diff)}</span>
+        <span class="ctag">${c.time} min</span>
+        <span class="ctag">${esc(c.concept)}</span>
+      </div>
+      <div class="card-goal">${esc(c.goal)}</div>
+      <div class="card-detail">
+        <div class="drow"><span class="dlabel">Deliverable</span><span class="dval">${esc(c.deliverable)}</span></div>
+        <div class="drow"><span class="dlabel">Agent cmd</span><span class="dval"><code>${esc(c.agentCmd)}</code></span></div>
+        <div class="drow"><span class="dlabel">Acceptance</span><span class="dval">${esc(c.acceptance)}</span></div>
+        <div class="drow"><span class="dlabel">Deps</span><span class="dval">${deps}</span></div>
+        <div class="hint-box"><b>Hint:</b> ${esc(c.hint)}</div>
+      </div>
+    </div>`;
+}
+
+function toggleCard(el) {
+  el.classList.toggle('open');
+}
+
+function copyCard(id, event) {
+  event.stopPropagation();
+  const c = CARDS.find(x => x.id === id);
+  if (!c) return;
+  const deps = c.deps.length ? c.deps.join(', ') : '—';
+  const text = [
+    `${c.id} — ${c.title}`,
+    `Team: ${c.team} | ${c.diff.charAt(0).toUpperCase()+c.diff.slice(1)} | ${c.time} min | ${c.concept}`,
+    ``,
+    `Goal: ${c.goal}`,
+    `Deliverable: ${c.deliverable}`,
+    `Agent cmd: ${c.agentCmd}`,
+    `Deps: ${deps}`,
+    `Acceptance: ${c.acceptance}`,
+    `Hint: ${c.hint}`,
+  ].join('\n');
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector(`.card[data-id="${id}"] .copy-btn`);
+    if (!btn) return;
+    btn.textContent = '✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '⎘'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+
+function render() {
+  const board = document.getElementById('board');
+
+  // Section headers
+  let html = `
+    <div class="col-headers">
+      <div class="ch-spacer"></div>
+      <div class="ch ch-examples">EXAMPLES</div>
+      <div class="ch ch-proposed">PROPOSED TASKS</div>
+      <div class="ch ch-imagination">USE YOUR IMAGINATION</div>
+    </div>`;
+
+  // Swimlane rows
+  SWIMLANES.forEach(lane => {
+    const ex  = CARDS.filter(c => c.swimlane === lane && c.status === 'examples');
+    const pr  = CARDS.filter(c => c.swimlane === lane && c.status === 'proposed');
+
+    const exCards  = ex.map(cardHtml).join('');
+    const prCards  = pr.map(cardHtml).join('');
+    const ph1 = `<div class="card-placeholder">Add text</div>`;
+    const ph2 = `<div class="card-placeholder">Add text</div>`;
+
+    html += `
+      <div class="lane-row" data-lane="${lane}">
+        <div class="lane-label">
+          <div class="arrow-shape">${lane}</div>
+        </div>
+        <div class="lane-section sec-examples">
+          <div class="cards-flex">${exCards}</div>
+        </div>
+        <div class="lane-section sec-proposed">
+          <div class="cards-flex">${prCards}</div>
+        </div>
+        <div class="lane-section sec-imagination">
+          <div class="cards-flex">${ph1}${ph2}</div>
+        </div>
+      </div>`;
+  });
+
+  board.innerHTML = html;
+}
+
+// ── Filter ─────────────────────────────────────────────────────────────────
+
+let activeFilter = 'all';
+
+function matchesFilter(card, filter) {
+  if (filter === 'all')      return true;
+  if (filter === 'examples') return card.dataset.status === 'examples';
+  if (filter === 'proposed') return card.dataset.status === 'proposed';
+  if (filter === 'low')      return card.dataset.diff === 'low';
+  if (filter === 'medium')   return card.dataset.diff === 'medium';
+  if (filter === 'high')     return card.dataset.diff === 'high';
+  return true;
+}
+
+function applyFilter(filter) {
+  const allCards = document.querySelectorAll('.card');
+  allCards.forEach(el => {
+    el.classList.toggle('hidden', !matchesFilter(el, filter));
+  });
+
+  // Hide lane row if it has no visible product cards (ignore placeholders)
+  document.querySelectorAll('.lane-row').forEach(row => {
+    const visible = row.querySelectorAll('.card:not(.hidden)').length;
+    row.dataset.visible = visible;
+    row.style.display = visible === 0 ? 'none' : '';
+  });
+
+  updateStats(filter);
+}
+
+function updateStats(filter) {
+  const visible = CARDS.filter(c => {
+    const el = document.querySelector(`.card[data-id="${c.id}"]`);
+    return el && !el.classList.contains('hidden');
+  });
+  const ex = visible.filter(c => c.status === 'examples').length;
+  const pr = visible.filter(c => c.status === 'proposed').length;
+  const mins = visible.reduce((s,c) => s + c.time, 0);
+  document.getElementById('statsbar').innerHTML = `
+    <span>Showing <strong>${visible.length}</strong> of ${CARDS.length} tasks</span>
+    <span>Examples: <strong>${ex}</strong></span>
+    <span>Proposed: <strong>${pr}</strong></span>
+    <span>Total time: <strong>${mins} min</strong></span>`;
+}
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.fbtn');
+  if (!btn) return;
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = btn.dataset.filter;
+  applyFilter(activeFilter);
+});
+
+// ── Init ───────────────────────────────────────────────────────────────────
+render();
+applyFilter('all');
+</script>
+</body>
+</html>

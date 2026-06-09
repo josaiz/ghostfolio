@@ -1,18 +1,27 @@
 # Innovation Night Ghostfolio Agentic Workshop
 
-## Objetivo
+## Workshop documentation
 
-Este repositorio es un fork local de Ghostfolio preparado para usarlo como producto base en un workshop de programacion agentica con OpenCode/OpenAgents Control.
+| Resource | Description |
+|----------|-------------|
+| [Getting Started](docs/workshop/getting-started.html) | Install, run, and configure Ghostfolio step by step |
+| [Backlog (Kanban)](docs/workshop/kanban.html) | Workshop task cards, filterable by difficulty and team |
 
-La preparacion busca que el proyecto arranque en local con Docker Desktop construyendo la imagen desde el codigo del fork. Asi, cualquier cambio posterior en el codigo se podra revisar con Git, reconstruir y levantar de nuevo para verlo funcionando.
+---
 
-## Que es Ghostfolio
+## Goal
 
-Ghostfolio es una aplicacion open source de wealth management y portfolio tracking. Permite gestionar inversiones, consultar datos de mercado y seguir el rendimiento de una cartera.
+This repository is a local fork of Ghostfolio prepared as the base product for an agentic programming workshop using OpenCode/OpenAgents Control.
 
-## Ficheros inspeccionados
+The setup is designed so the project runs locally with Docker Desktop by building the image from the fork's source code. Any subsequent code change can then be reviewed with Git, rebuilt, and relaunched to see it working.
 
-Todos los ficheros solicitados estaban presentes:
+## What is Ghostfolio
+
+Ghostfolio is an open-source wealth management and portfolio tracking application. It lets you manage investments, query market data, and track portfolio performance.
+
+## Inspected files
+
+All requested files were present:
 
 ```text
 README.md
@@ -22,67 +31,67 @@ docker/docker-compose.yml
 docker/docker-compose.build.yml
 ```
 
-Tambien se revisaron `Dockerfile`, `docker/entrypoint.sh`, `package.json`, `nx.json` y la estructura de carpetas para confirmar el stack y el comportamiento de arranque.
+`Dockerfile`, `docker/entrypoint.sh`, `package.json`, `nx.json`, and the folder structure were also reviewed to confirm the stack and startup behaviour.
 
-## Stack tecnico detectado
+## Detected tech stack
 
-Segun `README.md`, `DEVELOPMENT.md`, `package.json` y `nx.json`, el proyecto usa:
+According to `README.md`, `DEVELOPMENT.md`, `package.json`, and `nx.json`, the project uses:
 
 - TypeScript
 - Nx workspace
-- NestJS para el backend
-- Angular para el frontend
+- NestJS for the backend
+- Angular for the frontend
 - Angular Material
 - Bootstrap utility classes
 - PostgreSQL
 - Prisma
 - Redis
 - Docker Compose
-- Node.js `>=22.18.0` para desarrollo local sin Docker
+- Node.js `>=22.18.0` for local development without Docker
 
-## Imagen oficial vs build local
+## Official image vs local build
 
-Ghostfolio documenta dos formas de arrancar con Docker Compose:
+Ghostfolio documents two ways to start with Docker Compose:
 
-- `docker/docker-compose.yml` arranca la imagen oficial publicada en Docker Hub: `docker.io/ghostfolio/ghostfolio:latest`.
-- `docker/docker-compose.build.yml` construye la imagen desde el codigo local con `build: ../` y la etiqueta como `ghostfolio/ghostfolio:local`.
+- `docker/docker-compose.yml` pulls the official image from Docker Hub: `docker.io/ghostfolio/ghostfolio:latest`.
+- `docker/docker-compose.build.yml` builds the image from local source with `build: ../` and tags it as `ghostfolio/ghostfolio:local`.
 
-Para este workshop usamos como modo principal:
+For this workshop the primary mode is:
 
 ```bash
 docker compose --env-file .env -f docker/docker-compose.build.yml build
 docker compose --env-file .env -f docker/docker-compose.build.yml up -d
 ```
 
-El flag `--env-file .env` no rompe el compose actual. El fichero `docker/docker-compose.yml` ya declara `env_file: ../.env`, y `--env-file .env` ayuda a que Docker Compose tenga disponibles las variables para interpolacion y mantiene explicito el fichero de entorno que usamos en el workshop.
+The `--env-file .env` flag does not break the existing compose setup. `docker/docker-compose.yml` already declares `env_file: ../.env`, and `--env-file .env` makes the variables available for interpolation while keeping the environment file explicit.
 
-Los scripts ajustan `COMPOSE_PROJECT_NAME` a `ghostfolio_build` cuando el `.env.example` trae el valor por defecto `ghostfolio`. Esto evita reutilizar por accidente volumenes de un arranque anterior con la imagen oficial.
+The scripts set `COMPOSE_PROJECT_NAME` to `ghostfolio_build` when `.env.example` carries the default value `ghostfolio`. This prevents accidentally reusing volumes from a previous run with the official image.
 
-## Servicios Docker Compose
+## Docker Compose services
 
-`docker/docker-compose.yml` levanta:
+`docker/docker-compose.yml` starts:
 
-- `ghostfolio`: aplicacion web/API con imagen oficial `docker.io/ghostfolio/ghostfolio:latest`, puerto `3333:3333`, healthcheck en `/api/v1/health`.
-- `postgres`: PostgreSQL `15-alpine`, volumen `postgres`.
-- `redis`: Redis Alpine protegido con `REDIS_PASSWORD`.
+- `ghostfolio`: web/API application with the official image `docker.io/ghostfolio/ghostfolio:latest`, port `3333:3333`, healthcheck at `/api/v1/health`.
+- `postgres`: PostgreSQL `15-alpine`, volume `postgres`.
+- `redis`: Alpine Redis protected with `REDIS_PASSWORD`.
 
-`docker/docker-compose.build.yml` levanta los mismos servicios, pero cambia `ghostfolio` para construir desde el codigo local:
+`docker/docker-compose.build.yml` starts the same services but changes `ghostfolio` to build from local source:
 
-- `ghostfolio`: `build: ../`, imagen local `ghostfolio/ghostfolio:local`.
-- `postgres`: extiende el servicio base y usa el contenedor `gf-postgres-build`.
-- `redis`: extiende el servicio base y usa el contenedor `gf-redis-build`.
+- `ghostfolio`: `build: ../`, local image `ghostfolio/ghostfolio:local`.
+- `postgres`: extends the base service and uses the container `gf-postgres-build`.
+- `redis`: extends the base service and uses the container `gf-redis-build`.
 
-## Puerto y URL local
+## Port and local URL
 
-La aplicacion expone el puerto `3333`.
+The application exposes port `3333`.
 
 ```text
 http://localhost:3333
 ```
 
-## Variables de entorno
+## Environment variables
 
-`README.md` marca como necesarias estas variables principales:
+`README.md` marks these as required:
 
 - `ACCESS_TOKEN_SALT`
 - `DATABASE_URL`
@@ -94,9 +103,9 @@ http://localhost:3333
 - `REDIS_PASSWORD`
 - `REDIS_PORT`
 
-Tambien documenta variables opcionales utiles como `DIRECT_URL`, `PORT`, `REDIS_DB` y `ROOT_URL`.
+Optional but useful variables include `DIRECT_URL`, `PORT`, `REDIS_DB`, and `ROOT_URL`.
 
-El `.env.example` actual contiene estos placeholders:
+The current `.env.example` contains these placeholders:
 
 ```text
 <INSERT_REDIS_PASSWORD>
@@ -105,13 +114,13 @@ El `.env.example` actual contiene estos placeholders:
 <INSERT_RANDOM_STRING>
 ```
 
-El fichero `.env` local se crea copiando `.env.example` y sustituyendo esos placeholders con secretos aleatorios. No se imprimen secretos completos en este README.
+The local `.env` file is created by copying `.env.example` and replacing those placeholders with random secrets. No secrets are printed in this README.
 
-`.env` ya estaba incluido en `.gitignore`, asi que no aparece como fichero para commitear.
+`.env` is already included in `.gitignore`, so it will not appear as a file to commit.
 
-## Migraciones y setup
+## Migrations and setup
 
-Para el modo Docker, no hace falta lanzar un comando manual de setup despues de arrancar. `docker/entrypoint.sh` ejecuta:
+In Docker mode, no manual setup command is needed after starting. `docker/entrypoint.sh` runs:
 
 ```bash
 npx prisma migrate deploy
@@ -119,17 +128,17 @@ npx prisma db seed
 exec node main
 ```
 
-`README.md` tambien indica que el contenedor aplica automaticamente las migraciones de base de datos durante el arranque.
+`README.md` also states that the container automatically applies database migrations at startup.
 
-En modo desarrollo sin Docker completo, `DEVELOPMENT.md` usa otro flujo: `docker/docker-compose.dev.yml`, `npm run database:setup`, servidor y cliente por separado. Ese no es el flujo principal de este workshop.
+In development mode without full Docker, `DEVELOPMENT.md` uses a different flow: `docker/docker-compose.dev.yml`, `npm run database:setup`, and separate server and client processes. That is not the primary flow for this workshop.
 
-## Primer usuario administrador
+## First admin user
 
-`README.md` y `DEVELOPMENT.md` indican que, al abrir la UI y crear un usuario con _Get Started_, ese primer usuario recibe el rol `ADMIN`.
+`README.md` and `DEVELOPMENT.md` state that when you open the UI and create a user with _Get Started_, that first user is automatically assigned the `ADMIN` role.
 
-## Estructura del proyecto
+## Project structure
 
-Todo vive en un unico repositorio Git:
+Everything lives in a single Git repository:
 
 ```text
 innovation-night-ghostfolio-agentic-workshop/
@@ -144,7 +153,7 @@ innovation-night-ghostfolio-agentic-workshop/
   README-workshop.md
 ```
 
-## Requisitos Mac/Linux
+## Requirements — Mac / Linux
 
 - Git
 - Docker Desktop
@@ -152,101 +161,101 @@ innovation-night-ghostfolio-agentic-workshop/
 - curl
 - bash
 
-## Requisitos Windows
+## Requirements — Windows
 
 - Git for Windows
 - Docker Desktop
-- WSL2 recomendado
-- PowerShell 7 recomendado
-- Navegador web
+- WSL2 recommended
+- PowerShell 7 recommended
+- Web browser
 
-## Arranque rapido en Mac/Linux
+## Quick start — Mac / Linux
 
 ```bash
 ./scripts/start.sh
 ```
 
-## Arranque rapido en Windows PowerShell
+## Quick start — Windows PowerShell
 
 ```powershell
 .\scripts\start.ps1
 ```
 
-## URL local
+## Local URL
 
 ```text
 http://localhost:3333
 ```
 
-## Comprobar estado en Mac/Linux
+## Check status — Mac / Linux
 
 ```bash
 ./scripts/check.sh
 ```
 
-## Comprobar estado en Windows
+## Check status — Windows
 
 ```powershell
 .\scripts\check.ps1
 ```
 
-## Logs en Mac/Linux
+## Logs — Mac / Linux
 
 ```bash
 ./scripts/logs.sh
 ```
 
-## Logs en Windows
+## Logs — Windows
 
 ```powershell
 .\scripts\logs.ps1
 ```
 
-## Parar en Mac/Linux
+## Stop — Mac / Linux
 
 ```bash
 ./scripts/stop.sh
 ```
 
-## Parar en Windows
+## Stop — Windows
 
 ```powershell
 .\scripts\stop.ps1
 ```
 
-## Reset completo en Mac/Linux
+## Full reset — Mac / Linux
 
-Esto borra los contenedores, redes y volumenes locales. Tambien borra la base de datos local de Ghostfolio.
+Destroys all containers, networks, and local volumes, including the local Ghostfolio database.
 
 ```bash
 ./scripts/reset.sh
 ```
 
-Sin confirmacion interactiva:
+Without interactive confirmation:
 
 ```bash
 ./scripts/reset.sh --force
 ```
 
-## Reset completo en Windows
+## Full reset — Windows
 
-Esto borra los contenedores, redes y volumenes locales. Tambien borra la base de datos local de Ghostfolio.
+Destroys all containers, networks, and local volumes, including the local Ghostfolio database.
 
 ```powershell
 .\scripts\reset.ps1
 ```
 
-Sin confirmacion interactiva:
+Without interactive confirmation:
 
 ```powershell
 .\scripts\reset.ps1 -Force
 ```
 
-## Rebuild despues de cambiar codigo
+## Rebuild after changing code
 
-Esta parte es clave para el workshop: si modificamos codigo local de Ghostfolio, hay que reconstruir la imagen para que Docker ejecute una version nueva.
+This is key for the workshop: if you modify local Ghostfolio code, you must rebuild the image so Docker runs the new version.
 
-Mac/Linux:
+Mac / Linux:
 
 ```bash
 ./scripts/rebuild.sh
@@ -258,108 +267,108 @@ Windows:
 .\scripts\rebuild.ps1
 ```
 
-`rebuild` usa `docker/docker-compose.build.yml`, reconstruye sin cache y vuelve a levantar el entorno.
+`rebuild` uses `docker/docker-compose.build.yml`, rebuilds without cache, and restarts the environment.
 
-## Git basico para revisar cambios
+## Basic Git commands for reviewing changes
 
-Ver que ficheros han cambiado:
+See which files have changed:
 
 ```bash
 git status
 ```
 
-Ver el contenido exacto de los cambios:
+See the exact content of the changes:
 
 ```bash
 git diff
 ```
 
-Guardar los cambios en un commit local:
+Save changes in a local commit:
 
 ```bash
 git add .
 git commit -m "Prepare local workshop setup"
 ```
 
-Subir la rama al fork:
+Push the branch to the fork:
 
 ```bash
 git push origin workshop/local-docker-build-setup
 ```
 
-No ejecutes `git push` salvo que se pida explicitamente.
+Do not run `git push` unless explicitly asked.
 
 ## Troubleshooting
 
-### Puerto 3333 ocupado
+### Port 3333 already in use
 
-Cierra el proceso que este usando el puerto o cambia `PORT` en `.env`. Si cambias el puerto, revisa tambien el mapeo `3333:3333` del compose antes de usarlo como configuracion definitiva.
+Close the process using that port or change `PORT` in `.env`. If you change the port, also update the `3333:3333` mapping in the compose file before treating it as a permanent configuration.
 
-### Docker no esta arrancado
+### Docker is not running
 
-Abre Docker Desktop y espera a que indique que Docker esta listo. Despues ejecuta de nuevo `./scripts/start.sh` o `.\scripts\start.ps1`.
+Open Docker Desktop and wait until it indicates Docker is ready. Then run `./scripts/start.sh` or `.\scripts\start.ps1` again.
 
-### Error de conexion a PostgreSQL
+### PostgreSQL connection error
 
-Ejecuta el check y revisa logs:
+Run the check and review logs:
 
 ```bash
 ./scripts/check.sh
 ./scripts/logs.sh
 ```
 
-El servicio `postgres` usa las variables `POSTGRES_DB`, `POSTGRES_USER` y `POSTGRES_PASSWORD` de `.env`.
+The `postgres` service uses the variables `POSTGRES_DB`, `POSTGRES_USER`, and `POSTGRES_PASSWORD` from `.env`.
 
-### Error de conexion a Redis
+### Redis connection error
 
-Redis arranca con password obligatoria. Si falla, comprueba que `.env` no tenga placeholders y mira los logs:
+Redis starts with a mandatory password. If it fails, check that `.env` has no remaining placeholders and review the logs:
 
 ```bash
 ./scripts/logs.sh
 ```
 
-### `.env` no existe
+### `.env` does not exist
 
-Ejecuta:
+Run:
 
 ```bash
 ./scripts/start.sh
 ```
 
-El script crea `.env` desde `.env.example` y genera secretos locales.
+The script creates `.env` from `.env.example` and generates local secrets.
 
-### `.env` tiene placeholders sin reemplazar
+### `.env` has unreplaced placeholders
 
-Busca placeholders:
+Search for placeholders:
 
 ```bash
 grep '<INSERT_' .env
 ```
 
-Si aparecen, vuelve a ejecutar `./scripts/start.sh` o reemplazalos manualmente con valores seguros.
+If any appear, run `./scripts/start.sh` again or replace them manually with safe values.
 
-### Contenedor de Ghostfolio reiniciandose
+### Ghostfolio container restarting
 
-Ejecuta:
+Run:
 
 ```bash
 ./scripts/check.sh
 ./scripts/logs.sh
 ```
 
-Las causas habituales son `.env` incompleto, PostgreSQL no saludable o Redis sin password correcta.
+The most common causes are an incomplete `.env`, an unhealthy PostgreSQL, or an incorrect Redis password.
 
-### Build lento la primera vez
+### Slow first build
 
-Es normal. La primera build instala dependencias, genera Prisma y construye backend/frontend. Las builds posteriores deberian reutilizar capas salvo que uses `rebuild`, que fuerza `--no-cache`.
+This is normal. The first build installs dependencies, generates Prisma, and builds the full backend and frontend. Subsequent builds reuse Docker layer cache unless you use `rebuild`, which forces `--no-cache`.
 
-### Diferencias Mac/Windows
+### Differences between Mac and Windows
 
-En Mac/Linux usa scripts `.sh`. En Windows usa scripts `.ps1` desde PowerShell. Docker Desktop debe estar arrancado en ambos casos. WSL2 esta recomendado en Windows.
+On Mac/Linux use `.sh` scripts. On Windows use `.ps1` scripts from PowerShell. Docker Desktop must be running in both cases. WSL2 is recommended on Windows.
 
-### Resetear la instalacion local
+### Reset the local installation
 
-Mac/Linux:
+Mac / Linux:
 
 ```bash
 ./scripts/reset.sh
@@ -371,11 +380,11 @@ Windows:
 .\scripts\reset.ps1
 ```
 
-Esto borra la base de datos local.
+This deletes the local database.
 
-### Ver logs
+### View logs
 
-Mac/Linux:
+Mac / Linux:
 
 ```bash
 ./scripts/logs.sh
@@ -387,22 +396,22 @@ Windows:
 .\scripts\logs.ps1
 ```
 
-## Cargar datos de demo
+## Load demo data
 
-Antes de cargar datos, asegúrate de que:
+Before loading data, make sure:
 
-1. Ghostfolio esta arrancado.
-2. Ya has creado el usuario admin desde la UI.
-3. Tienes a mano el security token del usuario admin.
-4. El dataset esta en `data/workshop/`.
+1. Ghostfolio is running.
+2. You have already created the admin user from the UI.
+3. You have the admin user's security token at hand.
+4. The dataset is in `data/workshop/`.
 
-El dataset esperado vive en:
+The expected dataset lives in:
 
 ```text
 data/workshop/import/
 ```
 
-El seed usa estos tres CSV:
+The seed script uses these three CSV files:
 
 ```text
 myinvestor-core-etf.csv
@@ -410,13 +419,11 @@ trade-republic-growth.csv
 crypto-exchange.csv
 ```
 
-No importa por defecto `ghostfolio-workshop-anomalies-do-not-import-main.csv`.
+`ghostfolio-workshop-anomalies-do-not-import-main.csv` is not imported by default.
 
-Nota: el CSV cripto mantiene los tickers Yahoo `BTC-USD` y `ETH-USD`, pero esta
-version de Ghostfolio los valida como `BTCUSD` y `ETHUSD`. El seed hace esa
-normalizacion automaticamente al llamar a la API.
+Note: the crypto CSV keeps Yahoo tickers `BTC-USD` and `ETH-USD`, but this version of Ghostfolio validates them as `BTCUSD` and `ETHUSD`. The seed script normalises them automatically when calling the API.
 
-Mac/Linux:
+Mac / Linux:
 
 ```bash
 ./scripts/seed-workshop-data.sh
@@ -428,15 +435,15 @@ Windows:
 .\scripts\seed-workshop-data.ps1
 ```
 
-El script usa la API HTTP existente de Ghostfolio. Como esta version no tiene login local email/password, pedira el security token de Ghostfolio por consola. Alternativamente, para uso local temporal puedes usar:
+The script uses the existing Ghostfolio HTTP API. Since this build has no email/password login, it will prompt for the Ghostfolio security token. Alternatively, for temporary local use you can pass it directly:
 
 ```bash
-GHOSTFOLIO_ACCESS_TOKEN="tu-security-token" ./scripts/seed-workshop-data.sh
+GHOSTFOLIO_ACCESS_TOKEN="your-security-token" ./scripts/seed-workshop-data.sh
 ```
 
-Tambien se acepta `GHOSTFOLIO_AUTH_TOKEN` si ya tienes un JWT valido.
+`GHOSTFOLIO_AUTH_TOKEN` is also accepted if you already have a valid JWT.
 
-El seed crea, si faltan, estas cuentas:
+The seed creates the following accounts if they are missing:
 
 ```text
 MyInvestor Core ETF
@@ -444,19 +451,19 @@ Trade Republic Growth
 Crypto Exchange
 ```
 
-Cada actividad importada queda marcada en el comentario con `WORKSHOP_DEMO_DATA`, de forma que ejecutar el seed una segunda vez no deberia duplicar actividades.
+Each imported activity is tagged in its comment field with `WORKSHOP_DEMO_DATA`, so running the seed a second time will not create duplicate activities.
 
-## Resetear datos de demo
+## Reset demo data
 
-El reset solo debe borrar actividades marcadas como `WORKSHOP_DEMO_DATA`. No borra el usuario admin ni datos ajenos al workshop.
+The reset only deletes activities tagged `WORKSHOP_DEMO_DATA`. It does not delete the admin user or any data unrelated to the workshop.
 
-Mac/Linux:
+Mac / Linux:
 
 ```bash
 ./scripts/reset-workshop-data.sh
 ```
 
-Sin confirmacion:
+Without confirmation:
 
 ```bash
 ./scripts/reset-workshop-data.sh --force
@@ -468,17 +475,17 @@ Windows:
 .\scripts\reset-workshop-data.ps1
 ```
 
-Sin confirmacion:
+Without confirmation:
 
 ```powershell
 .\scripts\reset-workshop-data.ps1 -Force
 ```
 
-Las cuentas demo solo se borran si fueron creadas por el seed y quedan vacias tras eliminar las actividades demo.
+Demo accounts are only deleted if they were created by the seed and are empty after removing the demo activities.
 
-## Nota para siguientes fases
+## Note for future phases
 
-Esta fase solo deja Ghostfolio funcionando localmente con build desde codigo. En una fase posterior se podran anadir:
+This phase only gets Ghostfolio running locally with a build from source. In a later phase the following can be added:
 
 ```text
 .opencode/
@@ -488,4 +495,4 @@ Esta fase solo deja Ghostfolio funcionando localmente con build desde codigo. En
   skills/
 ```
 
-Tambien se podra crear un backlog para implementar funcionalidades AI-assisted tipo `Portfolio AI Assistant`.
+A backlog for implementing AI-assisted features such as a `Portfolio AI Assistant` can also be created then.

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ghostfolio Workshop — Getting Started Guide</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-2: #21253a;
+      --border: #2d3148;
+      --accent: #6c63ff;
+      --accent-2: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --blue: #60a5fa;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --code-bg: #111827;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 0 1rem;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 0 6rem;
+    }
+
+    /* ─── Header ─── */
+    .header {
+      text-align: center;
+      padding: 3rem 0 2.5rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+    .header .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+    .header h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 40%, var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.8rem;
+    }
+    .header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* ─── Section ─── */
+    .section {
+      margin-bottom: 3.5rem;
+    }
+
+    .step-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+    .step-num {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .step-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    p { color: var(--text-muted); margin-bottom: 1rem; }
+    h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+
+    /* ─── Cards ─── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    /* ─── Callouts ─── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 1.2rem;
+      border-left: 3px solid;
+    }
+    .callout.try {
+      background: #0d2135;
+      border-color: var(--blue);
+    }
+    .callout.try .callout-label { color: var(--blue); }
+    .callout.warn {
+      background: #1e1800;
+      border-color: var(--yellow);
+    }
+    .callout.warn .callout-label { color: var(--yellow); }
+    .callout.tip {
+      background: #081f18;
+      border-color: var(--green);
+    }
+    .callout.tip .callout-label { color: var(--green); }
+    .callout-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+    }
+    .callout p { margin-bottom: 0; color: var(--text); font-size: 0.92rem; }
+    .callout ul { color: var(--text); font-size: 0.92rem; padding-left: 1.2rem; }
+    .callout li { margin-bottom: 0.2rem; }
+
+    /* ─── Code blocks ─── */
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow-x: auto;
+    }
+    .code-block pre {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      white-space: pre;
+    }
+    .code-block .lang-tag {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.7rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .copy-btn {
+      position: absolute;
+      top: 0.4rem;
+      right: 3.5rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 5px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+    /* ─── Inline code ─── */
+    code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.1em 0.35em;
+      font-family: 'JetBrains Mono', Menlo, monospace;
+      font-size: 0.82em;
+      color: var(--accent-2);
+    }
+
+    /* ─── Token flow diagram ─── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin: 1.2rem 0;
+    }
+    .flow-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+      min-width: 130px;
+    }
+    .flow-box.highlight {
+      border-color: var(--accent);
+      color: var(--accent-2);
+    }
+    .flow-box.source {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .flow-box.result {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .flow-arrow {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+    .flow-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 0.2rem;
+    }
+    .flow-item { text-align: center; }
+
+    /* ─── Architecture diagram ─── */
+    .arch {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .arch-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+    }
+    .arch-box .icon { font-size: 1.8rem; margin-bottom: 0.4rem; }
+    .arch-box .name { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.2rem; color: var(--text); }
+    .arch-box .desc { font-size: 0.75rem; color: var(--text-muted); }
+    .arch-box.primary { border-color: var(--accent); }
+
+    /* ─── Checklist ─── */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.4rem 0;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li input[type=checkbox] { margin-top: 0.3rem; accent-color: var(--accent); flex-shrink: 0; }
+
+    /* ─── TOC ─── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .toc-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
+    .toc ol { padding-left: 1.2rem; counter-reset: none; }
+    .toc li { margin-bottom: 0.35rem; }
+    .toc a { color: var(--accent-2); text-decoration: none; font-size: 0.9rem; }
+    .toc a:hover { color: #fff; }
+
+    /* ─── Screenshots ─── */
+    .screenshot {
+      width: 100%;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin: 1.2rem 0 0.4rem;
+      display: block;
+    }
+    .screenshot-caption {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ─── URL chip ─── */
+    .url-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--green);
+      margin: 0.5rem 0 1rem;
+    }
+
+    /* ─── Divider ─── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+    /* ─── Footer ─── */
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ─── HEADER ─── -->
+  <div class="header">
+    <div class="badge">Innovation Night Workshop</div>
+    <h1>Ghostfolio Getting Started</h1>
+    <p>Install, run, and understand Ghostfolio locally — and get your security token to load demo data.</p>
+  </div>
+
+  <!-- ─── TABLE OF CONTENTS ─── -->
+  <nav class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#what-is-ghostfolio">What is Ghostfolio?</a></li>
+      <li><a href="#architecture">Architecture at a glance</a></li>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#install">Start the application</a></li>
+      <li><a href="#first-user">Create your admin user</a></li>
+      <li><a href="#security-token">Get your security token</a></li>
+      <li><a href="#load-data">Load demo data</a></li>
+      <li><a href="#troubleshoot">Common failure modes</a></li>
+    </ol>
+  </nav>
+
+  <!-- ─── SECTION 1: WHAT IS GHOSTFOLIO ─── -->
+  <div class="section" id="what-is-ghostfolio">
+    <div class="step-label">
+      <div class="step-num">1</div>
+      <div class="step-title">What is Ghostfolio?</div>
+    </div>
+    <p>
+      Ghostfolio is an <strong>open-source wealth management and portfolio tracking application</strong>.
+      It lets you record investment transactions (stocks, ETFs, crypto), pull live market data,
+      and visualise portfolio performance over time — all self-hosted, all privacy-first.
+    </p>
+    <p>
+      In this workshop, Ghostfolio is the <em>product</em> you will extend with AI-assisted features
+      using OpenCode/OpenAgents. Think of it like a personal Morningstar — it tracks your trades,
+      shows you charts, and exposes a REST API you can call from AI agents.
+      You do not need to be a Ghostfolio expert; you need to know how to run it, create a user, and call its API.
+    </p>
+
+    <img src="screenshots/06-dashboard.png" alt="Ghostfolio dashboard overview" class="screenshot" />
+    <div class="screenshot-caption">The Ghostfolio dashboard after logging in — portfolio overview, allocation charts, and performance metrics.</div>
+
+    <div class="card">
+      <div class="card-title">Key facts for the workshop</div>
+      <ul class="checklist" style="list-style: disc; padding-left: 1.2rem;">
+        <li style="border: none; display: list-item;">Backend: NestJS (Node.js REST API) — runs on port <code>3333</code></li>
+        <li style="border: none; display: list-item;">Frontend: Angular SPA — served by the same port</li>
+        <li style="border: none; display: list-item;">Database: PostgreSQL — managed by Prisma migrations</li>
+        <li style="border: none; display: list-item;">Cache: Redis — session and market data</li>
+        <li style="border: none; display: list-item;">No email/password login in this build — authentication uses a <strong>security token</strong></li>
+        <li style="border: none; display: list-item;">The first user to sign up automatically gets the <code>ADMIN</code> role</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 2: ARCHITECTURE ─── -->
+  <div class="section" id="architecture">
+    <div class="step-label">
+      <div class="step-num">2</div>
+      <div class="step-title">Architecture at a glance</div>
+    </div>
+    <p>Everything runs as three Docker containers, all wired together via Docker Compose.</p>
+
+    <div class="arch">
+      <div class="arch-box primary">
+        <div class="icon">🌐</div>
+        <div class="name">ghostfolio</div>
+        <div class="desc">NestJS API + Angular UI<br/>Port 3333 → your browser</div>
+      </div>
+      <div class="arch-box">
+        <div class="icon">🗄️</div>
+        <div class="name">postgres</div>
+        <div class="desc">PostgreSQL 15<br/>Stores all user data</div>
+      </div>
+      <div class="arch-box">
+        <div class="icon">⚡</div>
+        <div class="name">redis</div>
+        <div class="desc">In-memory cache<br/>Sessions &amp; market data</div>
+      </div>
+    </div>
+
+    <p>The workshop uses <code>docker/docker-compose.build.yml</code> which <strong>builds the image from local source</strong> instead of pulling the official Docker Hub image. This means any code change you make can be rebuilt and tested immediately. The local build is slower on the first run (5–15 minutes) but reuses Docker layer cache after that.</p>
+  </div>
+
+  <!-- ─── SECTION 3: PREREQUISITES ─── -->
+  <div class="section" id="prerequisites">
+    <div class="step-label">
+      <div class="step-num">3</div>
+      <div class="step-title">Prerequisites</div>
+    </div>
+    <p>On your Mac or Linux machine you need these tools installed and running <em>before</em> starting:</p>
+
+    <div class="card">
+      <div class="card-title">Mac / Linux requirements</div>
+      <ul class="checklist">
+        <li><input type="checkbox" /> <span><strong>Docker Desktop</strong> — must be <em>running</em>, not just installed. Check by clicking the Docker whale icon in the menu bar.</span></li>
+        <li><input type="checkbox" /> <span><strong>Git</strong> — to clone the repo and track changes. Run <code>git --version</code> to verify.</span></li>
+        <li><input type="checkbox" /> <span><strong>bash / zsh</strong> — the <code>.sh</code> scripts use standard POSIX bash. Already present on all Macs.</span></li>
+        <li><input type="checkbox" /> <span><strong>curl</strong> — used by the check script. Already present on all Macs.</span></li>
+        <li><input type="checkbox" /> <span><strong>Node.js ≥ 22</strong> — only needed for the data-seeding script, not for running the app. Run <code>node --version</code> to verify.</span></li>
+      </ul>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">Common pitfall</div>
+      <p>Docker Desktop must be <strong>running</strong> before you execute any script. If Docker is installed but not started you will see: <code>ERROR: Docker is installed, but the Docker daemon is not running.</code> — open Docker Desktop and wait for the whale icon to stop animating.</p>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 4: INSTALL ─── -->
+  <div class="section" id="install">
+    <div class="step-label">
+      <div class="step-num">4</div>
+      <div class="step-title">Start the application</div>
+    </div>
+
+    <p>One command does everything: creates <code>.env</code>, fills in secrets, builds the Docker image from source, and starts all three services.</p>
+
+    <div class="callout try">
+      <div class="callout-label">Try this</div>
+      <p>Run this from the root of the repo:</p>
+    </div>
+
+    <div class="code-block">
+      <span class="lang-tag">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre>./scripts/start.sh</pre>
+    </div>
+
+    <p>The first run takes <strong>5–15 minutes</strong> while Docker downloads base layers and builds the NestJS + Angular bundle. You will see Nx compile output scrolling by — this is normal.</p>
+
+    <div class="card">
+      <div class="card-title">What start.sh does, step by step</div>
+      <ul class="checklist" style="list-style: disc; padding-left: 1.2rem;">
+        <li style="border: none; display: list-item;"><strong>Checks Docker</strong> — verifies the daemon is running</li>
+        <li style="border: none; display: list-item;"><strong>Prepares .env</strong> — copies <code>.env.example</code> → <code>.env</code> and fills in generated secrets for Redis, Postgres, and JWT</li>
+        <li style="border: none; display: list-item;"><strong>Builds</strong> — runs <code>docker compose ... build</code> from <code>docker/docker-compose.build.yml</code></li>
+        <li style="border: none; display: list-item;"><strong>Starts services</strong> — runs <code>docker compose ... up -d</code> (detached, all three containers)</li>
+        <li style="border: none; display: list-item;"><strong>Runs migrations</strong> — the ghostfolio container entrypoint automatically runs <code>prisma migrate deploy</code> then starts Node</li>
+      </ul>
+    </div>
+
+    <p>When the script finishes, verify all containers are healthy:</p>
+
+    <div class="code-block">
+      <span class="lang-tag">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre>./scripts/check.sh</pre>
+    </div>
+
+    <p>Then open your browser at:</p>
+    <div class="url-chip">🔗 http://localhost:3333</div>
+
+    <img src="screenshots/01-home.png" alt="Ghostfolio home page" class="screenshot" />
+    <div class="screenshot-caption">The Ghostfolio home page at http://localhost:3333 — click <strong>Get Started</strong> to create your account.</div>
+
+    <div class="callout tip">
+      <div class="callout-label">Tip</div>
+      <p>If port <code>3333</code> is taken, change <code>PORT=3333</code> in <code>.env</code> and update the port mapping in <code>docker/docker-compose.build.yml</code> before starting.</p>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 5: FIRST USER ─── -->
+  <div class="section" id="first-user">
+    <div class="step-label">
+      <div class="step-num">5</div>
+      <div class="step-title">Create your admin user</div>
+    </div>
+
+    <p>Ghostfolio has no pre-created accounts. The <strong>first person to register becomes the administrator</strong>. Do this immediately after the app starts to lock in your admin role before anyone else.</p>
+
+    <div class="callout try">
+      <div class="callout-label">Try this</div>
+      <ul>
+        <li>Go to <strong>http://localhost:3333</strong></li>
+        <li>Click <strong>Get Started</strong> on the home screen</li>
+        <li>Follow the registration flow — no email or password needed, Ghostfolio generates a security token for you</li>
+        <li>You are now logged in as ADMIN</li>
+      </ul>
+    </div>
+
+    <img src="screenshots/02-register.png" alt="Registration page" class="screenshot" />
+    <div class="screenshot-caption">The registration page — click <strong>Create Account</strong> to begin.</div>
+
+    <img src="screenshots/03-create-account-dialog.png" alt="Create Account dialog with Terms and Conditions" class="screenshot" />
+    <div class="screenshot-caption">Accept the Terms and Conditions, then click <strong>Continue</strong>.</div>
+
+    <img src="screenshots/04-security-token.png" alt="Security token displayed after account creation" class="screenshot" />
+    <div class="screenshot-caption">Your security token is shown once — copy it and store it somewhere safe before closing this dialog.</div>
+
+    <div class="callout warn">
+      <div class="callout-label">Important</div>
+      <p>This app has no traditional username/password — Ghostfolio gives you a short <strong>security token</strong> instead. Treat it like a password and don't share it. You will use it in the next step to authenticate API calls. If you reset the database your token is gone and you will need to register again, so save it somewhere safe.</p>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 6: SECURITY TOKEN ─── -->
+  <div class="section" id="security-token">
+    <div class="step-label">
+      <div class="step-num">6</div>
+      <div class="step-title">Get your security token (GHOSTFOLIO_ACCESS_TOKEN)</div>
+    </div>
+
+    <p>The <strong>security token</strong> is a short, opaque string Ghostfolio generates when you create an account. It is the key that identifies your user — there are no passwords in this build.</p>
+
+    <h2 style="margin-top: 1.5rem; margin-bottom: 0.8rem;">What is the token flow?</h2>
+
+    <div class="flow">
+      <div class="flow-item">
+        <div class="flow-box source">Security Token<br/><small>(from the UI)</small></div>
+        <div class="flow-label">GHOSTFOLIO_ACCESS_TOKEN</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box highlight">POST /api/v1/<br/>auth/anonymous</div>
+        <div class="flow-label">Ghostfolio API</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box result">JWT Bearer Token<br/><small>(short-lived)</small></div>
+        <div class="flow-label">authToken in response</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box">All API calls<br/><small>Authorization: Bearer …</small></div>
+        <div class="flow-label">authenticated requests</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Why two tokens?</div>
+      <p style="margin: 0; font-size: 0.9rem;">The <strong>security token</strong> is your durable identity (stored in the database, never expires). The <strong>JWT</strong> is a short-lived bearer token generated from the security token — it's what the API checks on every request. The seed scripts handle this exchange automatically; you only ever need to copy the security token.</p>
+    </div>
+
+    <h2 style="margin-top: 1.5rem; margin-bottom: 0.8rem;">Step-by-step: finding your token</h2>
+
+    <div class="callout try">
+      <div class="callout-label">Try this — in the Ghostfolio UI</div>
+      <ul>
+        <li>Log in (or you may still be logged in from the previous step)</li>
+        <li>Click the <strong>user avatar / account icon</strong> in the top-right corner</li>
+        <li>Navigate to <strong>Account → Security</strong> (or directly to <code>/account</code>)</li>
+        <li>Look for <strong>Security Token</strong> — click the copy icon next to it</li>
+      </ul>
+    </div>
+
+    <img src="screenshots/05-sign-in-dialog.png" alt="Sign in dialog with security token field" class="screenshot" />
+    <div class="screenshot-caption">The Sign in dialog — paste your security token here to authenticate.</div>
+
+    <img src="screenshots/08-security-token-settings.png" alt="Security token in account settings" class="screenshot" />
+    <div class="screenshot-caption">Your security token is also visible in <strong>Settings → Danger Zone → Security Token</strong> at any time.</div>
+
+    <p>Alternatively you can retrieve the token via the API directly (useful for automation):</p>
+
+    <div class="code-block">
+      <span class="lang-tag">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre># Exchange your security token for a JWT (replace TOKEN with your actual token)
+curl -s -X POST http://localhost:3333/api/v1/auth/anonymous \
+  -H "Content-Type: application/json" \
+  -d '{"accessToken": "TOKEN"}' | python3 -m json.tool</pre>
+    </div>
+
+    <p>The response looks like:</p>
+
+    <div class="code-block">
+      <span class="lang-tag">json</span>
+      <pre>{
+  "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</pre>
+    </div>
+
+    <p>The <code>authToken</code> value is the short-lived JWT — you would pass it as <code>Authorization: Bearer &lt;authToken&gt;</code>. The seed scripts handle this exchange for you automatically.</p>
+
+    <div class="callout warn">
+      <div class="callout-label">Common pitfall</div>
+      <p>The seed scripts accept the <strong>security token</strong> (<code>GHOSTFOLIO_ACCESS_TOKEN</code>), not the JWT. Don't copy the JWT value — it expires. Always copy the security token from the UI settings page.</p>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 7: LOAD DATA ─── -->
+  <div class="section" id="load-data">
+    <div class="step-label">
+      <div class="step-num">7</div>
+      <div class="step-title">Load demo data</div>
+    </div>
+
+    <p>Once the app is running and you have your security token, you can seed the workshop portfolio with realistic demo transactions across three accounts.</p>
+
+    <div class="card">
+      <div class="card-title">What gets imported</div>
+      <ul class="checklist" style="list-style: disc; padding-left: 1.2rem;">
+        <li style="border: none; display: list-item;"><code>myinvestor-core-etf.csv</code> — Index ETF portfolio (EUR)</li>
+        <li style="border: none; display: list-item;"><code>trade-republic-growth.csv</code> — Growth stock portfolio (EUR)</li>
+        <li style="border: none; display: list-item;"><code>crypto-exchange.csv</code> — BTC &amp; ETH positions (USD)</li>
+      </ul>
+    </div>
+
+    <div class="callout try">
+      <div class="callout-label">Try this — interactive prompt</div>
+      <p>Run the seed script. It will prompt you for the security token:</p>
+    </div>
+
+    <div class="code-block">
+      <span class="lang-tag">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre>./scripts/seed-workshop-data.sh</pre>
+    </div>
+
+    <p>Or pass the token as an environment variable to skip the prompt (useful for re-runs or CI):</p>
+
+    <div class="code-block">
+      <span class="lang-tag">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre>GHOSTFOLIO_ACCESS_TOKEN="your-security-token-here" ./scripts/seed-workshop-data.sh</pre>
+    </div>
+
+    <p>The script is idempotent — running it twice will not create duplicate activities. Each imported activity is tagged with <code>WORKSHOP_DEMO_DATA</code> in its comment field, and the script checks for that tag before inserting.</p>
+
+    <p>To remove only the demo data (without touching your account or other data):</p>
+
+    <div class="code-block">
+      <span class="lang-tag">bash</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre>./scripts/reset-workshop-data.sh</pre>
+    </div>
+  </div>
+
+  <!-- ─── SECTION 8: TROUBLESHOOTING ─── -->
+  <div class="section" id="troubleshoot">
+    <div class="step-label">
+      <div class="step-num">8</div>
+      <div class="step-title">Common failure modes</div>
+    </div>
+    <p>Solutions to the most common issues you might run into.</p>
+
+    <div class="card">
+      <div class="card-title">Docker daemon not running</div>
+      <p><strong>Symptom:</strong> <code>ERROR: Docker is installed, but the Docker daemon is not running.</code></p>
+      <p><strong>Fix:</strong> Open Docker Desktop and wait for the whale icon to stop animating (≈ 30 seconds), then run <code>./scripts/start.sh</code> again.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Port 3333 already in use</div>
+      <p><strong>Symptom:</strong> Browser shows "connection refused" or the start script errors on port binding.</p>
+      <p><strong>Fix:</strong> Find and stop the process using the port: <code>lsof -i :3333</code>. Or change <code>PORT=3333</code> in <code>.env</code>.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Ghostfolio container keeps restarting</div>
+      <p><strong>Symptom:</strong> <code>./scripts/check.sh</code> shows the ghostfolio container in a restart loop.</p>
+      <p><strong>Fix:</strong> Check logs for the root cause:</p>
+      <div class="code-block"><pre>./scripts/logs.sh</pre></div>
+      <p>Most common cause: Postgres or Redis not yet healthy when ghostfolio started. Wait 30 seconds and check again — Docker healthchecks will restart in order.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">.env has unreplaced placeholders</div>
+      <p><strong>Symptom:</strong> <code>ERROR: .env still contains placeholders.</code></p>
+      <p><strong>Fix:</strong> Search for remaining placeholders and fix them:</p>
+      <div class="code-block"><pre>grep '&lt;INSERT_' .env</pre></div>
+      <p>Delete <code>.env</code> and run <code>./scripts/start.sh</code> again to regenerate it cleanly.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Security token authentication fails during data seed</div>
+      <p><strong>Symptom:</strong> <code>Could not authenticate with the provided security token (401).</code></p>
+      <p><strong>Fix:</strong> Make sure you are copying the <strong>Security Token</strong> from Account → Security in the UI — not the JWT <code>authToken</code>. The security token looks like a short alphanumeric string, not a long JWT starting with <code>eyJ…</code>.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Slow first build</div>
+      <p><strong>Symptom:</strong> The build takes 10–20 minutes on a clean machine.</p>
+      <p><strong>This is normal.</strong> The first run installs npm dependencies, generates Prisma, and builds the full NestJS + Angular bundle inside Docker. Subsequent starts reuse Docker layer cache and take under a minute. <code>./scripts/rebuild.sh</code> forces a <code>--no-cache</code> rebuild — only use it when you've changed code.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Full reset (nuclear option)</div>
+      <p>Destroys all containers, networks, and volumes (including the database). Use only if everything is broken:</p>
+      <div class="code-block"><pre>./scripts/reset.sh</pre></div>
+      <p>Then start fresh with <code>./scripts/start.sh</code>.</p>
+    </div>
+  </div>
+
+  <!-- ─── FOOTER ─── -->
+  <div class="footer">
+    Innovation Night · Ghostfolio Agentic Workshop · June 2026<br />
+    Source: <code>README-workshop.md</code> · Scripts: <code>scripts/</code> · Tools: <code>tools/workshop/</code>
+  </div>
+
+</div>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.parentElement.querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent.trim()).then(() => {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1800);
+    });
+  }
+</script>
+</body>
+</html>
