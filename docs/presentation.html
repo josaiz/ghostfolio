@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ep. 1 — Agent Smith | Innovation Night</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── LIGHT MODE (default) ── */
+    :root {
+      --bg: #f2f7fb;
+      --surface: #ffffff;
+      --surface-2: #e6f0f8;
+      --border: #b8d0e4;
+      --accent: #0891b2;
+      --accent-2: #0e7490;
+      --red: #dc2626;
+      --green: #059669;
+      --yellow: #d97706;
+      --blue: #0369a1;
+      --text: #0c1a28;
+      --muted: #4a6880;
+      --code-bg: #ddeef8;
+      --code-cmd: #0e7490;
+      --code-comment: #7a9ab0;
+      --radius: 12px;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, monospace;
+    }
+
+    /* ── DARK MODE ── */
+    html[data-theme="dark"] {
+      --bg: #060e1a;
+      --surface: #0c1b2e;
+      --surface-2: #112338;
+      --border: #1a3350;
+      --accent: #06b6d4;
+      --accent-2: #67e8f9;
+      --red: #e53935;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --blue: #38bdf8;
+      --text: #e8f4f8;
+      --muted: #7da4b8;
+      --code-bg: #040a14;
+      --code-cmd: #67e8f9;
+      --code-comment: #2a4a5e;
+    }
+
+    html {
+      font-size: clamp(13px, 1.4vw, 24px);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(8,145,178,0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(8,145,178,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    html[data-theme="dark"] body::before {
+      background-image:
+        linear-gradient(rgba(6,182,212,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(6,182,212,0.05) 1px, transparent 1px);
+    }
+
+    /* ── SLIDE ENGINE ── */
+    .deck { position: fixed; inset: 0; z-index: 1; }
+
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 3vh 5vw;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.55s cubic-bezier(0.77,0,0.175,1), opacity 0.35s ease;
+      will-change: transform, opacity;
+    }
+    .slide.active  { transform: translateX(0);     opacity: 1; }
+    .slide.visited { transform: translateX(-100%); opacity: 0; }
+
+    .slide-content {
+      width: 100%;
+      animation: fadeUp 0.45s ease 0.15s both;
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── CHROME ── */
+    #progress {
+      position: fixed; bottom: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width 0.4s ease; z-index: 100;
+    }
+    #counter {
+      position: fixed; bottom: 16px; right: 24px;
+      font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+      z-index: 100;
+    }
+    .nav-btn {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.22);
+      color: var(--muted); width: 42px; height: 42px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      z-index: 100; transition: all 0.2s ease; backdrop-filter: blur(8px);
+    }
+    .nav-btn:hover { background: rgba(6,182,212,0.25); color: var(--text); border-color: var(--accent); }
+    .nav-btn.l { left: 18px; } .nav-btn.r { right: 18px; }
+    .nav-btn svg { width: 17px; height: 17px; }
+
+    /* ── TYPOGRAPHY ── */
+    .slide-title {
+      font-size: clamp(1.9rem, 3.8vw, 3rem);
+      font-weight: 800; line-height: 1.12; letter-spacing: -0.022em;
+      color: var(--text); margin-bottom: 0.55em;
+    }
+    .slide-sub {
+      font-size: 1rem; color: var(--muted); line-height: 1.65;
+      margin-bottom: 1.5rem;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff; font-size: 0.67rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.28rem 0.85rem; border-radius: 999px; margin-bottom: 1.1rem;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+    }
+    .card-lbl {
+      font-size: 0.67rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.6rem;
+    }
+
+    /* ── GRIDS ── */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.85rem; }
+
+    /* ── CODE ── */
+    .code {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 0.9rem 1.1rem;
+      font-family: var(--mono); font-size: 0.8rem;
+      color: var(--accent-2); line-height: 1.75; overflow-x: auto;
+    }
+    .code .c  { color: var(--code-cmd); }
+    .code .a  { color: var(--muted); }
+    .code .cm { color: var(--code-comment); }
+    code {
+      font-family: var(--mono); font-size: 0.8em; color: var(--accent-2);
+      background: rgba(6,182,212,0.12); border-radius: 4px;
+      padding: 0.1em 0.38em;
+    }
+
+    /* ── CALLOUTS ── */
+    .clo {
+      border-radius: var(--radius); padding: 0.9rem 1.1rem;
+      border-left: 3px solid; margin: 0.8rem 0;
+    }
+    .clo p { font-size: 0.88rem; color: var(--text); margin: 0; line-height: 1.6; }
+    .clo.pu { background: rgba(6,182,212,0.08); border-color: var(--accent); }
+    .clo.gr { background: rgba(52,211,153,0.07);  border-color: var(--green); }
+    .clo.ye { background: rgba(251,191,36,0.07);  border-color: var(--yellow); }
+    .clo.re { background: rgba(239,68,68,0.07);   border-color: var(--red); }
+    .clo.bl { background: rgba(96,165,250,0.07);  border-color: var(--blue); }
+    .clo-lbl {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 0.35rem;
+    }
+
+    /* ── TAG ── */
+    .tag {
+      display: inline-block;
+      background: rgba(6,182,212,0.14); color: var(--accent-2);
+      border: 1px solid rgba(6,182,212,0.28); border-radius: 4px;
+      padding: 0.12rem 0.45rem; font-size: 0.75rem;
+      font-family: var(--mono); font-weight: 500;
+    }
+
+    /* ── TIMELINE ── */
+    .tl-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 0.65rem 0; border-bottom: 1px solid var(--border);
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-time { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; color: var(--green); min-width: 72px; padding-top: 0.1rem; }
+    .tl-name { font-weight: 700; font-size: 0.92rem; color: var(--text); }
+    .tl-desc { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+
+    /* ── FLOW ── */
+    .flow { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0 1.4rem; }
+    .flow-s { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 0.45rem 0.9rem; font-size: 0.8rem; font-weight: 600; }
+    .flow-s.hi { border-color: var(--accent); color: var(--accent-2); }
+    .flow-arr { color: var(--muted); }
+
+    /* ── FORMULA ── */
+    .formula { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.8rem; margin-top: 1.4rem; }
+    .f-item { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
+    .f-key  { font-weight: 800; color: var(--accent-2); font-size: 0.9rem; margin-bottom: 0.2rem; }
+    .f-val  { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── COMPARE ── */
+    .cmp-col { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
+    .cmp-col.good { border-top: 3px solid var(--green); }
+    .cmp-col.meh  { border-top: 3px solid var(--yellow); }
+    .cmp-col h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.9rem; }
+    .cmp-col ul { list-style: none; padding: 0; }
+    .cmp-col li { font-size: 0.82rem; color: var(--muted); padding: 0.28rem 0; border-bottom: 1px solid var(--border); display: flex; gap: 0.5rem; }
+    .cmp-col li:last-child { border-bottom: none; }
+
+    /* ── LINK CARD ── */
+    .lnk {
+      display: block; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.1rem; text-decoration: none; color: inherit;
+      transition: all 0.2s ease;
+    }
+    .lnk:hover { border-color: var(--accent); background: rgba(6,182,212,0.08); transform: translateY(-2px); }
+    .lnk-title { font-weight: 700; color: var(--text); margin-bottom: 0.25rem; font-size: 0.95rem; }
+    .lnk-desc  { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.35rem; }
+    .lnk-url   { font-family: var(--mono); font-size: 0.68rem; color: var(--accent-2); word-break: break-all; }
+
+    /* ── SCRIPT CARD ── */
+    .sc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; }
+    .sc-lbl  { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.4rem; }
+    .sc-cmd  { font-family: var(--mono); font-size: 0.8rem; color: var(--accent-2); font-weight: 600; }
+    .sc-desc { font-size: 0.76rem; color: var(--muted); margin-top: 0.35rem; }
+
+    /* ── CONCEPT NUM ── */
+    .cnum {
+      font-size: clamp(3.5rem,6vw,5.5rem); font-weight: 900; line-height: 1;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; flex-shrink: 0;
+    }
+    .concept-hdr { display: flex; align-items: flex-start; gap: 1.25rem; margin-bottom: 1.25rem; }
+
+    /* ── SLIDE-SPECIFIC ── */
+    #s1 {
+      background: radial-gradient(ellipse 75% 55% at 50% 28%, rgba(6,182,212,0.13) 0%, transparent 65%),
+                  radial-gradient(ellipse 35% 35% at 82% 75%, rgba(103,232,249,0.07) 0%, transparent 55%);
+    }
+    #s1 .slide-content { text-align: center; }
+    #s1 .big-title {
+      font-size: clamp(2.4rem,5.2vw,4.4rem); font-weight: 900; letter-spacing: -0.03em; line-height: 1.05;
+      background: linear-gradient(135deg, var(--text) 0%, #0891b2 55%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin: 0.6rem 0 0.4rem;
+    }
+    #s1 .cover-sub { font-size: 1.05rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+    #s1 .cover-date {
+      display: inline-block; margin-top: 1.4rem;
+      font-size: 0.76rem; color: var(--muted); font-family: var(--mono);
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 0.3rem 1rem; border-radius: 999px;
+    }
+    #s1 img { width: min(680px, 78vw); max-height: 52vh; object-fit: contain; filter: drop-shadow(0 4px 32px rgba(8,145,178,0.2)); }
+    html[data-theme="dark"] #s1 img { filter: drop-shadow(0 0 36px rgba(6,182,212,0.35)); }
+    html[data-theme="dark"] #s1 .big-title {
+      background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 55%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    #s14 { background: radial-gradient(ellipse 70% 55% at 50% 50%, rgba(6,182,212,0.12) 0%, transparent 65%); }
+    #s15 { background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(6,182,212,0.08) 0%, transparent 60%); }
+    #s15 .slide-content { text-align: center; }
+    #s14 .slide-content { text-align: center; }
+
+    /* ── THEME TOGGLE ── */
+    #theme-toggle {
+      position: fixed; bottom: 16px; left: 16px; z-index: 100;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); width: 38px; height: 38px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease; backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    #theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+    #theme-toggle svg { width: 16px; height: 16px; }
+
+    @media (max-width: 760px) {
+      .slide { padding: 36px 20px; }
+      .g2, .g3, .g4, .formula { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ── SLIDE 1 · Cover ── -->
+  <div class="slide active" id="s1">
+    <div class="slide-content">
+      <img src="./logo.png" alt="Innovation Night · mimacom" />
+      <div class="big-title">Ep. 1 — Agent Smith</div>
+      <div class="cover-sub">Innovation Night · mimacom</div>
+      <div class="cover-date">June 2026</div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 2 · Welcome ── -->
+  <div class="slide" id="s2">
+    <div class="slide-content">
+      <div class="badge">Welcome 🎉</div>
+      <h1 class="slide-title">Hey everyone! 👋</h1>
+      <p class="slide-sub">Thanks for joining us tonight — we know you could be doing literally anything else, and you chose <em>this</em>. Respect. 🤜🤛</p>
+      <div class="card" style="border-color: var(--accent); background: rgba(6,182,212,0.07); margin-bottom: 1rem;">
+        <p style="font-size: 1rem; color: var(--text); line-height: 1.7; margin: 0;">
+          Tonight is all about <strong style="color: var(--accent-2);">hands-on fun</strong>.
+          No endless slides — we'll spend most of the time actually building stuff together
+          with AI tools on a real project. Think hackathon, but chill. 🍕
+        </p>
+      </div>
+      <div class="g3">
+        <div class="card">
+          <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">🤝</div>
+          <div style="font-weight: 700; margin-bottom: 0.2rem;">Teams</div>
+          <div style="font-size: 0.82rem; color: var(--muted);">Groups of 2–4. Self-organize, don't overthink it.</div>
+        </div>
+        <div class="card">
+          <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">🛠️</div>
+          <div style="font-weight: 700; margin-bottom: 0.2rem;">Hands-on</div>
+          <div style="font-size: 0.82rem; color: var(--muted);">Real code, real project, real AI tools.</div>
+        </div>
+        <div class="card">
+          <div style="font-size: 1.4rem; margin-bottom: 0.4rem;">🍕</div>
+          <div style="font-weight: 700; margin-bottom: 0.2rem;">Pizzas</div>
+          <div style="font-size: 0.82rem; color: var(--muted);">Yes, they're coming. We promise.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 3 · Agenda ── -->
+  <div class="slide" id="s3">
+    <div class="slide-content">
+      <div class="badge">Agenda</div>
+      <h1 class="slide-title">Tonight's plan</h1>
+      <div class="card" style="padding: 0.4rem 1.25rem;">
+        <div class="tl-item">
+          <div class="tl-time">10 min</div>
+          <div><div class="tl-name">Intro + Core concepts</div><div class="tl-desc">Context, building blocks, and how everything fits together</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-time">120 min</div>
+          <div><div class="tl-name">You know, programmer stuff 🛠️</div><div class="tl-desc">Build things. Break things. Learn things. Repeat.</div></div>
+        </div>
+        <div class="tl-item" style="background: rgba(251,191,36,0.06); border-radius: 8px; margin: 0.25rem -0.25rem 0; padding: 0.65rem 0.25rem;">
+          <div class="tl-time" style="color: var(--yellow);">after</div>
+          <div><div class="tl-name" style="color: var(--yellow);">Pizzas 🍕</div><div class="tl-desc">Self-explanatory.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 4 · Why Ghostfolio ── -->
+  <div class="slide" id="s4">
+    <div class="slide-content">
+      <div class="badge">Context</div>
+      <h1 class="slide-title">Why an existing project?</h1>
+      <p class="slide-sub">Building with AI from scratch is easy. Working with an existing codebase? That's the real challenge — and that's <strong style="color:var(--text);">exactly what our day-to-day looks like</strong>.</p>
+      <div class="g2">
+        <div class="cmp-col good">
+          <h3>Starting from scratch 😌</h3>
+          <ul>
+            <li><span style="color:var(--green);">✓</span> Blank canvas, your rules</li>
+            <li><span style="color:var(--green);">✓</span> No existing patterns to respect</li>
+            <li><span style="color:var(--green);">✓</span> AI can invent architecture freely</li>
+            <li><span style="color:var(--green);">✓</span> Great for demos and tutorials</li>
+            <li><span style="color:var(--green);">✓</span> No hidden tech debt</li>
+          </ul>
+        </div>
+        <div class="cmp-col meh">
+          <h3>Real existing project 😅</h3>
+          <ul>
+            <li><span style="color:var(--yellow);">!</span> Architecture to understand first</li>
+            <li><span style="color:var(--yellow);">!</span> Coding conventions already set</li>
+            <li><span style="color:var(--yellow);">!</span> Real dependencies &amp; constraints</li>
+            <li><span style="color:var(--yellow);">!</span> Domain knowledge required</li>
+            <li><span style="color:var(--yellow); font-weight:700;">!</span> <em>This is what we actually do at work</em></li>
+          </ul>
+        </div>
+      </div>
+      <div class="clo gr" style="margin-top: 1rem;">
+        <p><strong>Ghostfolio</strong> is a real open-source wealth management platform — Angular + NestJS + Nx. Big enough to be interesting, structured enough to learn from.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 5 · Goal ── -->
+  <div class="slide" id="s5">
+    <div class="slide-content">
+      <div class="badge">The Goal</div>
+      <h1 class="slide-title">What we're building</h1>
+      <div class="clo pu">
+        <p style="font-style: italic; font-size: 1rem;">"We're not asking AI for code — we're building an <strong>agentic development system</strong>."</p>
+      </div>
+      <div class="card" style="margin-top: 1rem;">
+        <div class="card-lbl">Shared Epic</div>
+        <div style="font-size: 1.35rem; font-weight: 800; color: var(--text); margin-bottom: 1rem;">Portfolio Insights Assistant</div>
+        <div class="g2" style="gap: 0.7rem;">
+          <div style="display:flex; gap:0.5rem; font-size:0.84rem; color:var(--muted);">
+            <span style="color:var(--green); flex-shrink:0;">✦</span>
+            Demo portfolio summary — accounts, holdings, concentration
+          </div>
+          <div style="display:flex; gap:0.5rem; font-size:0.84rem; color:var(--muted);">
+            <span style="color:var(--green); flex-shrink:0;">✦</span>
+            Concentration signals by account and symbol
+          </div>
+          <div style="display:flex; gap:0.5rem; font-size:0.84rem; color:var(--muted);">
+            <span style="color:var(--green); flex-shrink:0;">✦</span>
+            Anomaly detection (duplicates, high fees, mismatches…)
+          </div>
+          <div style="display:flex; gap:0.5rem; font-size:0.84rem; color:var(--muted);">
+            <span style="color:var(--green); flex-shrink:0;">✦</span>
+            Educational insights — no personalised financial advice
+          </div>
+        </div>
+      </div>
+      <div class="g2" style="margin-top: 1rem;">
+        <div class="card" style="text-align:center;">
+          <div style="font-size: 2rem; font-weight: 900; color: var(--accent-2);">2–4</div>
+          <div style="font-size: 0.78rem; color: var(--muted);">people per team</div>
+        </div>
+        <div class="card">
+          <div style="font-size: 0.84rem; color: var(--muted); line-height: 1.65;">
+            A real feature, on a real project, using a <strong style="color:var(--text);">governed, repeatable, reviewable</strong> workflow with OpenCode.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 6 · Links ── -->
+  <div class="slide" id="s6">
+    <div class="slide-content">
+      <div class="badge">Resources</div>
+      <h1 class="slide-title">Useful links</h1>
+      <p class="slide-sub">Everything you need is here. Bookmark these before we start.</p>
+      <div style="display: flex; flex-direction: column; gap: 0.9rem;">
+        <a href="https://github.com/josaiz/ghostfolio/tree/main" target="_blank" class="lnk">
+          <div style="display:flex; align-items:center; gap:0.7rem; margin-bottom:0.4rem;">
+            <span style="font-size:1.35rem;">📦</span>
+            <div class="lnk-title">GitHub Repo</div>
+          </div>
+          <div class="lnk-desc">The Ghostfolio fork we'll be working on. Clone this, open at root in OpenCode.</div>
+          <div class="lnk-url">https://github.com/josaiz/ghostfolio/tree/main</div>
+        </a>
+        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/josaiz/ghostfolio/refs/heads/workshop/exercises/docs/workshop/kanban.html" target="_blank" class="lnk">
+          <div style="display:flex; align-items:center; gap:0.7rem; margin-bottom:0.4rem;">
+            <span style="font-size:1.35rem;">📋</span>
+            <div class="lnk-title">Kanban Board</div>
+          </div>
+          <div class="lnk-desc">All the tasks. Find your swimlane, pick a card, get to work.</div>
+          <div class="lnk-url">htmlpreview.github.io → .../kanban.html</div>
+        </a>
+        <a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/josaiz/ghostfolio/refs/heads/workshop/exercises/docs/workshop/workshop-101.html" target="_blank" class="lnk">
+          <div style="display:flex; align-items:center; gap:0.7rem; margin-bottom:0.4rem;">
+            <span style="font-size:1.35rem;">📖</span>
+            <div class="lnk-title">Workshop Guide (101)</div>
+          </div>
+          <div class="lnk-desc">The full guide: concepts, setup, card cycle, guardrails, done checklist. Your reference doc.</div>
+          <div class="lnk-url">htmlpreview.github.io → .../workshop-101.html</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 7 · OpenCode ── -->
+  <div class="slide" id="s7">
+    <div class="slide-content">
+      <div class="badge">OpenCode</div>
+      <h1 class="slide-title">Meet OpenCode</h1>
+      <p class="slide-sub">An AI-powered coding agent that lives in your terminal — governed by the <strong style="color:var(--text);">repository itself</strong>.</p>
+      <div class="card" style="margin-bottom: 1rem;">
+        <div class="card-lbl">Why it matters</div>
+        <p style="font-size: 0.88rem; color: var(--muted); margin: 0; line-height: 1.7;">
+          Instead of everyone writing loose prompts in a chat window, the team defines
+          <strong style="color:var(--text);">how to work with AI</strong> in versioned files — reviewed like code.
+          The workflow becomes <strong style="color:var(--text);">repeatable, traceable, and controllable</strong>.
+          Commands, agents, skills, and MCPs live in the repo alongside the code.
+        </p>
+      </div>
+      <div class="formula">
+        <div class="f-item"><div class="f-key">Command</div><div class="f-val">how to work</div></div>
+        <div class="f-item"><div class="f-key">Agent</div><div class="f-val">who works</div></div>
+        <div class="f-item"><div class="f-key">Skill</div><div class="f-val">what to know</div></div>
+        <div class="f-item"><div class="f-key">MCP</div><div class="f-val">what data to use</div></div>
+      </div>
+      <div class="clo pu" style="margin-top: 1rem;">
+        <p>Per-agent permissions are real controls — the AI literally can't access files outside its allowed scope. This protects secrets, real data, and financial-safety boundaries.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 8 · Scripts ── -->
+  <div class="slide" id="s8">
+    <div class="slide-content">
+      <div class="badge">Setup</div>
+      <h1 class="slide-title">Handy scripts</h1>
+      <p class="slide-sub">All scripts live in <span class="tag">./scripts/</span> — Windows folks, use the <span class="tag">.ps1</span> equivalents.</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;">
+        <div class="sc">
+          <div class="sc-lbl">1 · Start</div>
+          <div class="sc-cmd">./scripts/start.sh</div>
+          <div class="sc-desc">Starts Ghostfolio via Docker → <code>http://localhost:3333</code></div>
+        </div>
+        <div class="sc">
+          <div class="sc-lbl">2 · Check status</div>
+          <div class="sc-cmd">./scripts/check.sh</div>
+          <div class="sc-desc">Verifies Ghostfolio is up and all services are running</div>
+        </div>
+        <div class="sc">
+          <div class="sc-lbl">3 · Seed demo data</div>
+          <div class="sc-cmd">./scripts/seed-workshop-data.sh</div>
+          <div class="sc-desc">Creates 3 demo accounts with ~54 activities. Needs your security token.</div>
+        </div>
+        <div class="sc">
+          <div class="sc-lbl">4 · Verify MCP</div>
+          <div class="sc-cmd">./scripts/check-demo-mcp.sh</div>
+          <div class="sc-desc">Checks MCP is wired. Works without Ghostfolio running (reads CSV files).</div>
+        </div>
+        <div class="sc" style="grid-column: span 2;">
+          <div class="sc-lbl">5 · Rebuild <span style="font-weight:400; text-transform:none; letter-spacing:0;">(only if you change app code under <code>apps/</code>)</span></div>
+          <div class="sc-cmd">./scripts/rebuild.sh</div>
+          <div class="sc-desc">OpenCode config and MCP edits don't need this — only actual Ghostfolio code changes do.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 9 · Command ── -->
+  <div class="slide" id="s9">
+    <div class="slide-content">
+      <div class="badge">Concept 1 / 4</div>
+      <div class="concept-hdr">
+        <div class="cnum">01</div>
+        <div>
+          <h1 class="slide-title" style="margin-bottom: 0.1rem;">Command</h1>
+          <div style="color: var(--accent-2); font-weight: 700;">Repeatable workflows</div>
+        </div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="card" style="margin-bottom: 0.8rem;">
+            <div class="card-lbl">What it is</div>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.65;">
+              Prompt templates invoked with <span class="tag">/name</span>. They standardise recurring tasks
+              like investigate, plan, implement, and review.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-lbl">Use case</div>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.65;">
+              Everyone uses the same approach — no improvised prompts, no guesswork.
+              Versioned in the repo like any other file.
+            </p>
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--muted);">
+            Location: <span class="tag">.opencode/commands/&lt;name&gt;.md</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-lbl" style="margin-bottom: 0.4rem;">Examples</div>
+          <div class="code">
+            <div><span class="c">/workshop-inspect-architecture</span> <span class="a">&lt;topic&gt;</span></div>
+            <div><span class="c">/workshop-plan-frontend-card</span></div>
+            <div><span class="c">/workshop-plan-backend-card</span></div>
+            <div><span class="c">/workshop-plan-mcp-card</span></div>
+            <div><span class="c">/workshop-implement-small-product-slice</span></div>
+            <div><span class="c">/workshop-review-financial-safety</span></div>
+            <div><span class="c">/workshop-prepare-team-handoff</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 10 · Skill ── -->
+  <div class="slide" id="s10">
+    <div class="slide-content">
+      <div class="badge">Concept 2 / 4</div>
+      <div class="concept-hdr">
+        <div class="cnum" style="background: linear-gradient(135deg, var(--green), #6ee7b7); -webkit-background-clip:text; background-clip:text;">02</div>
+        <div>
+          <h1 class="slide-title" style="margin-bottom: 0.1rem;">Skill</h1>
+          <div style="color: var(--green); font-weight: 700;">Reusable knowledge</div>
+        </div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="card" style="margin-bottom: 0.8rem;">
+            <div class="card-lbl">What it is</div>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.65;">
+              Project best-practice manuals loaded on demand. They prevent the agent from
+              reinventing patterns the codebase already has.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-lbl">Use case</div>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.65;">
+              Carry domain knowledge about Ghostfolio's structure, NestJS conventions,
+              Angular Nx patterns — so the AI doesn't guess or hallucinate.
+            </p>
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--muted);">
+            Location: <span class="tag">.opencode/skills/&lt;name&gt;/SKILL.md</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-lbl" style="margin-bottom: 0.4rem;">Examples</div>
+          <div class="code" style="line-height: 2.1;">
+            <div><span class="c">ghostfolio-domain-analysis</span></div>
+            <div><span class="c">nestjs-api-development</span></div>
+            <div><span class="c">angular-nx-development</span></div>
+            <div><span class="c">financial-safety-review</span></div>
+          </div>
+          <div class="clo gr" style="margin-top: 0.8rem;">
+            <p style="font-size: 0.81rem;">Skills are loaded only when the task needs them — no wasted context, no token bloat.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 11 · Agent ── -->
+  <div class="slide" id="s11">
+    <div class="slide-content">
+      <div class="badge">Concept 3 / 4</div>
+      <div class="concept-hdr">
+        <div class="cnum" style="background: linear-gradient(135deg, var(--yellow), #fb923c); -webkit-background-clip:text; background-clip:text;">03</div>
+        <div>
+          <h1 class="slide-title" style="margin-bottom: 0.1rem;">Agent</h1>
+          <div style="color: var(--yellow); font-weight: 700;">Specialists with permissions</div>
+        </div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="card" style="margin-bottom: 0.8rem;">
+            <div class="card-lbl">What it is</div>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.65;">
+              Role-specific workers with their own system prompt and file permissions.
+              A backend agent can edit backend code; a safety reviewer stays read-only.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-lbl">Use case</div>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.65;">
+              Separation of concerns in AI workflows. Each agent knows its domain
+              and can't go outside its lane. Governance is baked in.
+            </p>
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--muted);">
+            Location: <span class="tag">.opencode/agents/&lt;name&gt;.md</span> + <span class="tag">AGENTS.md</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-lbl" style="margin-bottom: 0.4rem;">Examples</div>
+          <div class="code" style="line-height: 2.1;">
+            <div><span class="c">backend-nestjs-agent</span></div>
+            <div><span class="c">frontend-angular-agent</span></div>
+            <div><span class="c">financial-safety-reviewer</span></div>
+            <div><span class="c">workshop-facilitator-agent</span></div>
+          </div>
+          <div class="clo ye" style="margin-top: 0.8rem;">
+            <p style="font-size: 0.81rem;">Permissions are real — the AI literally cannot access files outside its allowed scope.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 12 · MCP ── -->
+  <div class="slide" id="s12">
+    <div class="slide-content">
+      <div class="badge">Concept 4 / 4</div>
+      <div class="concept-hdr">
+        <div class="cnum" style="background: linear-gradient(135deg, var(--blue), #818cf8); -webkit-background-clip:text; background-clip:text;">04</div>
+        <div>
+          <h1 class="slide-title" style="margin-bottom: 0.1rem;">MCP <span style="font-size: 0.5em; font-weight: 400; color: var(--muted); -webkit-text-fill-color: var(--muted);">Model Context Protocol</span></h1>
+          <div style="color: var(--blue); font-weight: 700;">Governed data access</div>
+        </div>
+      </div>
+      <div class="g2">
+        <div>
+          <div class="card" style="margin-bottom: 0.8rem;">
+            <div class="card-lbl">What it is</div>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.65;">
+              Standard connectors that expose tools or data to OpenCode.
+              Our workshop MCP gives read-only access to the demo portfolio data.
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-lbl">Use case</div>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.65;">
+              Instead of copy-pasting data into a chat and hoping the AI doesn't hallucinate
+              the numbers — MCPs give structured, read-only access to actual data.
+            </p>
+          </div>
+          <div style="margin-top: 0.75rem; font-size: 0.75rem; color: var(--muted);">
+            Config: <span class="tag">opencode.json</span> &nbsp;·&nbsp; Code: <span class="tag">tools/mcp/ghostfolio-demo-data-mcp/</span>
+          </div>
+        </div>
+        <div>
+          <div class="card-lbl" style="margin-bottom: 0.4rem;">Exposed tools</div>
+          <div class="code" style="line-height: 2.1;">
+            <div><span class="c">get_demo_portfolio_summary</span></div>
+            <div><span class="c">detect_demo_anomalies</span></div>
+            <div><span class="c">get_concentration_signals</span></div>
+          </div>
+          <div class="clo bl" style="margin-top: 0.8rem;">
+            <p style="font-size: 0.81rem;">The MCP works even without Ghostfolio running — it reads CSV files directly from the repo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 13 · Card workflow ── -->
+  <div class="slide" id="s13">
+    <div class="slide-content">
+      <div class="badge">Workflow</div>
+      <h1 class="slide-title">How to work a card</h1>
+      <div class="flow">
+        <div class="flow-s hi">Investigate</div><div class="flow-arr">→</div>
+        <div class="flow-s">Plan</div><div class="flow-arr">→</div>
+        <div class="flow-s">Implement</div><div class="flow-arr">→</div>
+        <div class="flow-s">Review</div><div class="flow-arr">→</div>
+        <div class="flow-s">Handoff</div>
+      </div>
+      <div class="code" style="margin-bottom: 1rem;">
+        <div><span class="cm">investigate →</span> <span class="c">/workshop-inspect-architecture</span> <span class="a">&lt;topic&gt;</span></div>
+        <div><span class="cm">plan        →</span> <span class="c">/workshop-plan-frontend-card</span> <span class="a">| -backend-card | -mcp-card</span></div>
+        <div><span class="cm">implement   →</span> <span class="c">/workshop-implement-small-product-slice</span> <span class="a">(only when card asks for it)</span></div>
+        <div><span class="cm">review      →</span> <span class="c">/workshop-review-financial-safety</span></div>
+        <div><span class="cm">handoff     →</span> <span class="c">/workshop-prepare-team-handoff</span></div>
+      </div>
+      <div class="g2" style="gap: 0.85rem;">
+        <div class="clo re">
+          <div class="clo-lbl" style="color: var(--red);">Don't touch</div>
+          <p style="font-size: 0.81rem;"><code>.env</code> files · <code>prisma/</code> · real user data · no <code>git commit/push</code> without the facilitator · no financial advice</p>
+        </div>
+        <div class="clo gr">
+          <div class="clo-lbl" style="color: var(--green);">Card is done when</div>
+          <p style="font-size: 0.81rem;">Functional objective met · At least one Command/Agent/Skill/MCP created or used · Safety review passed · Handoff prepared</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 14 · Closing ── -->
+  <div class="slide" id="s14">
+    <div class="slide-content">
+      <div class="badge" style="background: linear-gradient(135deg, #ef4444, #f97316);">Let's go! 🚀</div>
+      <h1 class="slide-title" style="font-size: clamp(2.2rem, 5vw, 4rem);">Let's build something!</h1>
+      <p style="font-size: 1.05rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem;">
+        You've got the tools. You've got the team. Now go build something awesome. 🤘
+      </p>
+      <div class="g2" style="margin-bottom: 1.1rem;">
+        <div class="card">
+          <div style="font-size: 1.25rem; margin-bottom: 0.4rem;">🤝</div>
+          <div style="font-weight: 700; margin-bottom: 0.2rem;">Form your team</div>
+          <div style="font-size: 0.82rem; color: var(--muted);">Groups of 2–4. Self-organize. Jump in.</div>
+        </div>
+        <div class="card">
+          <div style="font-size: 1.25rem; margin-bottom: 0.4rem;">📋</div>
+          <div style="font-weight: 700; margin-bottom: 0.2rem;">Pick a card</div>
+          <div style="font-size: 0.82rem; color: var(--muted);">Open the Kanban, find your swimlane, grab a card.</div>
+        </div>
+      </div>
+      <div class="clo pu" style="margin-bottom: 1rem;">
+        <p>Stuck? Ask <span class="tag">workshop-facilitator-agent</span> ("What command do I use for FE-02?") — or just ask a human. We're all here. 👋</p>
+      </div>
+      <div style="text-align: center; padding: 0.9rem; background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); border-radius: var(--radius);">
+        <span style="font-size: 1.4rem;">🍕</span>
+        <span style="color: var(--yellow); font-weight: 700; margin: 0 0.65rem; font-size: 1rem;">The pizzas are on their way.</span>
+        <span style="font-size: 1.4rem;">🍕</span>
+      </div>
+      <div style="margin-top: 1.25rem; text-align: center; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;">
+        Innovation Night · mimacom · June 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 15 · Support team ── -->
+  <div class="slide" id="s15">
+    <div class="slide-content">
+      <div class="badge">Support 🙋</div>
+      <h1 class="slide-title">We're all here</h1>
+      <p class="slide-sub">Got a question? Feeling stuck? There's someone in your office who's got your back.</p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+        <div class="card" style="border-top: 3px solid var(--accent);">
+          <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); margin-bottom: 0.5rem;">🇨🇭 Bern</div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--text);">Frank Bommeli</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent);">
+          <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); margin-bottom: 0.5rem;">🇪🇸 Gijón</div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--text);">Alberto Martínez</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent);">
+          <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); margin-bottom: 0.5rem;">🇪🇸 Madrid</div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--text);">Belén Jiménez</div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--text); margin-top: 0.25rem;">Juan Carlos Rivera</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent);">
+          <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); margin-bottom: 0.5rem;">🇩🇪 Stuttgart</div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--text);">Thomas Konstantinides</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent);">
+          <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); margin-bottom: 0.5rem;">🇪🇸 Valencia</div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--text);">Ariadna Gómez</div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--text); margin-top: 0.25rem;">Jorge Saiz</div>
+        </div>
+        <div class="card" style="border-top: 3px solid var(--accent);">
+          <div style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); margin-bottom: 0.5rem;">🇨🇭 Zurich</div>
+          <div style="font-weight: 700; font-size: 1rem; color: var(--text);">Olivier Piegai</div>
+        </div>
+      </div>
+      <div class="clo pu" style="margin-top: 1.25rem;">
+        <p>Don't be shy — that's what we're here for. Or ask the <span class="tag">workshop-facilitator-agent</span>, also on duty. 😄</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<div id="progress"></div>
+<div id="counter">1 / 15</div>
+
+<button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+  <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+  <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+</button>
+
+<button class="nav-btn l" id="btn-prev" onclick="prev()" aria-label="Previous">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button class="nav-btn r" id="btn-next" onclick="next()" aria-label="Next">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total  = slides.length;
+  let cur = 0;
+
+  function updateChrome() {
+    document.getElementById('progress').style.width = ((cur + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent  = (cur + 1) + ' / ' + total;
+    document.getElementById('btn-prev').style.opacity = cur === 0         ? '0.25' : '1';
+    document.getElementById('btn-next').style.opacity = cur === total - 1 ? '0.25' : '1';
+  }
+
+  function goTo(n) {
+    if (n < 0 || n >= total || n === cur) return;
+
+    slides[cur].classList.remove('active');
+    slides[cur].classList.toggle('visited', n > cur);
+
+    // ensure slides behind/ahead of new position are properly classed
+    slides.forEach((s, i) => {
+      if (i === n) return;
+      s.classList.remove('active');
+      s.classList.toggle('visited', i < n);
+    });
+
+    cur = n;
+    slides[cur].classList.remove('visited');
+    slides[cur].classList.add('active');
+
+    // Re-trigger enter animation
+    const c = slides[cur].querySelector('.slide-content');
+    if (c) { c.style.animation = 'none'; c.offsetHeight; c.style.animation = ''; }
+
+    updateChrome();
+  }
+
+  function next() { goTo(cur + 1); }
+  function prev() { goTo(cur - 1); }
+
+  // Init: everything except slide 0 should be translateX(100%)
+  slides.forEach((s, i) => { if (i > 0) { /* default transform from CSS */ } });
+  updateChrome();
+
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', ' '].includes(e.key)) { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft')               { e.preventDefault(); prev(); }
+  });
+
+  // Theme toggle
+  const toggle = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun  = document.getElementById('icon-sun');
+  toggle.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      iconMoon.style.display = ''; iconSun.style.display = 'none';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      iconMoon.style.display = 'none'; iconSun.style.display = '';
+    }
+  });
+
+  // Click-zone navigation (avoid nav buttons)
+  document.getElementById('deck').addEventListener('click', e => {
+    if (e.target.closest('.nav-btn') || e.target.closest('a')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.72) next();
+    else if (x < 0.28) prev();
+  });
+</script>
+</body>
+</html>
